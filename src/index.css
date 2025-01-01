@@ -514,3 +514,183 @@
 .animate-slide-in-left {
   animation: slide-in-left 0.4s ease-out;
 }
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-gradient-to-r from-primary to-emerald-300 bg-clip-text text-transparent;
+  }
+
+  .glow {
+    box-shadow: 0 0 40px hsl(var(--glow) / 0.3), 0 0 80px hsl(var(--glow) / 0.1);
+  }
+
+  .glow-sm {
+    box-shadow: 0 0 20px hsl(var(--glow) / 0.2);
+  }
+
+  .circuit-pattern {
+    background-image: 
+      linear-gradient(90deg, hsl(var(--circuit) / 0.1) 1px, transparent 1px),
+      linear-gradient(hsl(var(--circuit) / 0.1) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px hsl(var(--glow) / 0.3); }
+  50% { box-shadow: 0 0 40px hsl(var(--glow) / 0.5); }
+}
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+  20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+@keyframes success-pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.1); opacity: 0.9; }
+}
+
+@keyframes error-flash {
+  0%, 100% { background-color: transparent; }
+  50% { background-color: hsl(var(--destructive) / 0.1); }
+}
+
+@keyframes slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes page-transition {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -1000px 0; }
+  100% { background-position: 1000px 0; }
+}
+
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.animate-slide-up {
+  animation: slide-up 0.6s ease-out forwards;
+}
+
+.animate-page-transition {
+  animation: page-transition 0.4s ease-out;
+}
+
+.delay-100 { animation-delay: 100ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-400 { animation-delay: 400ms; }
+.delay-500 { animation-delay: 500ms; }
+.delay-600 { animation-delay: 600ms; }
+
+/* Smooth transitions for common properties */
+.transition-smooth {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Scroll reveal animation */
+@keyframes scroll-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.scroll-reveal {
+  opacity: 0;
+  animation: scroll-reveal 0.6s ease-out forwards;
+}
+
+.scroll-reveal.visible {
+  opacity: 1;
+}
+
+/* Loading spinner */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Shimmer effect for loading states */
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    hsl(var(--muted)) 0%,
+    hsl(var(--muted) / 0.5) 50%,
+    hsl(var(--muted)) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s linear infinite;
+}
+
+/* Success/Error animations */
+.animate-shake {
+  animation: shake 0.5s ease-in-out;
+}
+
+.animate-success-pulse {
+  animation: success-pulse 0.6s ease-in-out;
+}
+
+.animate-error-flash {
+  animation: error-flash 0.3s ease-in-out;
+}
+
+.animate-slide-in-right {
+  animation: slide-in-right 0.4s ease-out;
+}
+
+.animate-slide-in-left {
+  animation: slide-in-left 0.4s ease-out;
+}
