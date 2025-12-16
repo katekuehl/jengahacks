@@ -34,7 +34,7 @@ const About = () => {
             Why <span className="text-gradient">JengaHacks</span>?
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
-            "Jenga" means "build" in Swahili. We're building the future of African tech, one hack at a time.
+            We're building the future of Kenyan technology, one hack at a time.
           </p>
         </div>
 
