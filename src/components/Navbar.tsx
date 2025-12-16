@@ -9,7 +9,6 @@ const Navbar = () => {
   const navLinks = [
     { href: "#about", label: "About" },
     { href: "#sponsors", label: "Sponsors" },
-    { href: "#register", label: "Join Now" },
   ];
 
   return (
