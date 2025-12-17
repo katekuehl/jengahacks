@@ -14,7 +14,7 @@ const Footer = () => {
 
           <div className="flex items-center gap-4">
             <a
-              href="https://twitter.com/jengahacks"
+              href="https://x.com/jengahacks"
               target="_blank"
               rel="noopener noreferrer"
               className="w-10 h-10 flex items-center justify-center rounded-full bg-muted hover:bg-primary hover:text-primary-foreground transition-colors"
