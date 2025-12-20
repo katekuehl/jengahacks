@@ -14,6 +14,8 @@ import {
   sanitizeInput,
   isValidEmail,
   isValidFullName,
+  isValidWhatsAppNumber,
+  normalizeWhatsAppNumber,
 } from "@/lib/security";
 import { checkRateLimit, formatRetryAfter, recordSubmission } from "@/lib/rateLimit";
 import { cn } from "@/lib/utils";
