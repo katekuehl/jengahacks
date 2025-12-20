@@ -1,73 +1,260 @@
-# Welcome to your Lovable project
+# JengaHacks Hub
 
-## Project info
+> Built in Nairobi. Ready for the World.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+A modern, responsive website for **JengaHacks** - East Africa's premier hackathon event. This platform provides information about the hackathon, registration capabilities, sponsor showcases, and more.
 
-## How can I edit this code?
+## 🎯 About
 
-There are several ways of editing your application.
+JengaHacks is a 48-hour hackathon event taking place in Nairobi, Kenya, bringing together developers, designers, and entrepreneurs to build innovative solutions across multiple tracks including FinTech, HealthTech, AgriTech, EdTech, Climate Tech, and Open Innovation.
 
-**Use Lovable**
+**Event Details:**
+- 📅 **Date**: February 21-22, 2026
+- 📍 **Location**: iHub, Nairobi
+- ⏱️ **Duration**: 48 hours
+- 👥 **Expected Participants**: 100+ hackers
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+## ✨ Features
 
-Changes made via Lovable will be committed automatically to this repo.
+- 🎨 **Modern UI/UX** - Beautiful, responsive design built with Tailwind CSS and shadcn/ui
+- 📝 **Registration System** - Easy event registration with form validation
+- 🏢 **Sponsor Showcase** - Dedicated section highlighting event sponsors
+- 📱 **Fully Responsive** - Optimized for all devices and screen sizes
+- ⚡ **Fast Performance** - Built with Vite for lightning-fast development and builds
+- 🔐 **Supabase Integration** - Backend services for data management
+- 🎯 **Multi-page Navigation** - Clean routing with React Router
 
-**Use your preferred IDE**
+## 🛠️ Tech Stack
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### Core
+- **React 18** - UI library
+- **TypeScript** - Type-safe development
+- **Vite** - Build tool and dev server
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+### Styling & UI
+- **Tailwind CSS** - Utility-first CSS framework
+- **shadcn/ui** - High-quality React components
+- **Radix UI** - Accessible component primitives
+- **Lucide React** - Icon library
 
-Follow these steps:
+### Routing & State
+- **React Router** - Client-side routing
+- **TanStack Query** - Data fetching and caching
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
+### Backend & Database
+- **Supabase** - Backend-as-a-Service (BaaS)
+
+### Forms & Validation
+- **React Hook Form** - Form state management
+- **Zod** - Schema validation
+
+### Development Tools
+- **ESLint** - Code linting
+- **TypeScript ESLint** - TypeScript-specific linting rules
+- **PostCSS** - CSS processing
+
+## 📋 Prerequisites
+
+Before you begin, ensure you have the following installed:
+
+- **Node.js** (v18 or higher) - [Download](https://nodejs.org/)
+- **npm** or **bun** - Package manager (npm comes with Node.js)
+
+> 💡 **Tip**: We recommend using [nvm](https://github.com/nvm-sh/nvm) to manage Node.js versions.
+
+## 🚀 Getting Started
+
+### 1. Clone the Repository
+
+```bash
 git clone <YOUR_GIT_URL>
+cd jengahacks-hub
+```
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+### 2. Install Dependencies
 
-# Step 3: Install the necessary dependencies.
-npm i
+Using npm:
+```bash
+npm install
+```
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+Or using bun:
+```bash
+bun install
+```
+
+### 3. Environment Setup
+
+Create a `.env` file in the root directory:
+
+```bash
+cp .env.example .env
+```
+
+Add your Supabase credentials:
+
+```env
+VITE_SUPABASE_URL=your_supabase_url
+VITE_SUPABASE_PUBLISHABLE_KEY=your_supabase_anon_key
+```
+
+> ⚠️ **Note**: Replace the placeholder values with your actual Supabase credentials.
+
+### 4. Start Development Server
+
+```bash
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+The application will be available at `http://localhost:8080`
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## 📜 Available Scripts
 
-**Use GitHub Codespaces**
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start development server with hot reload |
+| `npm run build` | Build for production |
+| `npm run build:dev` | Build in development mode |
+| `npm run preview` | Preview production build locally |
+| `npm run lint` | Run ESLint to check code quality |
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## 📁 Project Structure
 
-## What technologies are used for this project?
+```
+jengahacks-hub/
+├── public/                 # Static assets
+│   ├── favicon.ico
+│   └── robots.txt
+├── src/
+│   ├── assets/            # Images and static files
+│   ├── components/        # React components
+│   │   ├── ui/           # shadcn/ui components
+│   │   ├── About.tsx
+│   │   ├── Footer.tsx
+│   │   ├── Hero.tsx
+│   │   ├── Navbar.tsx
+│   │   ├── Registration.tsx
+│   │   └── Sponsors.tsx
+│   ├── hooks/            # Custom React hooks
+│   ├── integrations/     # Third-party integrations
+│   │   └── supabase/     # Supabase client and types
+│   ├── lib/              # Utility functions
+│   ├── pages/            # Page components
+│   │   ├── Index.tsx
+│   │   ├── NotFound.tsx
+│   │   └── Sponsorship.tsx
+│   ├── App.tsx           # Main app component
+│   ├── main.tsx          # Application entry point
+│   └── index.css         # Global styles
+├── supabase/             # Supabase configuration
+│   └── migrations/       # Database migrations
+├── components.json       # shadcn/ui configuration
+├── tailwind.config.ts   # Tailwind CSS configuration
+├── vite.config.ts       # Vite configuration
+└── package.json         # Project dependencies
+```
 
-This project is built with:
+## 🎨 Customization
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+### Adding New Components
 
-## How can I deploy this project?
+Components are organized in the `src/components/` directory. UI components from shadcn/ui are located in `src/components/ui/`.
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+### Styling
 
-## Can I connect a custom domain to my Lovable project?
+The project uses Tailwind CSS for styling. Configuration can be found in `tailwind.config.ts`. Custom CSS variables and global styles are defined in `src/index.css`.
 
-Yes, you can!
+### Routes
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+Routes are defined in `src/App.tsx`. Add new routes above the catch-all `*` route.
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+## 🚢 Deployment
+
+### Using Lovable
+
+1. Open your [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID)
+2. Navigate to **Share → Publish**
+3. Follow the deployment prompts
+
+### Custom Domain
+
+To connect a custom domain:
+1. Navigate to **Project > Settings > Domains**
+2. Click **Connect Domain**
+3. Follow the setup instructions
+
+For more information, see [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+
+### Manual Deployment
+
+Build the project for production:
+
+```bash
+npm run build
+```
+
+The `dist/` directory will contain the production-ready files that can be deployed to any static hosting service (Vercel, Netlify, GitHub Pages, etc.).
+
+## 🤝 Contributing
+
+Contributions are welcome! Here are a few ways you can contribute:
+
+1. **Report Issues** - Found a bug? Open an issue with details
+2. **Suggest Features** - Have an idea? Share it with us
+3. **Submit Pull Requests** - Fix bugs or add features
+
+### Development Workflow
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Make your changes
+4. Commit your changes (`git commit -m 'Add some amazing feature'`)
+5. Push to the branch (`git push origin feature/amazing-feature`)
+6. Open a Pull Request
+
+## 📝 Editing Options
+
+### Using Lovable
+
+Visit your [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting. Changes made via Lovable will be automatically committed to this repository.
+
+### Using Your IDE
+
+1. Clone the repository
+2. Install dependencies (`npm install`)
+3. Make your changes locally
+4. Push changes to the repository
+5. Changes will be reflected in Lovable
+
+### Using GitHub
+
+- Navigate to the desired file
+- Click the "Edit" button (pencil icon)
+- Make changes and commit
+
+### Using GitHub Codespaces
+
+1. Navigate to the repository main page
+2. Click "Code" → "Codespaces" tab
+3. Click "New codespace"
+4. Edit files directly in the Codespace
+5. Commit and push when done
+
+## 📄 License
+
+This project is private and proprietary.
+
+## 🙏 Acknowledgments
+
+- [shadcn/ui](https://ui.shadcn.com/) for the amazing component library
+- [Radix UI](https://www.radix-ui.com/) for accessible primitives
+- [Vite](https://vitejs.dev/) for the excellent build tooling
+- [Supabase](https://supabase.com/) for backend services
+
+## 📞 Support
+
+For questions or support, please open an issue in the repository or contact the project maintainers.
+
+---
+
+**Built with ❤️ for the JengaHacks community**
