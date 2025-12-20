@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Calendar, MapPin } from "lucide-react";
-import logo from "@/assets/jengahacks-logo.png";
+import icon from "@/assets/jengahacks-icon.svg";
 
 const Hero = () => {
   return (
@@ -15,12 +15,16 @@ const Hero = () => {
       <div className="container mx-auto px-4 relative z-10">
         <div className="flex flex-col items-center text-center max-w-4xl mx-auto">
           {/* Logo */}
-          <div className="animate-slide-up mb-8">
+          <div className="animate-slide-up mb-8 relative">
             <img 
-              src={logo} 
-              alt="JengaHacks - Built in Nairobi. Ready for the World." 
-              className="w-full max-w-lg mx-auto"
+              src={icon} 
+              alt="JengaHacks Icon" 
+              className="w-32 md:w-40 mx-auto mb-4"
             />
+            <h1 className="font-londrina text-7xl md:text-9xl tracking-wider">
+              <span className="text-white">JENGA</span>
+              <span style={{ color: '#65bb3a' }}>HACKS</span>
+            </h1>
           </div>
 
           {/* Tagline */}

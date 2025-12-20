@@ -15,6 +15,7 @@ export default {
     extend: {
       fontFamily: {
         sans: ["Space Grotesk", "system-ui", "sans-serif"],
+        londrina: ["Londrina Outline", "cursive"],
       },
       colors: {
         border: "hsl(var(--border))",
