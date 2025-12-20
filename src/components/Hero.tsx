@@ -4,7 +4,7 @@ import icon from "@/assets/jengahacks-icon.svg";
 
 const Hero = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center pt-16 overflow-hidden">
+    <section className="relative min-h-screen flex items-center justify-center pt-14 sm:pt-16 overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 circuit-pattern opacity-30" />
       
@@ -12,67 +12,67 @@ const Hero = () => {
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-3xl animate-float" />
       <div className="absolute bottom-1/4 right-1/4 w-72 h-72 bg-primary/10 rounded-full blur-3xl animate-float delay-200" />
 
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="container mx-auto px-4 sm:px-6 relative z-10">
         <div className="flex flex-col items-center text-center max-w-4xl mx-auto">
           {/* Logo */}
-          <header className="animate-slide-up mb-8 relative">
+          <header className="animate-slide-up mb-6 sm:mb-8 relative">
             <img 
               src={icon} 
               alt="JengaHacks Logo - East Africa's Premier Hackathon" 
-              className="w-64 md:w-80 mx-auto mb-4"
+              className="w-48 sm:w-64 md:w-80 mx-auto mb-3 sm:mb-4"
               width="320"
               height="320"
               loading="eager"
             />
-            <h1 className="font-londrina text-6xl md:text-8xl tracking-wider">
+            <h1 className="font-londrina text-4xl sm:text-6xl md:text-8xl tracking-wider px-2">
               <span className="text-white">JENGA</span>
               <span style={{ color: '#65bb3a' }}>HACKS</span>
             </h1>
-            <p className="text-lg md:text-xl text-muted-foreground mt-2 tracking-wide">
+            <p className="text-base sm:text-lg md:text-xl text-muted-foreground mt-2 tracking-wide px-4">
               Built in Nairobi. Ready for the World.
             </p>
           </header>
 
           {/* Tagline */}
-          <p className="animate-slide-up delay-100 text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl">
+          <p className="animate-slide-up delay-100 text-lg sm:text-xl md:text-2xl text-muted-foreground mb-6 sm:mb-8 max-w-2xl px-4">
             48 hours of innovation, collaboration, and building solutions that matter. 
             <span className="text-primary font-semibold"> Join East Africa's premier hackathon.</span>
           </p>
 
           {/* Event Details */}
-          <div className="animate-slide-up delay-200 flex flex-wrap justify-center gap-6 mb-10" itemScope itemType="https://schema.org/Event">
-            <div className="flex items-center gap-2 text-foreground" itemProp="startDate" content="2026-02-21T00:00:00+03:00">
-              <Calendar className="w-5 h-5 text-primary" aria-hidden="true" />
+          <div className="animate-slide-up delay-200 flex flex-wrap justify-center gap-4 sm:gap-6 mb-8 sm:mb-10 px-4" itemScope itemType="https://schema.org/Event">
+            <div className="flex items-center gap-2 text-foreground text-sm sm:text-base" itemProp="startDate" content="2026-02-21T00:00:00+03:00">
+              <Calendar className="w-4 h-4 sm:w-5 sm:h-5 text-primary flex-shrink-0" aria-hidden="true" />
               <time dateTime="2026-02-21">February 21-22, 2026</time>
             </div>
-            <div className="flex items-center gap-2 text-foreground" itemProp="location" itemScope itemType="https://schema.org/Place">
-              <MapPin className="w-5 h-5 text-primary" aria-hidden="true" />
+            <div className="flex items-center gap-2 text-foreground text-sm sm:text-base" itemProp="location" itemScope itemType="https://schema.org/Place">
+              <MapPin className="w-4 h-4 sm:w-5 sm:h-5 text-primary flex-shrink-0" aria-hidden="true" />
               <span itemProp="name">iHub, Nairobi</span>
             </div>
           </div>
 
           {/* CTA Buttons */}
-          <div className="animate-slide-up delay-300 flex flex-col sm:flex-row gap-4">
-            <Button variant="hero" size="xl" asChild>
-              <a href="#register" className="flex items-center gap-2">
+          <div className="animate-slide-up delay-300 flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto px-4">
+            <Button variant="hero" size="lg" className="sm:size-xl w-full sm:w-auto" asChild>
+              <a href="#register" className="flex items-center justify-center gap-2">
                 Register Now
-                <ArrowRight className="w-5 h-5" />
+                <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
               </a>
             </Button>
-            <Button variant="outline" size="xl" asChild>
+            <Button variant="outline" size="lg" className="sm:size-xl w-full sm:w-auto" asChild>
               <a href="#about">Learn More</a>
             </Button>
           </div>
 
           {/* Stats */}
-          <div className="animate-slide-up delay-400 mt-16 grid grid-cols-2 gap-8 md:gap-16">
+          <div className="animate-slide-up delay-400 mt-12 sm:mt-16 grid grid-cols-2 gap-6 sm:gap-8 md:gap-16 w-full max-w-md px-4">
             <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-gradient">100+</div>
-              <div className="text-sm text-muted-foreground mt-1">Hackers</div>
+              <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-gradient">100+</div>
+              <div className="text-xs sm:text-sm text-muted-foreground mt-1">Hackers</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-gradient">48</div>
-              <div className="text-sm text-muted-foreground mt-1">Hours</div>
+              <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-gradient">48</div>
+              <div className="text-xs sm:text-sm text-muted-foreground mt-1">Hours</div>
             </div>
           </div>
         </div>

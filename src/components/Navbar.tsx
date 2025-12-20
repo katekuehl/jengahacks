@@ -14,10 +14,10 @@ const Navbar = () => {
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-lg border-b border-border">
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
+      <div className="container mx-auto px-4 sm:px-6">
+        <div className="flex items-center justify-between h-14 sm:h-16">
           <a href="/" className="flex items-center gap-2" aria-label="JengaHacks Home">
-            <img src={logo} alt="JengaHacks - East Africa's Premier Hackathon" className="h-10 w-auto" width="120" height="40" />
+            <img src={logo} alt="JengaHacks - East Africa's Premier Hackathon" className="h-8 sm:h-10 w-auto" width="120" height="40" />
           </a>
 
           {/* Desktop Navigation */}
@@ -59,7 +59,7 @@ const Navbar = () => {
         {/* Mobile Navigation */}
         {isOpen && (
           <div className="md:hidden py-4 border-t border-border">
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-3">
               {navLinks.map((link) => (
                 link.isRoute ? (
                   <Link

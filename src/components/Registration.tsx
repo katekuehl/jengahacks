@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
-import { Upload, Linkedin, CheckCircle } from "lucide-react";
+import { Upload, Linkedin, CheckCircle, AlertCircle, XCircle } from "lucide-react";
 import ReCAPTCHA from "react-google-recaptcha";
 import { supabase } from "@/integrations/supabase/client";
 import {
@@ -16,6 +16,7 @@ import {
   isValidFullName,
 } from "@/lib/security";
 import { checkRateLimit, formatRetryAfter, recordSubmission } from "@/lib/rateLimit";
+import { cn } from "@/lib/utils";
 
 const Registration = () => {
   const [formData, setFormData] = useState({
@@ -28,14 +29,68 @@ const Registration = () => {
   const [hasLinkedIn, setHasLinkedIn] = useState(false);
   const [hasResume, setHasResume] = useState(false);
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const [errors, setErrors] = useState<{
+    fullName?: string;
+    email?: string;
+    linkedIn?: string;
+    resume?: string;
+    captcha?: string;
+  }>({});
+  const [touched, setTouched] = useState<{
+    fullName?: boolean;
+    email?: boolean;
+    linkedIn?: boolean;
+  }>({});
   const fileInputRef = useRef<HTMLInputElement>(null);
   const recaptchaRef = useRef<ReCAPTCHA>(null);
   
   const RECAPTCHA_SITE_KEY = import.meta.env.VITE_RECAPTCHA_SITE_KEY || "";
 
+  const validateField = (name: string, value: string): string | undefined => {
+    switch (name) {
+      case "fullName":
+        if (!value.trim()) {
+          return "Full name is required";
+        }
+        if (!isValidFullName(value.trim())) {
+          return "Please enter a valid full name (2-100 characters, letters and spaces only)";
+        }
+        return undefined;
+      case "email":
+        if (!value.trim()) {
+          return "Email address is required";
+        }
+        if (!isValidEmail(value.trim())) {
+          return "Please enter a valid email address";
+        }
+        return undefined;
+      case "linkedIn":
+        if (value.trim() && !validateAndSanitizeUrl(value.trim())) {
+          return "Please enter a valid LinkedIn URL (e.g., linkedin.com/in/yourprofile)";
+        }
+        return undefined;
+      default:
+        return undefined;
+    }
+  };
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    
+    // Mark field as touched
+    setTouched((prev) => ({ ...prev, [name]: true }));
+    
+    // Clear error when user starts typing
+    if (errors[name as keyof typeof errors]) {
+      setErrors((prev) => ({ ...prev, [name]: undefined }));
+    }
+    
+    // Real-time validation for touched fields
+    if (touched[name as keyof typeof touched]) {
+      const error = validateField(name, value);
+      setErrors((prev) => ({ ...prev, [name]: error }));
+    }
     
     if (name === "linkedIn" && value.trim()) {
       setHasLinkedIn(true);
@@ -44,36 +99,51 @@ const Registration = () => {
     }
   };
 
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setTouched((prev) => ({ ...prev, [name]: true }));
+    const error = validateField(name, value);
+    setErrors((prev) => ({ ...prev, [name]: error }));
+  };
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
+    setErrors((prev) => ({ ...prev, resume: undefined }));
+    
     if (file) {
       // Validate file size first (most common issue)
       if (file.size > 5 * 1024 * 1024) {
-        toast.error("File size must be less than 5MB");
+        setErrors((prev) => ({ ...prev, resume: "File size must be less than 5MB" }));
         e.target.value = ''; // Reset input
+        setFormData((prev) => ({ ...prev, resume: null }));
+        setHasResume(false);
         return;
       }
 
       // Validate file extension (more secure check)
       if (!isValidPdfExtension(file.name)) {
-        toast.error("Please upload a PDF file (.pdf extension required)");
+        setErrors((prev) => ({ ...prev, resume: "Please upload a PDF file (.pdf extension required)" }));
         e.target.value = ''; // Reset input
+        setFormData((prev) => ({ ...prev, resume: null }));
+        setHasResume(false);
         return;
       }
 
       // Validate MIME type (additional security layer)
       if (!isValidPdfMimeType(file.type)) {
-        toast.error("Invalid file type. Please upload a PDF file.");
+        setErrors((prev) => ({ ...prev, resume: "Invalid file type. Please upload a PDF file." }));
         e.target.value = ''; // Reset input
+        setFormData((prev) => ({ ...prev, resume: null }));
+        setHasResume(false);
         return;
       }
 
-      // Additional validation: check file signature if possible
-      // Note: Full file signature validation would require reading file bytes
-      // For now, we rely on extension and MIME type validation
-
+      // File is valid
       setFormData((prev) => ({ ...prev, resume: file }));
       setHasResume(true);
+      setErrors((prev) => ({ ...prev, resume: undefined }));
+    } else {
+      setHasResume(false);
     }
   };
 
@@ -86,29 +156,47 @@ const Registration = () => {
     const linkedIn = formData.linkedIn.trim();
     const resume = formData.resume;
     
-    // Validation
-    if (!fullName || !isValidFullName(fullName)) {
-      toast.error("Please enter a valid full name (2-100 characters, letters and spaces only)");
-      return;
-    }
-    if (!email || !isValidEmail(email)) {
-      toast.error("Please enter a valid email address");
-      return;
-    }
+    // Mark all fields as touched for validation
+    setTouched({ fullName: true, email: true, linkedIn: true });
+    
+    // Validate all fields
+    const fullNameError = validateField("fullName", fullName);
+    const emailError = validateField("email", email);
+    const linkedInError = linkedIn ? validateField("linkedIn", linkedIn) : undefined;
+    
+    const newErrors: typeof errors = {
+      fullName: fullNameError,
+      email: emailError,
+      linkedIn: linkedInError,
+    };
+    
+    // Check if LinkedIn or Resume is provided
     if (!hasLinkedIn && !hasResume) {
-      toast.error("Please provide either your LinkedIn profile or upload your resume");
-      return;
+      newErrors.linkedIn = "Please provide either your LinkedIn profile or upload your resume";
     }
-
+    
     // Verify CAPTCHA
-    if (!RECAPTCHA_SITE_KEY) {
-      // If CAPTCHA is not configured, log warning but allow submission in development
-      if (import.meta.env.DEV) {
-        console.warn("reCAPTCHA site key not configured. Skipping CAPTCHA verification.");
+    if (RECAPTCHA_SITE_KEY && !captchaToken) {
+      newErrors.captcha = "Please complete the CAPTCHA verification";
+    }
+    
+    setErrors(newErrors);
+    
+    // Check if there are any errors
+    if (Object.values(newErrors).some(error => error !== undefined)) {
+      // Scroll to first error
+      const firstErrorField = Object.keys(newErrors).find(key => newErrors[key as keyof typeof newErrors]);
+      if (firstErrorField) {
+        const element = document.getElementById(firstErrorField);
+        if (element && typeof element.scrollIntoView === 'function') {
+          element.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+        element?.focus();
       }
-    } else if (!captchaToken) {
-      toast.error("Please complete the CAPTCHA verification");
-      recaptchaRef.current?.reset();
+      // Also show toast for critical errors
+      if (newErrors.fullName || newErrors.email) {
+        toast.error("Please fix the errors in the form");
+      }
       return;
     }
 
@@ -269,49 +357,101 @@ const Registration = () => {
   };
 
   return (
-    <section id="register" className="pt-12 pb-24 relative">
+    <section id="register" className="pt-12 sm:pt-16 pb-16 sm:pb-24 relative">
       <div className="absolute inset-0 circuit-pattern opacity-10" />
       
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="container mx-auto px-4 sm:px-6 relative z-10">
         <div className="max-w-xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+          <div className="text-center mb-8 sm:mb-12">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4 px-4">
               <span className="text-gradient">Register</span> Now
             </h2>
-            <p className="text-muted-foreground text-lg">
+            <p className="text-muted-foreground text-base sm:text-lg px-4">
               Secure your spot at JengaHacks 2026. Limited to 200 participants.
             </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6 bg-card p-8 rounded-2xl border border-border">
+          <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6 bg-card p-4 sm:p-6 md:p-8 rounded-xl sm:rounded-2xl border border-border">
             {/* Full Name */}
             <div className="space-y-2">
-              <Label htmlFor="fullName">Full Name *</Label>
-              <Input
-                id="fullName"
-                name="fullName"
-                type="text"
-                placeholder="John Doe"
-                value={formData.fullName}
-                onChange={handleInputChange}
-                className="bg-muted border-border focus:border-primary"
-                required
-              />
+              <Label htmlFor="fullName" className={cn(errors.fullName && "text-destructive")}>
+                Full Name *
+              </Label>
+              <div className="relative">
+                <Input
+                  id="fullName"
+                  name="fullName"
+                  type="text"
+                  placeholder="John Doe"
+                  value={formData.fullName}
+                  onChange={handleInputChange}
+                  onBlur={handleBlur}
+                  className={cn(
+                    "bg-muted border-border focus:border-primary pr-10",
+                    errors.fullName && "border-destructive focus:border-destructive",
+                    touched.fullName && !errors.fullName && formData.fullName && "border-primary"
+                  )}
+                  required
+                  aria-invalid={!!errors.fullName}
+                  aria-describedby={errors.fullName ? "fullName-error" : undefined}
+                />
+                {touched.fullName && (
+                  <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                    {errors.fullName ? (
+                      <XCircle className="w-5 h-5 text-destructive" aria-hidden="true" />
+                    ) : formData.fullName ? (
+                      <CheckCircle className="w-5 h-5 text-primary" aria-hidden="true" />
+                    ) : null}
+                  </div>
+                )}
+              </div>
+              {errors.fullName && (
+                <p id="fullName-error" className="text-sm text-destructive flex items-center gap-1.5" role="alert">
+                  <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                  <span>{errors.fullName}</span>
+                </p>
+              )}
             </div>
 
             {/* Email */}
             <div className="space-y-2">
-              <Label htmlFor="email">Email Address *</Label>
-              <Input
-                id="email"
-                name="email"
-                type="email"
-                placeholder="john@example.com"
-                value={formData.email}
-                onChange={handleInputChange}
-                className="bg-muted border-border focus:border-primary"
-                required
-              />
+              <Label htmlFor="email" className={cn(errors.email && "text-destructive")}>
+                Email Address *
+              </Label>
+              <div className="relative">
+                <Input
+                  id="email"
+                  name="email"
+                  type="email"
+                  placeholder="john@example.com"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  onBlur={handleBlur}
+                  className={cn(
+                    "bg-muted border-border focus:border-primary pr-10",
+                    errors.email && "border-destructive focus:border-destructive",
+                    touched.email && !errors.email && formData.email && "border-primary"
+                  )}
+                  required
+                  aria-invalid={!!errors.email}
+                  aria-describedby={errors.email ? "email-error" : undefined}
+                />
+                {touched.email && (
+                  <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                    {errors.email ? (
+                      <XCircle className="w-5 h-5 text-destructive" aria-hidden="true" />
+                    ) : formData.email ? (
+                      <CheckCircle className="w-5 h-5 text-primary" aria-hidden="true" />
+                    ) : null}
+                  </div>
+                )}
+              </div>
+              {errors.email && (
+                <p id="email-error" className="text-sm text-destructive flex items-center gap-1.5" role="alert">
+                  <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                  <span>{errors.email}</span>
+                </p>
+              )}
             </div>
 
             {/* Divider */}
@@ -328,28 +468,52 @@ const Registration = () => {
 
             {/* LinkedIn */}
             <div className="space-y-2">
-              <Label htmlFor="linkedIn" className="flex items-center gap-2">
+              <Label htmlFor="linkedIn" className={cn("flex items-center gap-2", errors.linkedIn && "text-destructive")}>
                 <Linkedin className="w-4 h-4" />
                 LinkedIn Profile
-                {hasLinkedIn && <CheckCircle className="w-4 h-4 text-primary" />}
+                {hasLinkedIn && !errors.linkedIn && <CheckCircle className="w-4 h-4 text-primary" />}
               </Label>
-              <Input
-                id="linkedIn"
-                name="linkedIn"
-                type="text"
-                placeholder="linkedin.com/in/yourprofile"
-                value={formData.linkedIn}
-                onChange={handleInputChange}
-                className="bg-muted border-border focus:border-primary"
-              />
+              <div className="relative">
+                <Input
+                  id="linkedIn"
+                  name="linkedIn"
+                  type="text"
+                  placeholder="linkedin.com/in/yourprofile"
+                  value={formData.linkedIn}
+                  onChange={handleInputChange}
+                  onBlur={handleBlur}
+                  className={cn(
+                    "bg-muted border-border focus:border-primary pr-10",
+                    errors.linkedIn && "border-destructive focus:border-destructive",
+                    touched.linkedIn && !errors.linkedIn && formData.linkedIn && "border-primary"
+                  )}
+                  aria-invalid={!!errors.linkedIn}
+                  aria-describedby={errors.linkedIn ? "linkedIn-error" : undefined}
+                />
+                {touched.linkedIn && formData.linkedIn && (
+                  <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                    {errors.linkedIn ? (
+                      <XCircle className="w-5 h-5 text-destructive" aria-hidden="true" />
+                    ) : (
+                      <CheckCircle className="w-5 h-5 text-primary" aria-hidden="true" />
+                    )}
+                  </div>
+                )}
+              </div>
+              {errors.linkedIn && (
+                <p id="linkedIn-error" className="text-sm text-destructive flex items-center gap-1.5" role="alert">
+                  <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                  <span>{errors.linkedIn}</span>
+                </p>
+              )}
             </div>
 
             {/* Resume Upload */}
             <div className="space-y-2">
-              <Label htmlFor="resume" className="flex items-center gap-2">
+              <Label htmlFor="resume" className={cn("flex items-center gap-2", errors.resume && "text-destructive")}>
                 <Upload className="w-4 h-4" />
                 Resume (PDF)
-                {hasResume && <CheckCircle className="w-4 h-4 text-primary" />}
+                {hasResume && !errors.resume && <CheckCircle className="w-4 h-4 text-primary" />}
               </Label>
               <div className="relative">
                 <Input
@@ -359,44 +523,68 @@ const Registration = () => {
                   type="file"
                   accept=".pdf,application/pdf"
                   onChange={handleFileChange}
-                  className="bg-muted border-border focus:border-primary file:bg-primary file:text-primary-foreground file:border-0 file:rounded file:px-4 file:py-1 file:mr-4 file:font-medium file:cursor-pointer"
+                  className={cn(
+                    "bg-muted border-border focus:border-primary file:bg-primary file:text-primary-foreground file:border-0 file:rounded file:px-4 file:py-1 file:mr-4 file:font-medium file:cursor-pointer",
+                    errors.resume && "border-destructive focus:border-destructive",
+                    hasResume && !errors.resume && "border-primary"
+                  )}
+                  aria-invalid={!!errors.resume}
+                  aria-describedby={errors.resume ? "resume-error" : undefined}
                 />
               </div>
-              {formData.resume && (
-                <p className="text-sm text-muted-foreground">
-                  Selected: {sanitizeFileName(formData.resume.name)}
+              {formData.resume && !errors.resume && (
+                <p className="text-sm text-muted-foreground flex items-center gap-1.5">
+                  <CheckCircle className="w-4 h-4 text-primary flex-shrink-0" />
+                  <span>Selected: {sanitizeFileName(formData.resume.name)}</span>
+                </p>
+              )}
+              {errors.resume && (
+                <p id="resume-error" className="text-sm text-destructive flex items-center gap-1.5" role="alert">
+                  <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                  <span>{errors.resume}</span>
                 </p>
               )}
             </div>
 
             {/* CAPTCHA */}
             {RECAPTCHA_SITE_KEY && (
-              <div className="flex justify-center">
-                <ReCAPTCHA
-                  ref={recaptchaRef}
-                  sitekey={RECAPTCHA_SITE_KEY}
-                  onChange={(token) => {
-                    if (token) {
-                      setCaptchaToken(token);
-                    }
-                  }}
-                  onExpired={() => {
-                    setCaptchaToken(null);
-                    toast.error("CAPTCHA expired. Please verify again.");
-                  }}
-                  onError={(error) => {
-                    setCaptchaToken(null);
-                    console.error("reCAPTCHA error:", error);
-                    // Check for specific error types
-                    if (error?.toString().includes("Invalid key type")) {
-                      toast.error("CAPTCHA configuration error. Please contact support.");
-                    } else {
-                      toast.error("CAPTCHA verification failed. Please refresh the page and try again.");
-                    }
-                  }}
-                  theme="dark"
-                  size="normal"
-                />
+              <div className="space-y-2">
+                <div className="flex justify-center overflow-x-auto pb-2">
+                  <div className="scale-90 sm:scale-100">
+                    <ReCAPTCHA
+                      ref={recaptchaRef}
+                      sitekey={RECAPTCHA_SITE_KEY}
+                      onChange={(token) => {
+                        if (token) {
+                          setCaptchaToken(token);
+                          setErrors((prev) => ({ ...prev, captcha: undefined }));
+                        }
+                      }}
+                      onExpired={() => {
+                        setCaptchaToken(null);
+                        setErrors((prev) => ({ ...prev, captcha: "CAPTCHA expired. Please verify again." }));
+                      }}
+                      onError={(error) => {
+                        setCaptchaToken(null);
+                        console.error("reCAPTCHA error:", error);
+                        // Check for specific error types
+                        if (error?.toString().includes("Invalid key type")) {
+                          setErrors((prev) => ({ ...prev, captcha: "CAPTCHA configuration error. Please contact support." }));
+                        } else {
+                          setErrors((prev) => ({ ...prev, captcha: "CAPTCHA verification failed. Please refresh the page and try again." }));
+                        }
+                      }}
+                      theme="dark"
+                      size="normal"
+                    />
+                  </div>
+                </div>
+                {errors.captcha && (
+                  <p className="text-sm text-destructive flex items-center justify-center gap-1.5" role="alert">
+                    <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                    <span>{errors.captcha}</span>
+                  </p>
+                )}
               </div>
             )}
 
@@ -411,7 +599,7 @@ const Registration = () => {
               {isSubmitting ? "Submitting..." : "Complete Registration"}
             </Button>
 
-            <p className="text-xs text-muted-foreground text-center">
+            <p className="text-xs sm:text-sm text-muted-foreground text-center px-2">
               By registering, you agree to our terms and conditions. 
               We'll never share your information without consent.
             </p>

@@ -94,9 +94,8 @@ describe("Registration", () => {
     fireEvent.submit(form);
 
     await waitFor(() => {
-      expect(toast.error).toHaveBeenCalledWith(
-        expect.stringContaining("valid full name")
-      );
+      // Check for inline error message
+      expect(screen.getByText(/Full name is required/i)).toBeInTheDocument();
     }, { timeout: 2000 });
   });
 
@@ -115,13 +114,15 @@ describe("Registration", () => {
     emailInput.type = "text";
     await user.type(emailInput, "invalid-email");
     
+    // Blur to trigger validation
+    fireEvent.blur(emailInput);
+    
     // Use fireEvent to bypass HTML5 validation
     fireEvent.submit(form);
 
     await waitFor(() => {
-      expect(toast.error).toHaveBeenCalledWith(
-        "Please enter a valid email address"
-      );
+      // Check for inline error message
+      expect(screen.getByText(/Please enter a valid email address/i)).toBeInTheDocument();
     }, { timeout: 2000 });
   });
 
@@ -140,9 +141,8 @@ describe("Registration", () => {
     await user.click(submitButton);
 
     await waitFor(() => {
-      expect(toast.error).toHaveBeenCalledWith(
-        "Please provide either your LinkedIn profile or upload your resume"
-      );
+      // Check for inline error message
+      expect(screen.getByText(/Please provide either your LinkedIn profile or upload your resume/i)).toBeInTheDocument();
     });
   });
 
@@ -210,16 +210,78 @@ describe("Registration", () => {
 
     const linkedInInput = screen.getByLabelText(/LinkedIn Profile/i);
     await user.type(linkedInInput, "linkedin.com/in/test");
+    
+    // Blur to trigger validation
+    fireEvent.blur(linkedInInput);
 
     // Verify the input has the value
     expect(linkedInInput).toHaveValue("linkedin.com/in/test");
     
-    // Check that the label contains a checkmark (CheckCircle icon)
-    // The icon is rendered as an SVG, so we check for its presence via the label
-    const label = linkedInInput.closest("div")?.querySelector("label");
-    expect(label).toBeInTheDocument();
-    // The CheckCircle component should be rendered when hasLinkedIn is true
-    // We verify by checking the input value which triggers the state change
+    // Wait for checkmark to appear (CheckCircle icon in the input)
+    await waitFor(() => {
+      const checkIcon = linkedInInput.parentElement?.querySelector('svg[class*="text-primary"]');
+      expect(checkIcon).toBeInTheDocument();
+    });
+  });
+
+  describe("Form Validation Feedback", () => {
+    it("should show real-time validation errors when field is touched", async () => {
+      const user = userEvent.setup();
+      render(<Registration />);
+
+      const emailInput = screen.getByLabelText(/Email Address/i);
+      
+      // Type invalid email
+      await user.type(emailInput, "invalid");
+      // Blur to trigger validation
+      fireEvent.blur(emailInput);
+
+      await waitFor(() => {
+        expect(screen.getByText(/Please enter a valid email address/i)).toBeInTheDocument();
+      });
+    });
+
+    it("should show success indicator when field is valid", async () => {
+      const user = userEvent.setup();
+      render(<Registration />);
+
+      const nameInput = screen.getByLabelText(/Full Name/i);
+      
+      // Type valid name
+      await user.type(nameInput, "John Doe");
+      // Blur to trigger validation
+      fireEvent.blur(nameInput);
+
+      await waitFor(() => {
+        // Check for success icon (CheckCircle)
+        const checkIcon = nameInput.parentElement?.querySelector('svg[class*="text-primary"]');
+        expect(checkIcon).toBeInTheDocument();
+      });
+    });
+
+    it("should clear error when user starts typing", async () => {
+      const user = userEvent.setup();
+      render(<Registration />);
+
+      const emailInput = screen.getByLabelText(/Email Address/i);
+      
+      // Type invalid email and blur
+      await user.type(emailInput, "invalid");
+      fireEvent.blur(emailInput);
+
+      await waitFor(() => {
+        expect(screen.getByText(/Please enter a valid email address/i)).toBeInTheDocument();
+      });
+
+      // Start typing valid email
+      await user.clear(emailInput);
+      await user.type(emailInput, "john@example.com");
+
+      // Error should be cleared
+      await waitFor(() => {
+        expect(screen.queryByText(/Please enter a valid email address/i)).not.toBeInTheDocument();
+      });
+    });
   });
 
   describe("IP Rate Limiting", () => {
