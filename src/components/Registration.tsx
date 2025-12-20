@@ -24,6 +24,7 @@ const Registration = () => {
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
+    whatsapp: "",
     linkedIn: "",
     resume: null as File | null,
   });
@@ -34,6 +35,7 @@ const Registration = () => {
   const [errors, setErrors] = useState<{
     fullName?: string;
     email?: string;
+    whatsapp?: string;
     linkedIn?: string;
     resume?: string;
     captcha?: string;
@@ -41,6 +43,7 @@ const Registration = () => {
   const [touched, setTouched] = useState<{
     fullName?: boolean;
     email?: boolean;
+    whatsapp?: boolean;
     linkedIn?: boolean;
   }>({});
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -64,6 +67,11 @@ const Registration = () => {
         }
         if (!isValidEmail(value.trim())) {
           return "Please enter a valid email address";
+        }
+        return undefined;
+      case "whatsapp":
+        if (value.trim() && !isValidWhatsAppNumber(value.trim())) {
+          return "Please enter a valid WhatsApp number (e.g., +254712345678 or 0712345678)";
         }
         return undefined;
       case "linkedIn":
@@ -155,20 +163,23 @@ const Registration = () => {
     // Capture and sanitize form data before async operations
     const fullName = sanitizeInput(formData.fullName.trim(), 100);
     const email = formData.email.trim().toLowerCase();
+    const whatsapp = formData.whatsapp.trim();
     const linkedIn = formData.linkedIn.trim();
     const resume = formData.resume;
     
     // Mark all fields as touched for validation
-    setTouched({ fullName: true, email: true, linkedIn: true });
+    setTouched({ fullName: true, email: true, whatsapp: true, linkedIn: true });
     
     // Validate all fields
     const fullNameError = validateField("fullName", fullName);
     const emailError = validateField("email", email);
+    const whatsappError = whatsapp ? validateField("whatsapp", whatsapp) : undefined;
     const linkedInError = linkedIn ? validateField("linkedIn", linkedIn) : undefined;
     
     const newErrors: typeof errors = {
       fullName: fullNameError,
       email: emailError,
+      whatsapp: whatsappError,
       linkedIn: linkedInError,
     };
     
@@ -265,10 +276,14 @@ const Registration = () => {
         return;
       }
 
+      // Normalize WhatsApp number if provided
+      const whatsappNumber = whatsapp ? normalizeWhatsAppNumber(whatsapp) : null;
+
       // Insert registration into database (always attempt, even if resume upload failed)
       const registrationData = {
         full_name: fullName,
         email: email,
+        whatsapp_number: whatsappNumber,
         linkedin_url: linkedInUrl,
         resume_path: resumePath,
       };
@@ -337,10 +352,12 @@ const Registration = () => {
       // Success - record submission and reset form
       recordSubmission();
       toast.success("Registration successful! We'll be in touch soon.");
-      setFormData({ fullName: "", email: "", linkedIn: "", resume: null });
+      setFormData({ fullName: "", email: "", whatsapp: "", linkedIn: "", resume: null });
       setHasLinkedIn(false);
       setHasResume(false);
       setCaptchaToken(null);
+      setErrors({});
+      setTouched({});
       
       // Reset file input and CAPTCHA
       if (fileInputRef.current) {
