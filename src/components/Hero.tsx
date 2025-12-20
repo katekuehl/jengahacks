@@ -19,12 +19,15 @@ const Hero = () => {
             <img 
               src={icon} 
               alt="JengaHacks Icon" 
-              className="w-32 md:w-40 mx-auto mb-4"
+              className="w-64 md:w-80 mx-auto mb-4"
             />
-            <h1 className="font-londrina text-7xl md:text-9xl tracking-wider">
+            <h1 className="font-londrina text-6xl md:text-8xl tracking-wider">
               <span className="text-white">JENGA</span>
               <span style={{ color: '#65bb3a' }}>HACKS</span>
             </h1>
+            <p className="text-lg md:text-xl text-muted-foreground mt-2 tracking-wide">
+              Built in Nairobi. Ready for the World.
+            </p>
           </div>
 
           {/* Tagline */}
