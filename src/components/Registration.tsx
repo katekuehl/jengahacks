@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -16,6 +16,7 @@ const Registration = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [hasLinkedIn, setHasLinkedIn] = useState(false);
   const [hasResume, setHasResume] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -47,12 +48,18 @@ const Registration = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    // Capture form data before async operations
+    const fullName = formData.fullName.trim();
+    const email = formData.email.trim().toLowerCase();
+    const linkedIn = formData.linkedIn.trim();
+    const resume = formData.resume;
+    
     // Validation
-    if (!formData.fullName.trim()) {
+    if (!fullName) {
       toast.error("Please enter your full name");
       return;
     }
-    if (!formData.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       toast.error("Please enter a valid email address");
       return;
     }
@@ -65,39 +72,51 @@ const Registration = () => {
     
     try {
       let resumePath: string | null = null;
+      let resumeUploadFailed = false;
 
       // Upload resume if provided
-      if (formData.resume) {
-        const fileExt = formData.resume.name.split('.').pop();
-        const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
-        
-        const { error: uploadError } = await supabase.storage
-          .from('resumes')
-          .upload(fileName, formData.resume);
+      if (resume) {
+        try {
+          const fileExt = resume.name.split('.').pop();
+          const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+          
+          const { error: uploadError } = await supabase.storage
+            .from('resumes')
+            .upload(fileName, resume);
 
-        if (uploadError) {
-          console.error('Upload error:', uploadError);
-          throw new Error('Failed to upload resume');
+          if (uploadError) {
+            console.error('Upload error:', uploadError);
+            resumeUploadFailed = true;
+            toast.error('Resume upload failed, but registration will continue');
+          } else {
+            resumePath = fileName;
+          }
+        } catch (uploadErr) {
+          console.error('Resume upload exception:', uploadErr);
+          resumeUploadFailed = true;
+          toast.error('Resume upload failed, but registration will continue');
         }
-        
-        resumePath = fileName;
       }
 
       // Normalize LinkedIn URL
-      let linkedInUrl = formData.linkedIn.trim();
+      let linkedInUrl = linkedIn;
       if (linkedInUrl && !linkedInUrl.startsWith('http')) {
         linkedInUrl = `https://${linkedInUrl}`;
       }
 
-      // Insert registration into database
+      // Insert registration into database (always attempt, even if resume upload failed)
+      const registrationData = {
+        full_name: fullName,
+        email: email,
+        linkedin_url: linkedInUrl || null,
+        resume_path: resumePath,
+      };
+
+      console.log('Submitting registration:', { ...registrationData, email: email.substring(0, 3) + '***' });
+
       const { error: insertError } = await supabase
         .from('registrations')
-        .insert({
-          full_name: formData.fullName.trim(),
-          email: formData.email.trim().toLowerCase(),
-          linkedin_url: linkedInUrl || null,
-          resume_path: resumePath,
-        });
+        .insert(registrationData);
 
       if (insertError) {
         console.error('Insert error:', insertError);
@@ -107,10 +126,16 @@ const Registration = () => {
         throw new Error('Failed to submit registration');
       }
 
+      // Success - reset form
       toast.success("Registration successful! We'll be in touch soon.");
       setFormData({ fullName: "", email: "", linkedIn: "", resume: null });
       setHasLinkedIn(false);
       setHasResume(false);
+      
+      // Reset file input
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
     } catch (error) {
       console.error('Registration error:', error);
       toast.error(error instanceof Error ? error.message : 'Registration failed. Please try again.');
@@ -204,6 +229,7 @@ const Registration = () => {
               </Label>
               <div className="relative">
                 <Input
+                  ref={fileInputRef}
                   id="resume"
                   name="resume"
                   type="file"
