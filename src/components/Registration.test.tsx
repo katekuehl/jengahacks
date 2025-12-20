@@ -75,7 +75,9 @@ describe("Registration", () => {
     fireEvent.submit(form);
 
     await waitFor(() => {
-      expect(toast.error).toHaveBeenCalledWith("Please enter your full name");
+      expect(toast.error).toHaveBeenCalledWith(
+        expect.stringContaining("valid full name")
+      );
     }, { timeout: 2000 });
   });
 

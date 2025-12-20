@@ -5,6 +5,15 @@ import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { Upload, Linkedin, CheckCircle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import {
+  sanitizeFileName,
+  isValidPdfExtension,
+  isValidPdfMimeType,
+  validateAndSanitizeUrl,
+  sanitizeInput,
+  isValidEmail,
+  isValidFullName,
+} from "@/lib/security";
 
 const Registration = () => {
   const [formData, setFormData] = useState({
@@ -32,14 +41,31 @@ const Registration = () => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      if (file.type !== "application/pdf" && !file.name.endsWith(".pdf")) {
-        toast.error("Please upload a PDF file");
-        return;
-      }
+      // Validate file size first (most common issue)
       if (file.size > 5 * 1024 * 1024) {
         toast.error("File size must be less than 5MB");
+        e.target.value = ''; // Reset input
         return;
       }
+
+      // Validate file extension (more secure check)
+      if (!isValidPdfExtension(file.name)) {
+        toast.error("Please upload a PDF file (.pdf extension required)");
+        e.target.value = ''; // Reset input
+        return;
+      }
+
+      // Validate MIME type (additional security layer)
+      if (!isValidPdfMimeType(file.type)) {
+        toast.error("Invalid file type. Please upload a PDF file.");
+        e.target.value = ''; // Reset input
+        return;
+      }
+
+      // Additional validation: check file signature if possible
+      // Note: Full file signature validation would require reading file bytes
+      // For now, we rely on extension and MIME type validation
+
       setFormData((prev) => ({ ...prev, resume: file }));
       setHasResume(true);
     }
@@ -48,18 +74,18 @@ const Registration = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Capture form data before async operations
-    const fullName = formData.fullName.trim();
+    // Capture and sanitize form data before async operations
+    const fullName = sanitizeInput(formData.fullName.trim(), 100);
     const email = formData.email.trim().toLowerCase();
     const linkedIn = formData.linkedIn.trim();
     const resume = formData.resume;
     
     // Validation
-    if (!fullName) {
-      toast.error("Please enter your full name");
+    if (!fullName || !isValidFullName(fullName)) {
+      toast.error("Please enter a valid full name (2-100 characters, letters and spaces only)");
       return;
     }
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    if (!email || !isValidEmail(email)) {
       toast.error("Please enter a valid email address");
       return;
     }
@@ -77,49 +103,69 @@ const Registration = () => {
       // Upload resume if provided
       if (resume) {
         try {
-          const fileExt = resume.name.split('.').pop();
+          // Sanitize original filename
+          const sanitizedOriginalName = sanitizeFileName(resume.name);
+          const fileExt = sanitizedOriginalName.split('.').pop() || 'pdf';
+          
+          // Generate secure filename with timestamp and random string
           const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+          
+          // Double-check file is still valid before upload
+          if (!isValidPdfExtension(fileName) || !isValidPdfMimeType(resume.type)) {
+            throw new Error('Invalid file type');
+          }
           
           const { error: uploadError } = await supabase.storage
             .from('resumes')
             .upload(fileName, resume);
 
           if (uploadError) {
-            console.error('Upload error:', uploadError);
+            // Log error details only in development, not in production
+            if (import.meta.env.DEV) {
+              console.error('Upload error:', uploadError);
+            }
             resumeUploadFailed = true;
             toast.error('Resume upload failed, but registration will continue');
           } else {
             resumePath = fileName;
           }
         } catch (uploadErr) {
-          console.error('Resume upload exception:', uploadErr);
+          // Log error details only in development
+          if (import.meta.env.DEV) {
+            console.error('Resume upload exception:', uploadErr);
+          }
           resumeUploadFailed = true;
           toast.error('Resume upload failed, but registration will continue');
         }
       }
 
-      // Normalize LinkedIn URL
-      let linkedInUrl = linkedIn;
-      if (linkedInUrl && !linkedInUrl.startsWith('http')) {
-        linkedInUrl = `https://${linkedInUrl}`;
+      // Validate and sanitize LinkedIn URL
+      const linkedInUrl = linkedIn ? validateAndSanitizeUrl(linkedIn) : null;
+      if (linkedIn && !linkedInUrl) {
+        toast.error("Please enter a valid LinkedIn URL");
+        setIsSubmitting(false);
+        return;
       }
 
       // Insert registration into database (always attempt, even if resume upload failed)
       const registrationData = {
         full_name: fullName,
         email: email,
-        linkedin_url: linkedInUrl || null,
+        linkedin_url: linkedInUrl,
         resume_path: resumePath,
       };
 
-      console.log('Submitting registration:', { ...registrationData, email: email.substring(0, 3) + '***' });
+      // Removed console.log to prevent information disclosure
 
       const { error: insertError } = await supabase
         .from('registrations')
         .insert(registrationData);
 
       if (insertError) {
-        console.error('Insert error:', insertError);
+        // Log error details only in development
+        if (import.meta.env.DEV) {
+          console.error('Insert error:', insertError);
+        }
         if (insertError.code === '23505') {
           throw new Error('This email is already registered');
         }
@@ -137,7 +183,10 @@ const Registration = () => {
         fileInputRef.current.value = '';
       }
     } catch (error) {
-      console.error('Registration error:', error);
+      // Log error details only in development
+      if (import.meta.env.DEV) {
+        console.error('Registration error:', error);
+      }
       toast.error(error instanceof Error ? error.message : 'Registration failed. Please try again.');
     } finally {
       setIsSubmitting(false);
@@ -240,7 +289,7 @@ const Registration = () => {
               </div>
               {formData.resume && (
                 <p className="text-sm text-muted-foreground">
-                  Selected: {formData.resume.name}
+                  Selected: {sanitizeFileName(formData.resume.name)}
                 </p>
               )}
             </div>
