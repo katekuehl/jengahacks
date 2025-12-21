@@ -65,15 +65,24 @@ const Navbar = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-4" aria-label={t("aria.desktopNavigation")}>
-            {navLinks.map((link) => (
-              link.isRoute ? (
+            {navLinks.map((link) => {
+              const isBlogOrSponsor = link.href === "/blog" || link.href === "/sponsorship";
+              return link.isRoute ? (
                 <Link
                   key={link.href}
                   to={link.href}
-                  className="text-primary hover:text-primary/80 transition-all duration-300 font-medium relative group"
+                  className={cn(
+                    "transition-all duration-300 font-medium relative group",
+                    isBlogOrSponsor 
+                      ? "text-[#999999] hover:text-[#999999]/80" 
+                      : "text-primary hover:text-primary/80"
+                  )}
                 >
                   {link.label}
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full" />
+                  <span className={cn(
+                    "absolute bottom-0 left-0 w-0 h-0.5 transition-all duration-300 group-hover:w-full",
+                    isBlogOrSponsor ? "bg-[#999999]" : "bg-primary"
+                  )} />
                 </Link>
               ) : (
                 <a
@@ -84,8 +93,8 @@ const Navbar = () => {
                   {link.label}
                   <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full" />
                 </a>
-              )
-            ))}
+              );
+            })}
             <LanguageSwitcher variant="compact" />
             <Button variant="hero" size="sm" asChild>
               <a href="#register" aria-label={`${t("common.joinNow")} - ${t("aria.navigateToRegistration")}`}>{t("common.joinNow")}</a>
@@ -132,13 +141,19 @@ const Navbar = () => {
         >
           <div className="border-t border-border pt-4">
             <div className="flex flex-col gap-3 animate-slide-in-down">
-              {navLinks.map((link) => (
-                link.isRoute ? (
+              {navLinks.map((link) => {
+                const isBlogOrSponsor = link.href === "/blog" || link.href === "/sponsorship";
+                return link.isRoute ? (
                   <Link
                     key={link.href}
                     to={link.href}
                     role="menuitem"
-                    className="text-primary hover:text-primary/80 transition-all duration-300 font-medium transform hover:translate-x-1 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background rounded px-2 py-1"
+                    className={cn(
+                      "transition-all duration-300 font-medium transform hover:translate-x-1 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background rounded px-2 py-1",
+                      isBlogOrSponsor 
+                        ? "text-[#999999] hover:text-[#999999]/80" 
+                        : "text-primary hover:text-primary/80"
+                    )}
                     onClick={() => setIsOpen(false)}
                     onKeyDown={(e) => {
                       if (e.key === "Enter" || e.key === " ") {
@@ -163,8 +178,8 @@ const Navbar = () => {
                   >
                     {link.label}
                   </a>
-                )
-              ))}
+                );
+              })}
               <div className="pt-2 border-t border-border">
                 <LanguageSwitcher variant="compact" className="w-full justify-start" />
               </div>
