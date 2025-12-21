@@ -129,6 +129,22 @@
     "tagline": "Imejengwa Nairobi. Tayari kwa Ulimwengu.",
     "copyright": "© {year} JengaHacks. Haki zote zimehifadhiwa.",
     "runBy": "Inaendeshwa na"
+  },
+  "socialShare": {
+    "share": "Shiriki",
+    "shareThis": "Shiriki tukio hili",
+    "shareLabel": "Shiriki:",
+    "copyLink": "Nakili Kiungo",
+    "linkCopied": "Kiungo kimenakiliwa!",
+    "copyFailed": "Imeshindwa kunakili kiungo",
+    "twitter": "Twitter",
+    "facebook": "Facebook",
+    "linkedin": "LinkedIn",
+    "whatsapp": "WhatsApp",
+    "reddit": "Reddit",
+    "telegram": "Telegram",
+    "email": "Barua Pepe",
+    "nativeShare": "Shiriki kupitia..."
   }
 }
 

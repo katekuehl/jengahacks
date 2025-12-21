@@ -19,7 +19,7 @@ export const SUPPORTED_LOCALES: Record<SupportedLocale, LocaleInfo> = {
     code: "en-KE",
     name: "English",
     nativeName: "English",
-    flag: "🇰🇪",
+    flag: "🇬🇧",
   },
   "sw-KE": {
     code: "sw-KE",

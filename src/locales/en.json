@@ -129,6 +129,22 @@
     "tagline": "Built in Nairobi. Ready for the World.",
     "copyright": "© {year} JengaHacks. All rights reserved.",
     "runBy": "Run by"
+  },
+  "socialShare": {
+    "share": "Share",
+    "shareThis": "Share this event",
+    "shareLabel": "Share:",
+    "copyLink": "Copy Link",
+    "linkCopied": "Link copied to clipboard!",
+    "copyFailed": "Failed to copy link",
+    "twitter": "Twitter",
+    "facebook": "Facebook",
+    "linkedin": "LinkedIn",
+    "whatsapp": "WhatsApp",
+    "reddit": "Reddit",
+    "telegram": "Telegram",
+    "email": "Email",
+    "nativeShare": "Share via..."
   }
 }
 
