@@ -24,6 +24,7 @@
 - [ ] Configure security headers (X-Frame-Options, X-Content-Type-Options, etc.)
 - [ ] Enable HTTPS enforcement in production
 - [ ] Set up server-side CAPTCHA verification (optional but recommended)
+- [ ] Install Synk
 
 ### Deployment
 - [ ] Deploy to production hosting
