@@ -18,6 +18,8 @@ interface RegistrationStats {
   today: number;
   thisWeek: number;
   thisMonth: number;
+  dailyTrends?: Array<{ date: string; count: number }>;
+  hourlyDistribution?: Array<{ hour: number; count: number }>;
 }
 
 const Admin = () => {
@@ -32,11 +34,14 @@ const Admin = () => {
     today: 0,
     thisWeek: 0,
     thisMonth: 0,
+    dailyTrends: [],
+    hourlyDistribution: [],
   });
 
   useEffect(() => {
     checkAuth();
     loadStats();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const checkAuth = async () => {
@@ -76,9 +81,56 @@ const Admin = () => {
 
       if (registrations) {
         const now = new Date();
-        const today = new Date(now.setHours(0, 0, 0, 0));
-        const thisWeek = new Date(now.setDate(now.getDate() - 7));
-        const thisMonth = new Date(now.setMonth(now.getMonth() - 1));
+        const today = new Date(now);
+        today.setHours(0, 0, 0, 0);
+        
+        const thisWeek = new Date(now);
+        thisWeek.setDate(thisWeek.getDate() - 7);
+        
+        const thisMonth = new Date(now);
+        thisMonth.setMonth(thisMonth.getMonth() - 1);
+
+        // Calculate daily trends (last 30 days)
+        const dailyTrendsMap = new Map<string, number>();
+        const thirtyDaysAgo = new Date(now);
+        thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+        
+        // Initialize all days with 0
+        for (let i = 0; i < 30; i++) {
+          const date = new Date(thirtyDaysAgo);
+          date.setDate(date.getDate() + i);
+          const dateKey = date.toISOString().split('T')[0];
+          dailyTrendsMap.set(dateKey, 0);
+        }
+
+        // Count registrations per day
+        registrations.forEach((r) => {
+          const regDate = new Date(r.created_at);
+          if (regDate >= thirtyDaysAgo) {
+            const dateKey = regDate.toISOString().split('T')[0];
+            dailyTrendsMap.set(dateKey, (dailyTrendsMap.get(dateKey) || 0) + 1);
+          }
+        });
+
+        const dailyTrends = Array.from(dailyTrendsMap.entries())
+          .map(([date, count]) => ({ date, count }))
+          .sort((a, b) => a.date.localeCompare(b.date));
+
+        // Calculate hourly distribution
+        const hourlyMap = new Map<number, number>();
+        for (let i = 0; i < 24; i++) {
+          hourlyMap.set(i, 0);
+        }
+
+        registrations.forEach((r) => {
+          const regDate = new Date(r.created_at);
+          const hour = regDate.getHours();
+          hourlyMap.set(hour, (hourlyMap.get(hour) || 0) + 1);
+        });
+
+        const hourlyDistribution = Array.from(hourlyMap.entries())
+          .map(([hour, count]) => ({ hour, count }))
+          .sort((a, b) => a.hour - b.hour);
 
         const stats: RegistrationStats = {
           total: registrations.length,
@@ -94,6 +146,8 @@ const Admin = () => {
           thisMonth: registrations.filter(
             (r) => new Date(r.created_at) >= thisMonth
           ).length,
+          dailyTrends,
+          hourlyDistribution,
         };
 
         setStats(stats);

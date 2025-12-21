@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
-import { Upload, Linkedin, CheckCircle, AlertCircle, XCircle, MessageCircle } from "lucide-react";
+import { Upload, Linkedin, CheckCircle, AlertCircle, XCircle, MessageCircle, Info } from "lucide-react";
 import ReCAPTCHA from "react-google-recaptcha";
 import { supabase } from "@/integrations/supabase/client";
 import {
@@ -19,6 +19,7 @@ import {
 } from "@/lib/security";
 import { checkRateLimit, formatRetryAfter, recordSubmission } from "@/lib/rateLimit";
 import { cn } from "@/lib/utils";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 const Registration = () => {
   const [formData, setFormData] = useState({
@@ -525,9 +526,25 @@ const Registration = () => {
               <div className="absolute inset-0 flex items-center">
                 <div className="w-full border-t border-border" />
               </div>
-              <div className="relative flex justify-center">
-                <span className="bg-card px-4 text-sm text-muted-foreground">
+              <div className="relative flex justify-center items-center gap-2">
+                <span className="bg-card px-4 text-sm text-muted-foreground flex items-center gap-2">
                   Provide at least one *
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <button
+                        type="button"
+                        className="inline-flex items-center justify-center rounded-full focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                        aria-label="Why do we collect this information?"
+                      >
+                        <Info className="w-4 h-4 text-muted-foreground hover:text-foreground transition-colors" />
+                      </button>
+                    </TooltipTrigger>
+                    <TooltipContent side="top" className="max-w-xs">
+                      <p className="text-sm">
+                        We use this information to connect you with hiring companies and sponsors who are looking for talented participants like you.
+                      </p>
+                    </TooltipContent>
+                  </Tooltip>
                 </span>
               </div>
             </div>
