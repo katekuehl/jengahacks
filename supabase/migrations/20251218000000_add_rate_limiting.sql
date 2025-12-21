@@ -86,3 +86,4 @@ GRANT EXECUTE ON FUNCTION get_rate_limit_info(TEXT) TO anon, authenticated;
 COMMENT ON FUNCTION check_registration_rate_limit IS 'Checks if email has exceeded rate limit of 3 registrations per hour';
 COMMENT ON FUNCTION get_rate_limit_info IS 'Returns rate limit status and retry information for an email';
 
+
