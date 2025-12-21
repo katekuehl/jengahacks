@@ -117,7 +117,7 @@ export const getMockPosts = (limit?: number): BlogPost[] => {
     },
     {
       id: "3",
-      title: "Hackathon Tips: How to Make the Most of 48 Hours",
+      title: "Hackathon Tips: How to Make the Most of 36 Hours",
       excerpt: "Expert advice on time management, team formation, and building a winning project at JengaHacks.",
       author: "JengaHacks Team",
       publishedAt: "2025-12-05T09:15:00Z",

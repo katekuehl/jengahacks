@@ -27,7 +27,7 @@ describe("About", () => {
   it("should render feature descriptions", () => {
     render(<About />);
     expect(
-      screen.getByText(/48 hours to turn your ideas into working prototypes/i)
+      screen.getByText(/36 hours to turn your ideas into working prototypes/i)
     ).toBeInTheDocument();
     expect(
       screen.getByText(/Connect with fellow developers, designers/i)

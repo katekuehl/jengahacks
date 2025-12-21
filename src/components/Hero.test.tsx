@@ -17,7 +17,7 @@ describe("Hero", () => {
   it("should render the tagline", () => {
     render(<Hero />);
     expect(
-      screen.getByText(/48 hours of innovation, collaboration/i)
+      screen.getByText(/36 hours of innovation, collaboration/i)
     ).toBeInTheDocument();
   });
 
@@ -48,7 +48,7 @@ describe("Hero", () => {
   it("should render stats section", () => {
     render(<Hero />);
     expect(screen.getByText("100+")).toBeInTheDocument();
-    expect(screen.getByText("48")).toBeInTheDocument();
+    expect(screen.getByText("36")).toBeInTheDocument();
     expect(screen.getByText("Hackers")).toBeInTheDocument();
     expect(screen.getByText("Hours")).toBeInTheDocument();
   });

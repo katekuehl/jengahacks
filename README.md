@@ -6,12 +6,12 @@ A modern, responsive website for **JengaHacks** - East Africa's premier hackatho
 
 ## 🎯 About
 
-JengaHacks is a 48-hour hackathon event taking place in Nairobi, Kenya, bringing together developers, designers, and entrepreneurs to build innovative solutions across multiple tracks including FinTech, HealthTech, AgriTech, EdTech, Climate Tech, and Open Innovation.
+JengaHacks is a 36-hour hackathon event taking place in Nairobi, Kenya, bringing together developers, designers, and entrepreneurs to build innovative solutions across multiple tracks including FinTech, HealthTech, AgriTech, EdTech, Climate Tech, and Open Innovation.
 
 **Event Details:**
 - 📅 **Date**: February 21-22, 2026
-- 📍 **Location**: iHub, Nairobi
-- ⏱️ **Duration**: 48 hours
+- 📍 **Location**: Nairobi, Kenya
+- ⏱️ **Duration**: 36 hours
 - 👥 **Expected Participants**: 100+ hackers
 
 ## ✨ Features

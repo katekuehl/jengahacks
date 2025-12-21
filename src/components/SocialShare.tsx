@@ -23,7 +23,7 @@ const SocialShare = ({
   
   // Default values with translations
   const defaultTitle = title || "JengaHacks 2026 - East Africa's Premier Hackathon";
-  const defaultDescription = description || "Join us for 48 hours of innovation, collaboration, and building solutions that matter. February 21-22, 2026 in Nairobi, Kenya.";
+  const defaultDescription = description || "Join us for 36 hours of innovation, collaboration, and building solutions that matter. February 21-22, 2026 in Nairobi, Kenya.";
   const shareUrl = url || (typeof window !== "undefined" ? window.location.href : "https://jengahacks.com");
   
   const encodedUrl = encodeURIComponent(shareUrl);

@@ -376,7 +376,7 @@
     "eventDetailsDescription": "Mark your calendar and join us for an amazing hackathon experience.",
     "date": "Date",
     "duration": "Duration",
-    "durationValue": "48 hours",
+    "durationValue": "36 hours",
     "location": "Location",
     "addToCalendar": "Add to Calendar",
     "addToCalendarDescription": "Don't forget! Add JengaHacks 2026 to your calendar.",
@@ -395,7 +395,7 @@
     "step2Title": "2. Join Our Community",
     "step2Description": "Connect with other participants, mentors, and organizers on Discord to stay updated and network.",
     "step3Title": "3. Prepare for the Event",
-    "step3Description": "Start thinking about your project ideas, form a team, and get ready for 48 hours of innovation!",
+    "step3Description": "Start thinking about your project ideas, form a team, and get ready for 36 hours of innovation!",
     "backToHome": "Back to Home",
     "viewBlog": "View Blog"
   }

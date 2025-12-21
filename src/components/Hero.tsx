@@ -110,7 +110,7 @@ const Hero = () => {
               <div className="text-xs sm:text-sm text-muted-foreground mt-1">{t("hero.hackers")}</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-gradient" aria-label="48">48</div>
+              <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-gradient" aria-label="36">36</div>
               <div className="text-xs sm:text-sm text-muted-foreground mt-1">{t("hero.hours")}</div>
             </div>
           </div>
