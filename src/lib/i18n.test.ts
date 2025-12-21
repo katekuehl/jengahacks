@@ -20,7 +20,7 @@ describe("i18n utilities", () => {
   describe("getLocale", () => {
     it("should return default locale when no environment variable", () => {
       const locale = getLocale();
-      expect(locale).toBe("en-KE");
+      expect(locale).toBe("en-UK");
     });
 
     it("should return environment variable locale when set", () => {
@@ -34,7 +34,7 @@ describe("i18n utilities", () => {
       // This test verifies the fallback logic works correctly
       const locale = getLocale();
       // In test mode, it returns default locale since navigator is undefined
-      expect(locale).toBe("en-KE");
+      expect(locale).toBe("en-UK");
     });
   });
 
