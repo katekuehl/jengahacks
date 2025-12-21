@@ -56,6 +56,16 @@ JengaHacks is a 48-hour hackathon event taking place in Nairobi, Kenya, bringing
 - **React Testing Library** - Component testing utilities
 - **jsdom** - DOM environment for testing
 
+## 📚 Documentation
+
+- **[Architecture Diagrams](./ARCHITECTURE.md)** - Visual system architecture and component diagrams
+- **[API Documentation](./API.md)** - Complete API reference for Edge Functions, database schema, and client-side integrations
+- **[Deployment Guide](./DEPLOYMENT.md)** - Step-by-step guide for deploying to production
+- **[Environment Variables](./ENVIRONMENT_VARIABLES.md)** - Complete reference for all environment variables
+- **[Troubleshooting Guide](./TROUBLESHOOTING.md)** - Solutions for common issues and errors
+- **[Contributing Guidelines](./CONTRIBUTING.md)** - Guidelines for contributing to the project
+- **[TODO](./TODO.md)** - Project roadmap and task tracking
+
 ## 📋 Prerequisites
 
 Before you begin, ensure you have the following installed:
@@ -94,23 +104,24 @@ Create a `.env` file in the root directory:
 cp .env.example .env
 ```
 
-Add your Supabase credentials and reCAPTCHA site key:
+Edit `.env` with your configuration. See [Environment Variables Documentation](./ENVIRONMENT_VARIABLES.md) for complete reference.
+
+**Minimum required variables:**
 
 ```env
 VITE_SUPABASE_URL=your_supabase_url
 VITE_SUPABASE_PUBLISHABLE_KEY=your_supabase_anon_key
 VITE_RECAPTCHA_SITE_KEY=your_recaptcha_site_key
-VITE_USE_REGISTRATION_EDGE_FUNCTION=false
 ```
 
-> **Note**: Set `VITE_USE_REGISTRATION_EDGE_FUNCTION=true` to enable IP-based rate limiting via Edge Function (requires deployment of `register-with-ip` function).
-
+> 📖 **For detailed setup instructions**, see [ENVIRONMENT_VARIABLES.md](./ENVIRONMENT_VARIABLES.md)
+> 
 > ⚠️ **Note**: Replace the placeholder values with your actual credentials.
 > 
-> **reCAPTCHA Setup**: 
-> 1. Get your site key from [Google reCAPTCHA](https://www.google.com/recaptcha/admin)
-> 2. Add the site key to your `.env` file
-> 3. The form will work without CAPTCHA in development, but requires it in production
+> **Quick Setup Guides:**
+> - **Supabase**: [Dashboard → Settings → API](https://app.supabase.com)
+> - **reCAPTCHA**: [Google reCAPTCHA Admin](https://www.google.com/recaptcha/admin)
+> - **Google Analytics**: [Analytics Dashboard](https://analytics.google.com)
 
 ### 4. Start Development Server
 
@@ -259,20 +270,18 @@ The `dist/` directory will contain the production-ready files that can be deploy
 
 ## 🤝 Contributing
 
-Contributions are welcome! Here are a few ways you can contribute:
+Contributions are welcome! Please read our [Contributing Guidelines](./CONTRIBUTING.md) before submitting pull requests.
 
-1. **Report Issues** - Found a bug? Open an issue with details
-2. **Suggest Features** - Have an idea? Share it with us
-3. **Submit Pull Requests** - Fix bugs or add features
-
-### Development Workflow
-
+**Quick Start:**
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
 3. Make your changes
-4. Commit your changes (`git commit -m 'Add some amazing feature'`)
-5. Push to the branch (`git push origin feature/amazing-feature`)
-6. Open a Pull Request
+4. Run tests (`npm run test:run`) and lint (`npm run lint`)
+5. Commit your changes (follow [commit message guidelines](./CONTRIBUTING.md#commit-message-guidelines))
+6. Push to your branch (`git push origin feature/amazing-feature`)
+7. Open a Pull Request
+
+For detailed guidelines, see [CONTRIBUTING.md](./CONTRIBUTING.md).
 
 ## 📝 Editing Options
 
