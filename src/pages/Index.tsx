@@ -7,6 +7,7 @@ import Registration from "@/components/Registration";
 import Footer from "@/components/Footer";
 import SEO from "@/components/SEO";
 import StructuredData from "@/components/StructuredData";
+import ScrollReveal from "@/components/ScrollReveal";
 
 const Index = () => {
   return (
@@ -17,12 +18,22 @@ const Index = () => {
         <Navbar />
         <main>
           <Hero />
-          <About />
-          <Sponsors />
-          <BlogPreview />
-          <Registration />
+          <ScrollReveal direction="up" delay={100}>
+            <About />
+          </ScrollReveal>
+          <ScrollReveal direction="up" delay={200}>
+            <Sponsors />
+          </ScrollReveal>
+          <ScrollReveal direction="up" delay={300}>
+            <BlogPreview />
+          </ScrollReveal>
+          <ScrollReveal direction="up" delay={400}>
+            <Registration />
+          </ScrollReveal>
         </main>
-        <Footer />
+        <ScrollReveal direction="up" delay={500}>
+          <Footer />
+        </ScrollReveal>
       </div>
     </>
   );

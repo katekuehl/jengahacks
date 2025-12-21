@@ -425,16 +425,16 @@ const Registration = () => {
                 {touched.fullName && (
                   <div className="absolute right-3 top-1/2 -translate-y-1/2">
                     {errors.fullName ? (
-                      <XCircle className="w-5 h-5 text-destructive" aria-hidden="true" />
+                      <XCircle className="w-5 h-5 text-destructive animate-bounce-in" aria-hidden="true" />
                     ) : formData.fullName ? (
-                      <CheckCircle className="w-5 h-5 text-primary" aria-hidden="true" />
+                      <CheckCircle className="w-5 h-5 text-primary animate-success-pulse" aria-hidden="true" />
                     ) : null}
                   </div>
                 )}
               </div>
               {errors.fullName && (
-                <p id="fullName-error" className="text-sm text-destructive flex items-center gap-1.5" role="alert">
-                  <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                <p id="fullName-error" className="text-sm text-destructive flex items-center gap-1.5 animate-slide-in-right" role="alert">
+                  <AlertCircle className="w-4 h-4 flex-shrink-0 animate-bounce-in" />
                   <span>{errors.fullName}</span>
                 </p>
               )}
@@ -456,8 +456,8 @@ const Registration = () => {
                 onChange={handleInputChange}
                   onBlur={handleBlur}
                   className={cn(
-                    "bg-muted border-border focus:border-primary pr-10",
-                    errors.email && "border-destructive focus:border-destructive",
+                    "bg-muted border-border focus:border-primary pr-10 transition-all duration-300",
+                    errors.email && "border-destructive focus:border-destructive animate-error-flash",
                     touched.email && !errors.email && formData.email && "border-primary"
                   )}
                 required
@@ -467,16 +467,16 @@ const Registration = () => {
                 {touched.email && (
                   <div className="absolute right-3 top-1/2 -translate-y-1/2">
                     {errors.email ? (
-                      <XCircle className="w-5 h-5 text-destructive" aria-hidden="true" />
+                      <XCircle className="w-5 h-5 text-destructive animate-bounce-in" aria-hidden="true" />
                     ) : formData.email ? (
-                      <CheckCircle className="w-5 h-5 text-primary" aria-hidden="true" />
+                      <CheckCircle className="w-5 h-5 text-primary animate-success-pulse" aria-hidden="true" />
                     ) : null}
                   </div>
                 )}
               </div>
               {errors.email && (
-                <p id="email-error" className="text-sm text-destructive flex items-center gap-1.5" role="alert">
-                  <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                <p id="email-error" className="text-sm text-destructive flex items-center gap-1.5 animate-slide-in-right" role="alert">
+                  <AlertCircle className="w-4 h-4 flex-shrink-0 animate-bounce-in" />
                   <span>{errors.email}</span>
                 </p>
               )}
@@ -499,8 +499,8 @@ const Registration = () => {
                   onChange={handleInputChange}
                   onBlur={handleBlur}
                   className={cn(
-                    "bg-muted border-border focus:border-primary pr-10",
-                    errors.whatsapp && "border-destructive focus:border-destructive",
+                    "bg-muted border-border focus:border-primary pr-10 transition-all duration-300",
+                    errors.whatsapp && "border-destructive focus:border-destructive animate-error-flash",
                     touched.whatsapp && !errors.whatsapp && formData.whatsapp && "border-primary"
                   )}
                   aria-invalid={!!errors.whatsapp}
@@ -509,16 +509,16 @@ const Registration = () => {
                 {touched.whatsapp && formData.whatsapp && (
                   <div className="absolute right-3 top-1/2 -translate-y-1/2">
                     {errors.whatsapp ? (
-                      <XCircle className="w-5 h-5 text-destructive" aria-hidden="true" />
+                      <XCircle className="w-5 h-5 text-destructive animate-bounce-in" aria-hidden="true" />
                     ) : (
-                      <CheckCircle className="w-5 h-5 text-primary" aria-hidden="true" />
+                      <CheckCircle className="w-5 h-5 text-primary animate-success-pulse" aria-hidden="true" />
                     )}
                   </div>
                 )}
               </div>
               {errors.whatsapp && (
-                <p id="whatsapp-error" className="text-sm text-destructive flex items-center gap-1.5" role="alert">
-                  <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                <p id="whatsapp-error" className="text-sm text-destructive flex items-center gap-1.5 animate-slide-in-right" role="alert">
+                  <AlertCircle className="w-4 h-4 flex-shrink-0 animate-bounce-in" />
                   <span>{errors.whatsapp}</span>
                 </p>
               )}
@@ -560,7 +560,7 @@ const Registration = () => {
               <Label htmlFor="linkedIn" className={cn("flex items-center gap-2", errors.linkedIn && "text-destructive")}>
                 <Linkedin className="w-4 h-4" />
                 {t("registration.linkedin")}
-                {hasLinkedIn && !errors.linkedIn && <CheckCircle className="w-4 h-4 text-primary" />}
+                {hasLinkedIn && !errors.linkedIn && <CheckCircle className="w-4 h-4 text-primary animate-success-pulse" />}
               </Label>
               <div className="relative">
                 <Input
@@ -573,8 +573,8 @@ const Registration = () => {
                 onChange={handleInputChange}
                   onBlur={handleBlur}
                   className={cn(
-                    "bg-muted border-border focus:border-primary pr-10",
-                    errors.linkedIn && "border-destructive focus:border-destructive",
+                    "bg-muted border-border focus:border-primary pr-10 transition-all duration-300",
+                    errors.linkedIn && "border-destructive focus:border-destructive animate-error-flash",
                     touched.linkedIn && !errors.linkedIn && formData.linkedIn && "border-primary"
                   )}
                   aria-invalid={!!errors.linkedIn}
@@ -603,7 +603,7 @@ const Registration = () => {
               <Label htmlFor="resume" className={cn("flex items-center gap-2", errors.resume && "text-destructive")}>
                 <Upload className="w-4 h-4" />
                 {t("registration.resume")}
-                {hasResume && !errors.resume && <CheckCircle className="w-4 h-4 text-primary" />}
+                {hasResume && !errors.resume && <CheckCircle className="w-4 h-4 text-primary animate-success-pulse" />}
               </Label>
               <div className="relative">
                 <Input
@@ -614,8 +614,8 @@ const Registration = () => {
                   accept=".pdf,application/pdf"
                   onChange={handleFileChange}
                   className={cn(
-                    "bg-muted border-border focus:border-primary file:bg-primary file:text-primary-foreground file:border-0 file:rounded file:px-4 file:py-1 file:mr-4 file:font-medium file:cursor-pointer",
-                    errors.resume && "border-destructive focus:border-destructive",
+                    "bg-muted border-border focus:border-primary file:bg-primary file:text-primary-foreground file:border-0 file:rounded file:px-4 file:py-1 file:mr-4 file:font-medium file:cursor-pointer transition-all duration-300",
+                    errors.resume && "border-destructive focus:border-destructive animate-error-flash",
                     hasResume && !errors.resume && "border-primary"
                   )}
                   aria-invalid={!!errors.resume}
@@ -623,14 +623,14 @@ const Registration = () => {
                 />
               </div>
               {formData.resume && !errors.resume && (
-                <p className="text-sm text-muted-foreground flex items-center gap-1.5">
-                  <CheckCircle className="w-4 h-4 text-primary flex-shrink-0" />
+                <p className="text-sm text-muted-foreground flex items-center gap-1.5 animate-slide-in-right">
+                  <CheckCircle className="w-4 h-4 text-primary flex-shrink-0 animate-success-pulse" />
                   <span>Selected: {sanitizeFileName(formData.resume.name)}</span>
                 </p>
               )}
               {errors.resume && (
-                <p id="resume-error" className="text-sm text-destructive flex items-center gap-1.5" role="alert">
-                  <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                <p id="resume-error" className="text-sm text-destructive flex items-center gap-1.5 animate-slide-in-right" role="alert">
+                  <AlertCircle className="w-4 h-4 flex-shrink-0 animate-bounce-in" />
                   <span>{errors.resume}</span>
                 </p>
               )}
@@ -670,8 +670,8 @@ const Registration = () => {
                   </div>
                 </div>
                 {errors.captcha && (
-                  <p className="text-sm text-destructive flex items-center justify-center gap-1.5" role="alert">
-                    <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                  <p className="text-sm text-destructive flex items-center justify-center gap-1.5 animate-slide-in-right" role="alert">
+                    <AlertCircle className="w-4 h-4 flex-shrink-0 animate-bounce-in" />
                     <span>{errors.captcha}</span>
                   </p>
                 )}
@@ -683,10 +683,17 @@ const Registration = () => {
               type="submit"
               variant="hero"
               size="lg"
-              className="w-full"
+              className="w-full relative overflow-hidden"
               disabled={isSubmitting}
             >
-              {isSubmitting ? t("registration.submitting") : t("registration.submit")}
+              {isSubmitting && (
+                <span className="absolute inset-0 flex items-center justify-center">
+                  <span className="w-5 h-5 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin" />
+                </span>
+              )}
+              <span className={cn("transition-opacity duration-300", isSubmitting && "opacity-0")}>
+                {isSubmitting ? t("registration.submitting") : t("registration.submit")}
+              </span>
             </Button>
 
             <p className="text-xs sm:text-sm text-muted-foreground text-center px-2">

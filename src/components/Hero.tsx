@@ -57,14 +57,14 @@ const Hero = () => {
 
           {/* CTA Buttons */}
           <div className="animate-slide-up delay-300 flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto px-4">
-            <Button variant="hero" size="lg" className="sm:size-xl w-full sm:w-auto" asChild>
+            <Button variant="hero" size="lg" className="sm:size-xl w-full sm:w-auto group" asChild>
               <a 
                 href="#register" 
                 className="flex items-center justify-center gap-2"
                 onClick={() => trackButtonClick("Register Now", "hero")}
               >
                 {t("common.register")}
-                <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
+                <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-300 group-hover:translate-x-1" />
               </a>
             </Button>
             <Button variant="outline" size="lg" className="sm:size-xl w-full sm:w-auto" asChild>
