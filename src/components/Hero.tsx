@@ -53,59 +53,59 @@ const Hero = () => {
             itemScope 
             itemType="https://schema.org/Event"
             role="list"
-            aria-label="Event details"
+            aria-label={t("aria.eventDetails")}
           >
-            <div 
-              className="flex items-center gap-2 text-foreground text-sm sm:text-base" 
-              itemProp="startDate" 
-              content="2026-02-21T00:00:00+03:00"
-              role="listitem"
-            >
-              <Calendar className="w-4 h-4 sm:w-5 sm:h-5 text-primary flex-shrink-0" aria-hidden="true" />
-              <time dateTime="2026-02-21" aria-label={`Event date: ${t("hero.date")}`}>{t("hero.date")}</time>
-            </div>
-            <div 
-              className="flex items-center gap-2 text-foreground text-sm sm:text-base" 
-              itemProp="location" 
-              itemScope 
-              itemType="https://schema.org/Place"
-              role="listitem"
-            >
-              <MapPin className="w-4 h-4 sm:w-5 sm:h-5 text-primary flex-shrink-0" aria-hidden="true" />
-              <span itemProp="name" aria-label={`Event location: ${t("hero.location")}`}>{t("hero.location")}</span>
-            </div>
-          </div>
-
-          {/* CTA Buttons */}
-          <nav className="animate-slide-up delay-300 flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto px-4" aria-label="Main actions">
-            <Button variant="hero" size="lg" className="sm:size-xl w-full sm:w-auto group" asChild>
-              <a 
-                href="#register" 
-                className="flex items-center justify-center gap-2"
-                onClick={() => trackButtonClick("Register Now", "hero")}
-                aria-label={`${t("common.register")} - Navigate to registration form`}
+              <div 
+                className="flex items-center gap-2 text-foreground text-sm sm:text-base" 
+                itemProp="startDate" 
+                content="2026-02-21T00:00:00+03:00"
+                role="listitem"
               >
-                {t("common.register")}
-                <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true" />
-              </a>
-            </Button>
-            <Button variant="outline" size="lg" className="sm:size-xl w-full sm:w-auto" asChild>
-              <a 
-                href="#about"
-                onClick={() => trackButtonClick("Learn More", "hero")}
-                aria-label={`${t("common.learnMore")} - Navigate to about section`}
+                <Calendar className="w-4 h-4 sm:w-5 sm:h-5 text-primary flex-shrink-0" aria-hidden="true" />
+                <time dateTime="2026-02-21" aria-label={t("aria.eventDate", { date: t("hero.date") })}>{t("hero.date")}</time>
+              </div>
+              <div 
+                className="flex items-center gap-2 text-foreground text-sm sm:text-base" 
+                itemProp="location" 
+                itemScope 
+                itemType="https://schema.org/Place"
+                role="listitem"
               >
-                {t("common.learnMore")}
-              </a>
-            </Button>
-          </nav>
+                <MapPin className="w-4 h-4 sm:w-5 sm:h-5 text-primary flex-shrink-0" aria-hidden="true" />
+                <span itemProp="name" aria-label={t("aria.eventLocation", { location: t("hero.location") })}>{t("hero.location")}</span>
+              </div>
+            </div>
 
-          {/* Stats */}
-          <div 
-            className="animate-slide-up delay-400 mt-12 sm:mt-16 grid grid-cols-2 gap-6 sm:gap-8 md:gap-16 w-full max-w-md px-4"
-            role="group"
-            aria-label="Event statistics"
-          >
+            {/* CTA Buttons */}
+            <nav className="animate-slide-up delay-300 flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto px-4" aria-label={t("aria.mainActions")}>
+              <Button variant="hero" size="lg" className="sm:size-xl w-full sm:w-auto group" asChild>
+                <a 
+                  href="#register" 
+                  className="flex items-center justify-center gap-2"
+                  onClick={() => trackButtonClick("Register Now", "hero")}
+                  aria-label={`${t("common.register")} - ${t("aria.navigateToRegistration")}`}
+                >
+                  {t("common.register")}
+                  <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true" />
+                </a>
+              </Button>
+              <Button variant="outline" size="lg" className="sm:size-xl w-full sm:w-auto" asChild>
+                <a 
+                  href="#about"
+                  onClick={() => trackButtonClick("Learn More", "hero")}
+                  aria-label={`${t("common.learnMore")} - ${t("aria.navigateToAbout")}`}
+                >
+                  {t("common.learnMore")}
+                </a>
+              </Button>
+            </nav>
+
+            {/* Stats */}
+            <div 
+              className="animate-slide-up delay-400 mt-12 sm:mt-16 grid grid-cols-2 gap-6 sm:gap-8 md:gap-16 w-full max-w-md px-4"
+              role="group"
+              aria-label={t("aria.eventStatistics")}
+            >
             <div className="text-center">
               <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-gradient" aria-label="100 plus">100+</div>
               <div className="text-xs sm:text-sm text-muted-foreground mt-1">{t("hero.hackers")}</div>
@@ -125,7 +125,7 @@ const Hero = () => {
           <div 
             className="hidden md:flex animate-slide-up delay-600 mt-8 sm:mt-12 animate-bounce justify-center"
             role="button"
-            aria-label="Scroll down to see more content"
+            aria-label={t("aria.scrollDown")}
             tabIndex={0}
             onClick={() => {
               window.scrollTo({ top: window.innerHeight, behavior: "smooth" });
@@ -148,7 +148,7 @@ const Hero = () => {
       <div 
         className="md:hidden absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce"
         role="button"
-        aria-label="Scroll down to see more content"
+        aria-label={t("aria.scrollDown")}
         tabIndex={0}
         onClick={() => {
           window.scrollTo({ top: window.innerHeight, behavior: "smooth" });

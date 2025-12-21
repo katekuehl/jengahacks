@@ -43,7 +43,7 @@ const BlogPreview = () => {
         </header>
 
         {posts.length > 0 && (
-          <div className="grid gap-6 sm:gap-8 md:grid-cols-2 max-w-4xl mx-auto mb-8" role="list" aria-label="Latest blog posts">
+          <div className="grid gap-6 sm:gap-8 md:grid-cols-2 max-w-4xl mx-auto mb-8" role="list" aria-label={t("aria.latestBlogPosts")}>
             {posts.map((post) => (
               <Card
                 key={post.id}
@@ -51,7 +51,7 @@ const BlogPreview = () => {
                 className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1 flex flex-col"
               >
                 <CardHeader>
-                  <div className="flex items-center gap-2 text-xs text-muted-foreground mb-2" aria-label={`Published on ${formatBlogDateShort(post.publishedAt)}`}>
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground mb-2" aria-label={t("aria.publishedOn", { date: formatBlogDateShort(post.publishedAt) })}>
                     <Calendar className="w-3 h-3" aria-hidden="true" />
                     <time dateTime={post.publishedAt}>{formatBlogDateShort(post.publishedAt)}</time>
                   </div>
@@ -70,7 +70,7 @@ const BlogPreview = () => {
                     {post.excerpt}
                   </p>
                   <Button variant="ghost" size="sm" asChild className="w-full sm:w-auto self-start group-hover:text-primary">
-                    <Link to="/blog" aria-label={`Read more about ${post.title}`}>
+                    <Link to="/blog" aria-label={t("aria.readMoreAbout", { title: post.title })}>
                       {t("common.readMore")}
                       <ArrowRight className="w-4 h-4 ml-2" aria-hidden="true" />
                     </Link>
@@ -83,7 +83,7 @@ const BlogPreview = () => {
 
         <div className="text-center">
           <Button variant="outline" size="lg" asChild>
-            <Link to="/blog" className="flex items-center gap-2" aria-label="View all blog posts">
+            <Link to="/blog" className="flex items-center gap-2" aria-label={t("aria.viewAllBlogPosts")}>
               {posts.length > 0 ? t("blog.viewAll") : t("blog.title")}
               <ArrowRight className="w-4 h-4" aria-hidden="true" />
             </Link>

@@ -445,7 +445,7 @@ const Registration = () => {
                         className="w-5 h-5 text-primary animate-success-pulse" 
                         aria-hidden="true"
                         id="fullName-success"
-                        aria-label="Full name is valid"
+                        aria-label={t("aria.fullNameValid")}
                       />
                     ) : null}
                   </div>
@@ -494,7 +494,7 @@ const Registration = () => {
                         className="w-5 h-5 text-primary animate-success-pulse" 
                         aria-hidden="true"
                         id="email-success"
-                        aria-label="Email is valid"
+                        aria-label={t("aria.emailValid")}
                       />
                     ) : null}
                   </div>
@@ -541,7 +541,7 @@ const Registration = () => {
                         className="w-5 h-5 text-primary animate-success-pulse" 
                         aria-hidden="true"
                         id="whatsapp-success"
-                        aria-label="WhatsApp number is valid"
+                        aria-label={t("aria.whatsappValid")}
                       />
                     )}
                   </div>
@@ -594,7 +594,7 @@ const Registration = () => {
                 {hasLinkedIn && !errors.linkedIn && (
                   <CheckCircle 
                     className="w-4 h-4 text-primary animate-success-pulse" 
-                    aria-label="LinkedIn URL is valid"
+                    aria-label={t("aria.linkedinValid")}
                     aria-hidden="false"
                   />
                 )}
@@ -643,7 +643,7 @@ const Registration = () => {
                 {hasResume && !errors.resume && (
                   <CheckCircle 
                     className="w-4 h-4 text-primary animate-success-pulse" 
-                    aria-label="Resume file is selected"
+                    aria-label={t("aria.resumeSelected")}
                     aria-hidden="false"
                   />
                 )}

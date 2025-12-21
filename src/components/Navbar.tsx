@@ -12,7 +12,6 @@ import { useArrowKeyNavigation } from "@/hooks/useArrowKeyNavigation";
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { t } = useTranslation();
-  const menuRef = useRef<HTMLDivElement>(null);
   const trapRef = useFocusTrap(isOpen);
   const arrowNavRef = useArrowKeyNavigation({
     enabled: isOpen,
@@ -20,14 +19,12 @@ const Navbar = () => {
     loop: true,
   });
 
-  // Combine refs for focus trap and arrow navigation
-  useEffect(() => {
-    if (menuRef.current) {
-      (trapRef as React.MutableRefObject<HTMLElement | null>).current = menuRef.current;
-      (arrowNavRef as React.MutableRefObject<HTMLElement | null>).current = menuRef.current;
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isOpen]);
+  // Callback ref to assign element to both hooks' refs immediately
+  // This ensures refs are set before hooks' effects run
+  const menuRef = (element: HTMLDivElement | null) => {
+    (trapRef as React.MutableRefObject<HTMLElement | null>).current = element;
+    (arrowNavRef as React.MutableRefObject<HTMLElement | null>).current = element;
+  };
 
   // Handle Escape key to close menu
   useEffect(() => {
@@ -58,16 +55,16 @@ const Navbar = () => {
     <nav 
       className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-lg border-b border-border"
       role="navigation"
-      aria-label="Main navigation"
+      aria-label={t("aria.mainNavigation")}
     >
       <div className="container mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-14 sm:h-16">
-          <a href="/" className="flex items-center gap-2" aria-label="JengaHacks Home - Navigate to homepage">
+          <a href="/" className="flex items-center gap-2" aria-label={t("aria.homeLink")}>
             <img src={logo} alt="" className="h-8 sm:h-10 w-auto" width="120" height="40" aria-hidden="true" />
           </a>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-4" aria-label="Desktop navigation">
+          <nav className="hidden md:flex items-center gap-4" aria-label={t("aria.desktopNavigation")}>
             {navLinks.map((link) => (
               link.isRoute ? (
                 <Link
@@ -91,7 +88,7 @@ const Navbar = () => {
             ))}
             <LanguageSwitcher variant="compact" />
             <Button variant="hero" size="sm" asChild>
-              <a href="#register" aria-label={`${t("common.joinNow")} - Navigate to registration form`}>{t("common.joinNow")}</a>
+              <a href="#register" aria-label={`${t("common.joinNow")} - ${t("aria.navigateToRegistration")}`}>{t("common.joinNow")}</a>
             </Button>
           </nav>
 
@@ -99,7 +96,7 @@ const Navbar = () => {
           <button
             className="md:hidden text-foreground transition-transform duration-300 hover:scale-110 active:scale-95 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background rounded"
             onClick={() => setIsOpen(!isOpen)}
-            aria-label="Toggle menu"
+            aria-label={t("aria.toggleMenu")}
             aria-expanded={isOpen}
             aria-controls="mobile-menu"
           >
@@ -131,7 +128,7 @@ const Navbar = () => {
             isOpen ? "max-h-96 opacity-100 py-4" : "max-h-0 opacity-0 py-0"
           )}
           role="menu"
-          aria-label="Mobile navigation menu"
+          aria-label={t("aria.mobileNavigation")}
         >
           <div className="border-t border-border pt-4">
             <div className="flex flex-col gap-3 animate-slide-in-down">
