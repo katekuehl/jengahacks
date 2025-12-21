@@ -23,6 +23,7 @@ JengaHacks is a 48-hour hackathon event taking place in Nairobi, Kenya, bringing
 - ⚡ **Fast Performance** - Built with Vite for lightning-fast development and builds
 - 🔐 **Supabase Integration** - Backend services for data management
 - 🎯 **Multi-page Navigation** - Clean routing with React Router
+- 🐛 **Error Tracking** - Sentry integration for error monitoring and debugging
 
 ## 🛠️ Tech Stack
 
@@ -47,6 +48,9 @@ JengaHacks is a 48-hour hackathon event taking place in Nairobi, Kenya, bringing
 ### Forms & Validation
 - **React Hook Form** - Form state management
 - **Zod** - Schema validation
+
+### Monitoring & Error Tracking
+- **Sentry** - Error tracking and performance monitoring
 
 ### Development Tools
 - **ESLint** - Code linting

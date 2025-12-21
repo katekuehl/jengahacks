@@ -295,6 +295,12 @@
     "title": "404",
     "message": "Lo! Ukurasa haupatikani",
     "returnHome": "Rudi Nyumbani"
+  },
+  "error": {
+    "title": "Kitu kimekosea",
+    "message": "Samahani, lakini kitu kisichotarajiwa kimetokea. Timu yetu imeonywa.",
+    "reload": "Pakia Ukurasa Tena",
+    "goHome": "Nenda Nyumbani"
   }
 }
 
