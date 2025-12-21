@@ -55,6 +55,7 @@ JengaHacks is a 48-hour hackathon event taking place in Nairobi, Kenya, bringing
 - **Vitest** - Fast unit test framework
 - **React Testing Library** - Component testing utilities
 - **jsdom** - DOM environment for testing
+- **Playwright** - End-to-end testing framework
 
 ## 📚 Documentation
 
@@ -140,10 +141,15 @@ The application will be available at `http://localhost:8080`
 | `npm run build:dev` | Build in development mode |
 | `npm run preview` | Preview production build locally |
 | `npm run lint` | Run ESLint to check code quality |
-| `npm run test` | Run tests in watch mode |
-| `npm run test:run` | Run tests once |
+| `npm run test` | Run unit/integration tests in watch mode |
+| `npm run test:run` | Run unit/integration tests once |
 | `npm run test:ui` | Run tests with Vitest UI |
 | `npm run test:coverage` | Run tests with coverage report |
+| `npm run test:e2e` | Run E2E tests with Playwright |
+| `npm run test:e2e:ui` | Run E2E tests in interactive UI mode |
+| `npm run test:e2e:headed` | Run E2E tests with visible browser |
+| `npm run test:e2e:debug` | Debug E2E tests |
+| `npm run test:e2e:report` | View E2E test report |
 
 ## 📁 Project Structure
 

@@ -23,6 +23,11 @@ dist-ssr
 *.sln
 *.sw?
 
+# Playwright
+/test-results/
+/playwright-report/
+/playwright/.cache/
+
 # Supabase
 supabase/.temp/
 

@@ -71,12 +71,12 @@
 - [x] Add unit tests for Google Analytics integration (`src/lib/analytics.test.ts` - 11 tests)
 - [x] Add unit tests for BlogPreview component (5 tests)
 - [x] Fix all test failures and ensure all tests pass (47 tests passing)
-- [ ] Add integration tests for registration flow
-- [ ] Add E2E tests (Playwright/Cypress)
-- [ ] Test rate limiting in production-like environment
-- [ ] Test CAPTCHA integration end-to-end
+- [x] Add integration tests for registration flow (`src/components/Registration.integration.test.tsx` - 14 tests)
+- [x] Add E2E tests (Playwright) - Registration, Navigation, Homepage, Blog tests
+- [x] Test rate limiting in production-like environment (`e2e/rate-limiting.spec.ts` - 10 tests)
+- [x] Test CAPTCHA integration end-to-end (`e2e/captcha.spec.ts` - 11 tests)
 - [ ] Add performance tests
-- [ ] Test on multiple browsers and devices
+- [ ] Test on multiple browsers and devices (Firefox, Safari)
 - [ ] Add visual regression tests
 
 ### Documentation
