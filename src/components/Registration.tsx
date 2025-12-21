@@ -397,10 +397,11 @@ const Registration = () => {
                 Full Name *
               </Label>
               <div className="relative">
-              <Input
+                <Input
                 id="fullName"
                 name="fullName"
                 type="text"
+                autoComplete="name"
                 placeholder="John Doe"
                 value={formData.fullName}
                 onChange={handleInputChange}
@@ -442,6 +443,7 @@ const Registration = () => {
                 id="email"
                 name="email"
                 type="email"
+                autoComplete="email"
                 placeholder="john@example.com"
                 value={formData.email}
                 onChange={handleInputChange}
@@ -484,6 +486,7 @@ const Registration = () => {
                   id="whatsapp"
                   name="whatsapp"
                   type="tel"
+                  autoComplete="tel"
                   placeholder="+254712345678 or 0712345678"
                   value={formData.whatsapp}
                   onChange={handleInputChange}
@@ -537,10 +540,11 @@ const Registration = () => {
                 {hasLinkedIn && !errors.linkedIn && <CheckCircle className="w-4 h-4 text-primary" />}
               </Label>
               <div className="relative">
-              <Input
+                <Input
                 id="linkedIn"
                 name="linkedIn"
                 type="text"
+                autoComplete="url"
                 placeholder="linkedin.com/in/yourprofile"
                 value={formData.linkedIn}
                 onChange={handleInputChange}
