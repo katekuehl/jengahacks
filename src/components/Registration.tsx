@@ -20,8 +20,10 @@ import {
 import { checkRateLimit, formatRetryAfter, recordSubmission } from "@/lib/rateLimit";
 import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { useTranslation } from "@/hooks/useTranslation";
 
 const Registration = () => {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -56,28 +58,28 @@ const Registration = () => {
     switch (name) {
       case "fullName":
         if (!value.trim()) {
-          return "Full name is required";
+          return t("registration.errors.fullNameRequired");
         }
         if (!isValidFullName(value.trim())) {
-          return "Please enter a valid full name (2-100 characters, letters and spaces only)";
+          return t("registration.errors.fullNameInvalid");
         }
         return undefined;
       case "email":
         if (!value.trim()) {
-          return "Email address is required";
+          return t("registration.errors.emailRequired");
         }
         if (!isValidEmail(value.trim())) {
-          return "Please enter a valid email address";
+          return t("registration.errors.emailInvalid");
         }
         return undefined;
       case "whatsapp":
         if (value.trim() && !isValidWhatsAppNumber(value.trim())) {
-          return "Please enter a valid WhatsApp number (e.g., +254712345678 or 0712345678)";
+          return t("registration.errors.whatsappInvalid");
         }
         return undefined;
       case "linkedIn":
         if (value.trim() && !validateAndSanitizeUrl(value.trim())) {
-          return "Please enter a valid LinkedIn URL (e.g., linkedin.com/in/yourprofile)";
+          return t("registration.errors.linkedinInvalid");
         }
         return undefined;
       default:
@@ -124,7 +126,7 @@ const Registration = () => {
     if (file) {
       // Validate file size first (most common issue)
       if (file.size > 5 * 1024 * 1024) {
-        setErrors((prev) => ({ ...prev, resume: "File size must be less than 5MB" }));
+        setErrors((prev) => ({ ...prev, resume: t("registration.errors.resumeSize") }));
         e.target.value = ''; // Reset input
         setFormData((prev) => ({ ...prev, resume: null }));
         setHasResume(false);
@@ -133,7 +135,7 @@ const Registration = () => {
 
       // Validate file extension (more secure check)
       if (!isValidPdfExtension(file.name)) {
-        setErrors((prev) => ({ ...prev, resume: "Please upload a PDF file (.pdf extension required)" }));
+        setErrors((prev) => ({ ...prev, resume: t("registration.errors.resumeType") }));
         e.target.value = ''; // Reset input
         setFormData((prev) => ({ ...prev, resume: null }));
         setHasResume(false);
@@ -142,7 +144,7 @@ const Registration = () => {
 
       // Validate MIME type (additional security layer)
       if (!isValidPdfMimeType(file.type)) {
-        setErrors((prev) => ({ ...prev, resume: "Invalid file type. Please upload a PDF file." }));
+        setErrors((prev) => ({ ...prev, resume: t("registration.errors.resumeType") }));
         e.target.value = ''; // Reset input
         setFormData((prev) => ({ ...prev, resume: null }));
         setHasResume(false);
@@ -186,12 +188,12 @@ const Registration = () => {
     
     // Check if LinkedIn or Resume is provided
     if (!hasLinkedIn && !hasResume) {
-      newErrors.linkedIn = "Please provide either your LinkedIn profile or upload your resume";
+      newErrors.linkedIn = t("registration.errors.resumeRequired");
     }
     
     // Verify CAPTCHA
     if (RECAPTCHA_SITE_KEY && !captchaToken) {
-      newErrors.captcha = "Please complete the CAPTCHA verification";
+      newErrors.captcha = t("registration.errors.captchaRequired");
     }
     
     setErrors(newErrors);
@@ -218,8 +220,8 @@ const Registration = () => {
     const rateLimitCheck = checkRateLimit();
     if (!rateLimitCheck.allowed) {
       const retryMessage = rateLimitCheck.retryAfter 
-        ? `Rate limit exceeded. Please try again in ${formatRetryAfter(rateLimitCheck.retryAfter)}.`
-        : "Rate limit exceeded. Please try again later.";
+        ? t("registration.errors.rateLimit", { time: formatRetryAfter(rateLimitCheck.retryAfter) })
+        : t("registration.errors.rateLimit", { time: t("common.retry") });
       toast.error(retryMessage);
       return;
     }
@@ -255,7 +257,7 @@ const Registration = () => {
           console.error('Upload error:', uploadError);
             }
             resumeUploadFailed = true;
-            toast.error('Resume upload failed, but registration will continue');
+            toast.error(t("registration.errors.failed"));
           } else {
             resumePath = fileName;
           }
@@ -271,8 +273,8 @@ const Registration = () => {
 
       // Validate and sanitize LinkedIn URL
       const linkedInUrl = linkedIn ? validateAndSanitizeUrl(linkedIn) : null;
-      if (linkedIn && !linkedInUrl) {
-        toast.error("Please enter a valid LinkedIn URL");
+        if (linkedIn && !linkedInUrl) {
+        toast.error(t("registration.errors.linkedinInvalid"));
         setIsSubmitting(false);
         return;
       }
@@ -308,12 +310,12 @@ const Registration = () => {
         } else if (functionData?.error) {
           // Handle Edge Function error response
           if (functionData.code === 'RATE_LIMIT_EXCEEDED') {
-            throw new Error(functionData.error || 'Rate limit exceeded. Maximum 3 registrations per email or 5 per IP per hour.');
+            throw new Error(functionData.error || t("registration.errors.rateLimit", { time: "" }));
           }
           if (functionData.code === 'DUPLICATE_EMAIL') {
-            throw new Error(functionData.error || 'This email is already registered');
+            throw new Error(functionData.error || t("registration.errors.duplicateEmail"));
           }
-          throw new Error(functionData.error || 'Failed to submit registration');
+          throw new Error(functionData.error || t("registration.errors.failed"));
         }
       } else {
         // Direct database insert (IP will be NULL, but email-based rate limiting still applies)
@@ -332,11 +334,11 @@ const Registration = () => {
         
         // Check for rate limit violation (custom error code or message)
         if (insertError.message?.includes('rate limit') || insertError.message?.includes('too many')) {
-          throw new Error('Rate limit exceeded. Maximum 3 registrations per email or 5 per IP per hour. Please try again later.');
+          throw new Error(t("registration.errors.rateLimit", { time: "" }));
         }
         
         if (insertError.code === '23505') {
-          throw new Error('This email is already registered');
+          throw new Error(t("registration.errors.duplicateEmail"));
         }
         
         // Check if RLS policy blocked due to rate limit
@@ -344,15 +346,15 @@ const Registration = () => {
         // The rate limit check happens at the database level via the policy
         if (insertError.message?.includes('policy') || insertError.message?.includes('permission')) {
           // Likely rate limited by RLS policy (email or IP)
-          throw new Error('Rate limit exceeded. Maximum 3 registrations per email or 5 per IP per hour. Please try again later.');
+          throw new Error(t("registration.errors.rateLimit", { time: "" }));
         }
         
-        throw new Error('Failed to submit registration');
+        throw new Error(t("registration.errors.failed"));
       }
 
       // Success - record submission and reset form
       recordSubmission();
-      toast.success("Registration successful! We'll be in touch soon.");
+      toast.success(t("registration.success"));
       setFormData({ fullName: "", email: "", whatsapp: "", linkedIn: "", resume: null });
       setHasLinkedIn(false);
       setHasResume(false);
@@ -370,7 +372,7 @@ const Registration = () => {
       if (import.meta.env.DEV) {
       console.error('Registration error:', error);
       }
-      toast.error(error instanceof Error ? error.message : 'Registration failed. Please try again.');
+      toast.error(error instanceof Error ? error.message : t("registration.errors.failed"));
     } finally {
       setIsSubmitting(false);
     }
@@ -384,10 +386,10 @@ const Registration = () => {
         <div className="max-w-xl mx-auto">
           <div className="text-center mb-8 sm:mb-12">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4 px-4">
-              <span className="text-gradient">Register</span> Now
+              <span className="text-gradient">{t("registration.title")}</span>
             </h2>
             <p className="text-muted-foreground text-base sm:text-lg px-4">
-              Secure your spot at JengaHacks 2026. Limited to 200 participants.
+              {t("registration.subtitle")}
             </p>
           </div>
 
@@ -395,7 +397,7 @@ const Registration = () => {
             {/* Full Name */}
             <div className="space-y-2">
               <Label htmlFor="fullName" className={cn(errors.fullName && "text-destructive")}>
-                Full Name *
+                {t("registration.fullName")} *
               </Label>
               <div className="relative">
                 <Input
@@ -437,7 +439,7 @@ const Registration = () => {
             {/* Email */}
             <div className="space-y-2">
               <Label htmlFor="email" className={cn(errors.email && "text-destructive")}>
-                Email Address *
+                {t("registration.email")} *
               </Label>
               <div className="relative">
               <Input
@@ -480,7 +482,7 @@ const Registration = () => {
             <div className="space-y-2">
               <Label htmlFor="whatsapp" className={cn("flex items-center gap-2", errors.whatsapp && "text-destructive")}>
                 <MessageCircle className="w-4 h-4" />
-                WhatsApp Number
+                {t("registration.whatsapp")}
               </Label>
               <div className="relative">
                 <Input
@@ -517,7 +519,7 @@ const Registration = () => {
                 </p>
               )}
               <p className="text-xs text-muted-foreground">
-                Optional - We'll use this to contact you about the event
+                {t("registration.optionalWhatsApp")}
               </p>
             </div>
 
@@ -528,20 +530,20 @@ const Registration = () => {
               </div>
               <div className="relative flex justify-center items-center gap-2">
                 <span className="bg-card px-4 text-sm text-muted-foreground flex items-center gap-2">
-                  Provide at least one *
+                  {t("registration.provideAtLeastOne")} *
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <button
                         type="button"
                         className="inline-flex items-center justify-center rounded-full focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
-                        aria-label="Why do we collect this information?"
+                        aria-label={t("registration.whyCollect")}
                       >
                         <Info className="w-4 h-4 text-muted-foreground hover:text-foreground transition-colors" />
                       </button>
                     </TooltipTrigger>
                     <TooltipContent side="top" className="max-w-xs">
                       <p className="text-sm">
-                        We use this information to connect you with hiring companies and sponsors who are looking for talented participants like you.
+                        {t("registration.whyCollect")}
                       </p>
                     </TooltipContent>
                   </Tooltip>
@@ -553,7 +555,7 @@ const Registration = () => {
             <div className="space-y-2">
               <Label htmlFor="linkedIn" className={cn("flex items-center gap-2", errors.linkedIn && "text-destructive")}>
                 <Linkedin className="w-4 h-4" />
-                LinkedIn Profile
+                {t("registration.linkedin")}
                 {hasLinkedIn && !errors.linkedIn && <CheckCircle className="w-4 h-4 text-primary" />}
               </Label>
               <div className="relative">
@@ -596,7 +598,7 @@ const Registration = () => {
             <div className="space-y-2">
               <Label htmlFor="resume" className={cn("flex items-center gap-2", errors.resume && "text-destructive")}>
                 <Upload className="w-4 h-4" />
-                Resume (PDF)
+                {t("registration.resume")}
                 {hasResume && !errors.resume && <CheckCircle className="w-4 h-4 text-primary" />}
               </Label>
               <div className="relative">
@@ -646,16 +648,16 @@ const Registration = () => {
                       }}
                       onExpired={() => {
                         setCaptchaToken(null);
-                        setErrors((prev) => ({ ...prev, captcha: "CAPTCHA expired. Please verify again." }));
+                        setErrors((prev) => ({ ...prev, captcha: t("registration.errors.captchaFailed") }));
                       }}
                       onError={(error) => {
                         setCaptchaToken(null);
                         console.error("reCAPTCHA error:", error);
                         // Check for specific error types
                         if (error?.toString().includes("Invalid key type")) {
-                          setErrors((prev) => ({ ...prev, captcha: "CAPTCHA configuration error. Please contact support." }));
+                          setErrors((prev) => ({ ...prev, captcha: t("registration.errors.captchaFailed") }));
                         } else {
-                          setErrors((prev) => ({ ...prev, captcha: "CAPTCHA verification failed. Please refresh the page and try again." }));
+                          setErrors((prev) => ({ ...prev, captcha: t("registration.errors.captchaFailed") }));
                         }
                       }}
                       theme="dark"
@@ -680,12 +682,11 @@ const Registration = () => {
               className="w-full"
               disabled={isSubmitting}
             >
-              {isSubmitting ? "Submitting..." : "Complete Registration"}
+              {isSubmitting ? t("registration.submitting") : t("registration.submit")}
             </Button>
 
             <p className="text-xs sm:text-sm text-muted-foreground text-center px-2">
-              By registering, you agree to our terms and conditions. 
-              We'll never share your information without consent.
+              {t("registration.terms")}
             </p>
           </form>
         </div>

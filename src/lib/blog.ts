@@ -138,27 +138,21 @@ export const getMockPosts = (limit?: number): BlogPost[] => {
   return limit ? mockPosts.slice(0, limit) : mockPosts;
 };
 
+import { formatDate as i18nFormatDate, formatDateShort as i18nFormatDateShort } from "./i18n";
+
 /**
  * Format date for display
+ * @deprecated Use formatDate from @/lib/i18n instead
  */
 export const formatBlogDate = (dateString: string): string => {
-  const date = new Date(dateString);
-  return date.toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+  return i18nFormatDate(dateString);
 };
 
 /**
  * Format date for short display
+ * @deprecated Use formatDateShort from @/lib/i18n instead
  */
 export const formatBlogDateShort = (dateString: string): string => {
-  const date = new Date(dateString);
-  return date.toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-  });
+  return i18nFormatDateShort(dateString);
 };
 

@@ -1,0 +1,134 @@
+{
+  "common": {
+    "register": "Register Now",
+    "learnMore": "Learn More",
+    "joinNow": "Join Now",
+    "readMore": "Read More",
+    "viewAll": "View All",
+    "loading": "Loading...",
+    "error": "Error",
+    "retry": "Retry",
+    "close": "Close",
+    "save": "Save",
+    "cancel": "Cancel",
+    "submit": "Submit",
+    "download": "Download",
+    "search": "Search",
+    "filter": "Filter",
+    "refresh": "Refresh"
+  },
+  "hero": {
+    "tagline": "Built in Nairobi. Ready for the World.",
+    "description": "48 hours of innovation, collaboration, and building solutions that matter.",
+    "cta": "Join East Africa's premier hackathon.",
+    "date": "February 21-22, 2026",
+    "location": "iHub, Nairobi",
+    "hackers": "Hackers",
+    "hours": "Hours",
+    "tracks": "Tracks"
+  },
+  "nav": {
+    "about": "About",
+    "blog": "Blog",
+    "sponsorship": "Become a Sponsor",
+    "admin": "Admin"
+  },
+  "about": {
+    "title": "Why JengaHacks?",
+    "subtitle": "We're building the future of Kenyan technology, one hack at a time.",
+    "features": {
+      "build": {
+        "title": "Build & Ship",
+        "description": "48 hours to turn your ideas into working prototypes with mentorship from industry experts."
+      },
+      "network": {
+        "title": "Network",
+        "description": "Connect with fellow developers, designers, and entrepreneurs from across East Africa."
+      },
+      "win": {
+        "title": "Win Big",
+        "description": "Compete for prizes, mentorship opportunities, and the glory of it all."
+      },
+      "learn": {
+        "title": "Learn & Grow",
+        "description": "Workshops, talks, and hands-on sessions with leading tech companies and innovators."
+      }
+    },
+    "tracks": {
+      "title": "Hackathon Tracks",
+      "fintech": "FinTech",
+      "healthtech": "HealthTech",
+      "agritech": "AgriTech",
+      "edtech": "EdTech",
+      "climatetech": "Climate Tech",
+      "jobtech": "JobTech",
+      "aiml": "AI/ML",
+      "open": "Open Innovation"
+    },
+    "community": {
+      "title": "Join Our Community",
+      "description": "Connect with participants, mentors, and organizers on Discord. Get updates, ask questions, and network!",
+      "cta": "Join Discord Server"
+    }
+  },
+  "registration": {
+    "title": "Register Now",
+    "subtitle": "Secure your spot at JengaHacks 2026. Limited to 200 participants.",
+    "fullName": "Full Name",
+    "email": "Email Address",
+    "whatsapp": "WhatsApp Number",
+    "linkedin": "LinkedIn Profile",
+    "resume": "Resume (PDF only, max 5MB)",
+    "provideAtLeastOne": "Provide at least one",
+    "whyCollect": "We use this information to connect you with hiring companies and sponsors who are looking for talented participants like you.",
+    "optional": "Optional",
+    "optionalWhatsApp": "Optional - We'll use this to contact you about the event",
+    "submit": "Complete Registration",
+    "submitting": "Submitting...",
+    "success": "Registration successful! We'll be in touch soon.",
+    "required": "required",
+    "errors": {
+      "fullNameRequired": "Full name is required",
+      "fullNameInvalid": "Please enter a valid full name (2-100 characters, letters and spaces only)",
+      "emailRequired": "Email address is required",
+      "emailInvalid": "Please enter a valid email address",
+      "whatsappInvalid": "Please enter a valid WhatsApp number (e.g., +254712345678 or 0712345678)",
+      "linkedinInvalid": "Please enter a valid LinkedIn URL (e.g., linkedin.com/in/yourprofile)",
+      "resumeRequired": "Please provide either your LinkedIn profile or upload your resume",
+      "resumeSize": "File size must be less than 5MB",
+      "resumeType": "Please upload a PDF file (.pdf extension required)",
+      "captchaRequired": "Please complete the CAPTCHA",
+      "captchaFailed": "CAPTCHA verification failed. Please try again.",
+      "rateLimit": "Too many registration attempts. Please try again after {time}.",
+      "duplicateEmail": "This email is already registered",
+      "failed": "Registration failed. Please try again."
+    },
+    "terms": "By registering, you agree to our terms and conditions. We'll never share your information without consent."
+  },
+  "sponsors": {
+    "title": "Our Sponsors",
+    "subtitle": "Backed by leading tech companies",
+    "platinum": "Platinum Partners",
+    "becomeSponsor": "Become a Sponsor",
+    "sponsorDescription": "Partner with us to shape the future of technology in East Africa.",
+    "sponsorCta": "Join Us →"
+  },
+  "blog": {
+    "title": "Blog & News",
+    "subtitle": "Stay updated with the latest announcements, insights, and stories from JengaHacks 2026",
+    "latest": "Latest News",
+    "latestSubtitle": "Stay updated with announcements, insights, and stories from JengaHacks",
+    "noPosts": "No blog posts available yet.",
+    "checkBack": "Check back soon for updates!",
+    "loading": "Loading posts...",
+    "viewAll": "View All Posts",
+    "readTime": "{minutes} min read",
+    "by": "By"
+  },
+  "footer": {
+    "tagline": "Built in Nairobi. Ready for the World.",
+    "copyright": "© {year} JengaHacks. All rights reserved.",
+    "runBy": "Run by"
+  }
+}
+

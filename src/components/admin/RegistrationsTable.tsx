@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { createObjectURL, revokeObjectURL } from "@/lib/polyfills";
+import { createObjectURL, revokeObjectURL, safeSessionStorage } from "@/lib/polyfills";
+import { formatDateTimeShort } from "@/lib/i18n";
 import {
   Table,
   TableBody,
@@ -122,13 +123,62 @@ const RegistrationsTable = ({ onRefresh }: RegistrationsTableProps) => {
 
   const downloadResume = async (resumePath: string, fileName: string) => {
     try {
-      const { data, error } = await supabase.storage
-        .from("resumes")
-        .download(resumePath);
+      // Get signed URL from Edge Function for secure access
+      // Pass admin password for authentication (in production, use proper Supabase Auth)
+      const adminPassword = safeSessionStorage.getItem("admin_authenticated") === "authenticated" 
+        ? import.meta.env.VITE_ADMIN_PASSWORD || "admin123"
+        : null;
+      
+      const { data: functionData, error: functionError } = await supabase.functions.invoke(
+        "get-resume-url",
+        {
+          body: { 
+            resume_path: resumePath,
+            admin_password: adminPassword,
+          },
+        }
+      );
 
-      if (error) throw error;
+      if (functionError) {
+        // Fallback: Try direct signed URL generation (requires proper permissions)
+        const { data: signedUrlData, error: urlError } = await supabase.storage
+          .from("resumes")
+          .createSignedUrl(resumePath, 3600); // 1 hour expiration
 
-      const url = createObjectURL(data);
+        if (urlError || !signedUrlData) {
+          throw new Error("Failed to generate secure download URL");
+        }
+
+        // Download using signed URL
+        const response = await fetch(signedUrlData.signedUrl);
+        if (!response.ok) throw new Error("Failed to download file");
+        const blob = await response.blob();
+
+        const url = createObjectURL(blob);
+        if (!url) {
+          throw new Error("Failed to create object URL");
+        }
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = fileName || "resume.pdf";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        revokeObjectURL(url);
+        return;
+      }
+
+      // Use signed URL from Edge Function
+      if (!functionData?.url) {
+        throw new Error("No download URL received");
+      }
+
+      // Download using signed URL
+      const response = await fetch(functionData.url);
+      if (!response.ok) throw new Error("Failed to download file");
+      const blob = await response.blob();
+
+      const url = createObjectURL(blob);
       if (!url) {
         throw new Error("Failed to create object URL");
       }
@@ -272,7 +322,7 @@ const RegistrationsTable = ({ onRefresh }: RegistrationsTableProps) => {
                     )}
                   </TableCell>
                   <TableCell>
-                    {new Date(registration.created_at).toLocaleString()}
+                    {formatDateTimeShort(registration.created_at)}
                   </TableCell>
                 </TableRow>
               ))

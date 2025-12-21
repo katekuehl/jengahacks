@@ -3,14 +3,17 @@ import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import { Link } from "react-router-dom";
 import logo from "@/assets/jengahacks-logo.png";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
+import { useTranslation } from "@/hooks/useTranslation";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { t } = useTranslation();
 
   const navLinks = [
-    { href: "#about", label: "About" },
-    { href: "/blog", label: "Blog", isRoute: true },
-    { href: "/sponsorship", label: "Become a Sponsor", isRoute: true },
+    { href: "#about", label: t("nav.about") },
+    { href: "/blog", label: t("nav.blog"), isRoute: true },
+    { href: "/sponsorship", label: t("nav.sponsorship"), isRoute: true },
   ];
 
   return (
@@ -22,7 +25,7 @@ const Navbar = () => {
           </a>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden md:flex items-center gap-4">
             {navLinks.map((link) => (
               link.isRoute ? (
                 <Link
@@ -42,8 +45,9 @@ const Navbar = () => {
                 </a>
               )
             ))}
+            <LanguageSwitcher variant="compact" />
             <Button variant="hero" size="sm" asChild>
-              <a href="#register">Join Now</a>
+              <a href="#register">{t("common.joinNow")}</a>
             </Button>
           </div>
 
@@ -82,8 +86,11 @@ const Navbar = () => {
                   </a>
                 )
               ))}
+              <div className="pt-2 border-t border-border">
+                <LanguageSwitcher variant="compact" className="w-full justify-start" />
+              </div>
               <Button variant="hero" size="sm" asChild>
-                <a href="#register" onClick={() => setIsOpen(false)}>Join Now</a>
+                <a href="#register" onClick={() => setIsOpen(false)}>{t("common.joinNow")}</a>
               </Button>
             </div>
           </div>

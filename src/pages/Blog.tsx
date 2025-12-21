@@ -6,11 +6,13 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import SEO from "@/components/SEO";
 import { fetchBlogPosts, formatBlogDate, type BlogPost } from "@/lib/blog";
+import { useTranslation } from "@/hooks/useTranslation";
 
 const Blog = () => {
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { t } = useTranslation();
 
   useEffect(() => {
     const loadPosts = async () => {
@@ -44,10 +46,10 @@ const Blog = () => {
             <div className="container mx-auto px-4 sm:px-6">
               <div className="text-center max-w-3xl mx-auto">
                 <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
-                  <span className="text-gradient">Blog</span> & News
+                  <span className="text-gradient">{t("blog.title")}</span>
                 </h1>
                 <p className="text-lg sm:text-xl text-muted-foreground">
-                  Stay updated with the latest announcements, insights, and stories from JengaHacks 2026
+                  {t("blog.subtitle")}
                 </p>
               </div>
             </div>
@@ -60,20 +62,20 @@ const Blog = () => {
                 <div className="flex items-center justify-center py-12">
                   <div className="text-center">
                     <div className="mb-4 h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent mx-auto" />
-                    <p className="text-muted-foreground">Loading posts...</p>
+                    <p className="text-muted-foreground">{t("blog.loading")}</p>
                   </div>
                 </div>
               ) : error ? (
                 <div className="text-center py-12">
                   <p className="text-destructive text-lg mb-2">{error}</p>
                   <Button variant="outline" onClick={() => window.location.reload()}>
-                    Retry
+                    {t("common.retry")}
                   </Button>
                 </div>
               ) : posts.length === 0 ? (
                 <div className="text-center py-12">
-                  <p className="text-muted-foreground text-lg">No blog posts available yet.</p>
-                  <p className="text-muted-foreground mt-2">Check back soon for updates!</p>
+                  <p className="text-muted-foreground text-lg">{t("blog.noPosts")}</p>
+                  <p className="text-muted-foreground mt-2">{t("blog.checkBack")}</p>
                 </div>
               ) : (
                 <div className="grid gap-6 sm:gap-8 md:grid-cols-2 lg:grid-cols-3 max-w-7xl mx-auto">
@@ -100,7 +102,7 @@ const Blog = () => {
                           {post.readTime && (
                             <div className="flex items-center gap-1">
                               <Clock className="w-3 h-3" />
-                              <span>{post.readTime} min read</span>
+                              <span>{t("blog.readTime", { minutes: post.readTime })}</span>
                             </div>
                           )}
                         </div>
@@ -108,7 +110,7 @@ const Blog = () => {
                           {post.title}
                         </CardTitle>
                         {post.author && (
-                          <CardDescription className="text-sm">By {post.author}</CardDescription>
+                          <CardDescription className="text-sm">{t("blog.by")} {post.author}</CardDescription>
                         )}
                       </CardHeader>
                       <CardContent className="flex-1 flex flex-col">
@@ -123,13 +125,13 @@ const Blog = () => {
                               rel="noopener noreferrer"
                               className="flex items-center gap-2"
                             >
-                              Read More
+                              {t("common.readMore")}
                               <ExternalLink className="w-4 h-4" />
                             </a>
                           </Button>
                         ) : (
                           <Button variant="outline" size="sm" className="w-full sm:w-auto group-hover:bg-primary group-hover:text-primary-foreground">
-                            Read More
+                            {t("common.readMore")}
                             <ArrowRight className="w-4 h-4 ml-2" />
                           </Button>
                         )}

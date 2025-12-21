@@ -2,8 +2,10 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Calendar, MapPin, MessageSquare } from "lucide-react";
 import icon from "@/assets/jengahacks-icon.svg";
 import SocialShare from "@/components/SocialShare";
+import { useTranslation } from "@/hooks/useTranslation";
 
 const Hero = () => {
+  const { t } = useTranslation();
   return (
     <section className="relative min-h-screen flex items-center justify-center pt-14 sm:pt-16 overflow-hidden">
       {/* Background Pattern */}
@@ -30,25 +32,25 @@ const Hero = () => {
               <span style={{ color: '#65bb3a' }}>HACKS</span>
             </h1>
             <p className="text-base sm:text-lg md:text-xl text-muted-foreground mt-2 tracking-wide px-4">
-              Built in Nairobi. Ready for the World.
+              {t("hero.tagline")}
             </p>
           </header>
 
           {/* Tagline */}
           <p className="animate-slide-up delay-100 text-lg sm:text-xl md:text-2xl text-muted-foreground mb-6 sm:mb-8 max-w-2xl px-4">
-            48 hours of innovation, collaboration, and building solutions that matter. 
-            <span className="text-primary font-semibold"> Join East Africa's premier hackathon.</span>
+            {t("hero.description")}{" "}
+            <span className="text-primary font-semibold">{t("hero.cta")}</span>
           </p>
 
           {/* Event Details */}
           <div className="animate-slide-up delay-200 flex flex-wrap justify-center gap-4 sm:gap-6 mb-8 sm:mb-10 px-4" itemScope itemType="https://schema.org/Event">
             <div className="flex items-center gap-2 text-foreground text-sm sm:text-base" itemProp="startDate" content="2026-02-21T00:00:00+03:00">
               <Calendar className="w-4 h-4 sm:w-5 sm:h-5 text-primary flex-shrink-0" aria-hidden="true" />
-              <time dateTime="2026-02-21">February 21-22, 2026</time>
+              <time dateTime="2026-02-21">{t("hero.date")}</time>
             </div>
             <div className="flex items-center gap-2 text-foreground text-sm sm:text-base" itemProp="location" itemScope itemType="https://schema.org/Place">
               <MapPin className="w-4 h-4 sm:w-5 sm:h-5 text-primary flex-shrink-0" aria-hidden="true" />
-              <span itemProp="name">iHub, Nairobi</span>
+              <span itemProp="name">{t("hero.location")}</span>
             </div>
           </div>
 
@@ -56,12 +58,12 @@ const Hero = () => {
           <div className="animate-slide-up delay-300 flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto px-4">
             <Button variant="hero" size="lg" className="sm:size-xl w-full sm:w-auto" asChild>
               <a href="#register" className="flex items-center justify-center gap-2">
-                Register Now
+                {t("common.register")}
                 <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
               </a>
             </Button>
             <Button variant="outline" size="lg" className="sm:size-xl w-full sm:w-auto" asChild>
-              <a href="#about">Learn More</a>
+              <a href="#about">{t("common.learnMore")}</a>
             </Button>
             <Button 
               variant="outline" 
@@ -85,11 +87,11 @@ const Hero = () => {
           <div className="animate-slide-up delay-400 mt-12 sm:mt-16 grid grid-cols-2 gap-6 sm:gap-8 md:gap-16 w-full max-w-md px-4">
             <div className="text-center">
               <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-gradient">100+</div>
-              <div className="text-xs sm:text-sm text-muted-foreground mt-1">Hackers</div>
+              <div className="text-xs sm:text-sm text-muted-foreground mt-1">{t("hero.hackers")}</div>
             </div>
             <div className="text-center">
               <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-gradient">48</div>
-              <div className="text-xs sm:text-sm text-muted-foreground mt-1">Hours</div>
+              <div className="text-xs sm:text-sm text-muted-foreground mt-1">{t("hero.hours")}</div>
             </div>
           </div>
 

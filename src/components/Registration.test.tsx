@@ -53,6 +53,52 @@ vi.mock("react-google-recaptcha", () => ({
   ),
 }));
 
+// Mock translations
+vi.mock("@/hooks/useTranslation", () => ({
+  useTranslation: () => ({
+    t: (key: string, params?: Record<string, string | number>) => {
+      const translations: Record<string, string> = {
+        "registration.title": "Register Now",
+        "registration.subtitle": "Secure your spot at JengaHacks 2026. Limited to 200 participants.",
+        "registration.fullName": "Full Name",
+        "registration.email": "Email Address",
+        "registration.whatsapp": "WhatsApp Number",
+        "registration.linkedin": "LinkedIn Profile",
+        "registration.resume": "Resume (PDF only, max 5MB)",
+        "registration.provideAtLeastOne": "Provide at least one",
+        "registration.whyCollect": "We use this information to connect you with hiring companies and sponsors who are looking for talented participants like you.",
+        "registration.optionalWhatsApp": "Optional - We'll use this to contact you about the event",
+        "registration.submit": "Complete Registration",
+        "registration.submitting": "Submitting...",
+        "registration.success": "Registration successful! We'll be in touch soon.",
+        "registration.terms": "By registering, you agree to our terms and conditions. We'll never share your information without consent.",
+        "registration.errors.fullNameRequired": "Full name is required",
+        "registration.errors.fullNameInvalid": "Please enter a valid full name (2-100 characters, letters and spaces only)",
+        "registration.errors.emailRequired": "Email address is required",
+        "registration.errors.emailInvalid": "Please enter a valid email address",
+        "registration.errors.whatsappInvalid": "Please enter a valid WhatsApp number (e.g., +254712345678 or 0712345678)",
+        "registration.errors.linkedinInvalid": "Please enter a valid LinkedIn URL (e.g., linkedin.com/in/yourprofile)",
+        "registration.errors.resumeRequired": "Please provide either your LinkedIn profile or upload your resume",
+        "registration.errors.resumeSize": "File size must be less than 5MB",
+        "registration.errors.resumeType": "Please upload a PDF file (.pdf extension required)",
+        "registration.errors.captchaRequired": "Please complete the CAPTCHA",
+        "registration.errors.captchaFailed": "CAPTCHA verification failed. Please try again.",
+        "registration.errors.rateLimit": "Too many registration attempts. Please try again after {time}.",
+        "registration.errors.duplicateEmail": "This email is already registered",
+        "registration.errors.failed": "Registration failed. Please try again.",
+        "common.retry": "Retry",
+      };
+      let translation = translations[key] || key;
+      if (params) {
+        Object.entries(params).forEach(([paramKey, paramValue]) => {
+          translation = translation.replace(`{${paramKey}}`, String(paramValue));
+        });
+      }
+      return translation;
+    },
+  }),
+}));
+
 describe("Registration", () => {
   beforeEach(() => {
     vi.clearAllMocks();

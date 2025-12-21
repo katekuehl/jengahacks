@@ -1,0 +1,134 @@
+{
+  "common": {
+    "register": "Jiandikishe Sasa",
+    "learnMore": "Jifunze Zaidi",
+    "joinNow": "Jiunge Sasa",
+    "readMore": "Soma Zaidi",
+    "viewAll": "Angalia Zote",
+    "loading": "Inapakia...",
+    "error": "Kosa",
+    "retry": "Jaribu Tena",
+    "close": "Funga",
+    "save": "Hifadhi",
+    "cancel": "Ghairi",
+    "submit": "Wasilisha",
+    "download": "Pakua",
+    "search": "Tafuta",
+    "filter": "Chuja",
+    "refresh": "Onyesha Upya"
+  },
+  "hero": {
+    "tagline": "Imejengwa Nairobi. Tayari kwa Ulimwengu.",
+    "description": "Masaa 48 ya ubunifu, ushirikiano, na kujenga suluhisho muhimu.",
+    "cta": "Jiunge na hackathon kuu ya Afrika Mashariki.",
+    "date": "Februari 21-22, 2026",
+    "location": "iHub, Nairobi",
+    "hackers": "Wahackers",
+    "hours": "Masaa",
+    "tracks": "Njia"
+  },
+  "nav": {
+    "about": "Kuhusu",
+    "blog": "Blogu",
+    "sponsorship": "Kuwa Mfadhili",
+    "admin": "Msimamizi"
+  },
+  "about": {
+    "title": "Kwa Nini JengaHacks?",
+    "subtitle": "Tunajenga teknolojia ya baadaye ya Kenya, hack moja kwa wakati.",
+    "features": {
+      "build": {
+        "title": "Jenga na Wasilisha",
+        "description": "Masaa 48 ya kugeuza mawazo yako kuwa mifano ya kazi na uongozi kutoka wataalamu wa tasnia."
+      },
+      "network": {
+        "title": "Mtandao",
+        "description": "Ungana na watengenezaji, wabunifu, na wajasiriamali kutoka Afrika Mashariki."
+      },
+      "win": {
+        "title": "Shinda Kubwa",
+        "description": "Shindana kwa zawadi, fursa za uongozi, na utukufu wote."
+      },
+      "learn": {
+        "title": "Jifunze na Kukua",
+        "description": "Warsha, mazungumzo, na mafunzo ya vitendo na kampuni za teknolojia na wabunifu wakuu."
+      }
+    },
+    "tracks": {
+      "title": "Njia za Hackathon",
+      "fintech": "FinTech",
+      "healthtech": "HealthTech",
+      "agritech": "AgriTech",
+      "edtech": "EdTech",
+      "climatetech": "Teknolojia ya Hali ya Hewa",
+      "jobtech": "JobTech",
+      "aiml": "AI/ML",
+      "open": "Ubunifu wa Wazi"
+    },
+    "community": {
+      "title": "Jiunge na Jumuiya Yetu",
+      "description": "Ungana na washiriki, waongozi, na waandaaji kwenye Discord. Pata sasisho, uliza maswali, na uungane!",
+      "cta": "Jiunge na Seva ya Discord"
+    }
+  },
+  "registration": {
+    "title": "Jiandikishe Sasa",
+    "subtitle": "Hifadhi nafasi yako kwenye JengaHacks 2026. Imepunguzwa hadi washiriki 200.",
+    "fullName": "Jina Kamili",
+    "email": "Anwani ya Barua Pepe",
+    "whatsapp": "Nambari ya WhatsApp",
+    "linkedin": "Wasifu wa LinkedIn",
+    "resume": "Resume (PDF tu, kiwango cha juu 5MB)",
+    "provideAtLeastOne": "Toa angalau moja",
+    "whyCollect": "Tunatumia taarifa hii kukuunganisha na kampuni za kuajiri na wafadhili wanaotafuta washiriki wenye talanta kama wewe.",
+    "optional": "Hiari",
+    "optionalWhatsApp": "Hiari - Tutatumia hii kukuhusiana na tukio",
+    "submit": "Kamilisha Usajili",
+    "submitting": "Inawasilisha...",
+    "success": "Usajili umefanikiwa! Tutawasiliana hivi karibuni.",
+    "required": "inahitajika",
+    "errors": {
+      "fullNameRequired": "Jina kamili linahitajika",
+      "fullNameInvalid": "Tafadhali ingiza jina halali (herufi 2-100, herufi na nafasi tu)",
+      "emailRequired": "Anwani ya barua pepe inahitajika",
+      "emailInvalid": "Tafadhali ingiza anwani halali ya barua pepe",
+      "whatsappInvalid": "Tafadhali ingiza nambari halali ya WhatsApp (mfano: +254712345678 au 0712345678)",
+      "linkedinInvalid": "Tafadhali ingiza URL halali ya LinkedIn (mfano: linkedin.com/in/wasifuwako)",
+      "resumeRequired": "Tafadhali toa wasifu wako wa LinkedIn au pakia resume yako",
+      "resumeSize": "Ukubwa wa faili lazima uwe chini ya 5MB",
+      "resumeType": "Tafadhali pakia faili ya PDF (kipengele cha .pdf kinahitajika)",
+      "captchaRequired": "Tafadhali kamilisha CAPTCHA",
+      "captchaFailed": "Uthibitishaji wa CAPTCHA umeshindwa. Tafadhali jaribu tena.",
+      "rateLimit": "Majaribio mengi sana ya usajili. Tafadhali jaribu tena baada ya {time}.",
+      "duplicateEmail": "Barua pepe hii tayari imesajiliwa",
+      "failed": "Usajili umeshindwa. Tafadhali jaribu tena."
+    },
+    "terms": "Kwa kujiandikisha, unakubali masharti na hali zetu. Hatutawahi kushiriki taarifa zako bila idhini."
+  },
+  "sponsors": {
+    "title": "Wafadhili Wetu",
+    "subtitle": "Inaungwa mkono na kampuni kuu za teknolojia zilizojitolea kukuza mfumo wa ubunifu wa Afrika.",
+    "platinum": "Washirika wa Platinum",
+    "becomeSponsor": "Kuwa Mfadhili",
+    "sponsorDescription": "Shirikiana nasi kujenga teknolojia ya baadaye ya talanta za teknolojia za Afrika.",
+    "sponsorCta": "Jiunge Nasi →"
+  },
+  "blog": {
+    "title": "Blogu na Habari",
+    "subtitle": "Endelea kupata sasisho na habari za hivi karibuni kutoka JengaHacks 2026",
+    "latest": "Habari za Hivi Karibuni",
+    "latestSubtitle": "Endelea kupata sasisho, maarifa, na hadithi kutoka JengaHacks",
+    "noPosts": "Hakuna machapisho ya blogu bado.",
+    "checkBack": "Rudi hivi karibuni kwa sasisho!",
+    "loading": "Inapakia machapisho...",
+    "viewAll": "Angalia Machapisho Yote",
+    "readTime": "Soma kwa dakika {minutes}",
+    "by": "Na"
+  },
+  "footer": {
+    "tagline": "Imejengwa Nairobi. Tayari kwa Ulimwengu.",
+    "copyright": "© {year} JengaHacks. Haki zote zimehifadhiwa.",
+    "runBy": "Inaendeshwa na"
+  }
+}
+

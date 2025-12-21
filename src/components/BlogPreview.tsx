@@ -4,9 +4,11 @@ import { Button } from "@/components/ui/button";
 import { Calendar, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { fetchBlogPosts, formatBlogDateShort, type BlogPost } from "@/lib/blog";
+import { useTranslation } from "@/hooks/useTranslation";
 
 const BlogPreview = () => {
   const [posts, setPosts] = useState<BlogPost[]>([]);
+  const { t } = useTranslation();
 
   useEffect(() => {
     const loadPosts = async () => {
@@ -29,10 +31,10 @@ const BlogPreview = () => {
       <div className="container mx-auto px-4 sm:px-6 relative z-10">
         <div className="text-center mb-10 sm:mb-12 md:mb-16">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4 px-4">
-            Latest <span className="text-gradient">News</span>
+            {t("blog.latest")}
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto text-base sm:text-lg px-4">
-            Stay updated with announcements, insights, and stories from JengaHacks
+            {t("blog.latestSubtitle")}
           </p>
         </div>
 
@@ -52,7 +54,7 @@ const BlogPreview = () => {
                   {post.title}
                 </CardTitle>
                 {post.author && (
-                  <CardDescription className="text-sm">By {post.author}</CardDescription>
+                  <CardDescription className="text-sm">{t("blog.by")} {post.author}</CardDescription>
                 )}
               </CardHeader>
               <CardContent className="flex-1 flex flex-col">
@@ -61,7 +63,7 @@ const BlogPreview = () => {
                 </p>
                 <Button variant="ghost" size="sm" asChild className="w-full sm:w-auto self-start group-hover:text-primary">
                   <Link to="/blog">
-                    Read More
+                    {t("common.readMore")}
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </Link>
                 </Button>
@@ -74,7 +76,7 @@ const BlogPreview = () => {
         <div className="text-center">
           <Button variant="outline" size="lg" asChild>
             <Link to="/blog" className="flex items-center gap-2">
-              {posts.length > 0 ? "View All Posts" : "View Blog"}
+              {posts.length > 0 ? t("blog.viewAll") : t("blog.title")}
               <ArrowRight className="w-4 h-4" />
             </Link>
           </Button>

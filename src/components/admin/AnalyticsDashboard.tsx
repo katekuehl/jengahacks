@@ -14,6 +14,7 @@ import {
   Line,
   Legend
 } from "recharts";
+import { formatDateShort } from "@/lib/i18n";
 
 interface RegistrationStats {
   total: number;
@@ -151,8 +152,7 @@ const AnalyticsDashboard = ({ stats }: AnalyticsDashboardProps) => {
                 <YAxis />
                 <Tooltip 
                   labelFormatter={(value) => {
-                    const date = new Date(value);
-                    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                    return formatDateShort(value);
                   }}
                 />
                 <Line 

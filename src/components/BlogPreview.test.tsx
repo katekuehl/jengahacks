@@ -12,16 +12,41 @@ vi.mock("@/lib/blog", () => ({
   }),
 }));
 
+// Mock translations
+vi.mock("@/hooks/useTranslation", () => ({
+  useTranslation: () => ({
+    t: (key: string, params?: Record<string, string | number>) => {
+      const translations: Record<string, string> = {
+        "blog.latest": "Latest News",
+        "blog.latestSubtitle": "Stay updated with announcements, insights, and stories from JengaHacks",
+        "blog.viewAll": "View All Posts",
+        "blog.title": "Blog & News",
+        "blog.by": "By",
+        "common.readMore": "Read More",
+      };
+      let translation = translations[key] || key;
+      if (params) {
+        Object.entries(params).forEach(([paramKey, paramValue]) => {
+          translation = translation.replace(`{${paramKey}}`, String(paramValue));
+        });
+      }
+      return translation;
+    },
+  }),
+}));
+
 describe("BlogPreview", () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
-  it("should render the section heading", () => {
+  it("should render the section heading", async () => {
     vi.mocked(blogLib.fetchBlogPosts).mockResolvedValue([]);
     render(<BlogPreview />);
-    expect(screen.getByText(/Latest/i)).toBeInTheDocument();
-    expect(screen.getByText(/News/i)).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText(/Latest/i)).toBeInTheDocument();
+      expect(screen.getByText(/News/i)).toBeInTheDocument();
+    });
   });
 
   it("should render blog posts when available", async () => {
@@ -58,7 +83,7 @@ describe("BlogPreview", () => {
     render(<BlogPreview />);
 
     await waitFor(() => {
-      const button = screen.getByText("View Blog");
+      const button = screen.getByText(/Blog/i);
       expect(button).toBeInTheDocument();
     });
   });
@@ -89,7 +114,7 @@ describe("BlogPreview", () => {
     render(<BlogPreview />);
 
     await waitFor(() => {
-      const link = screen.getByText("View Blog").closest("a");
+      const link = screen.getByText(/Blog/i).closest("a");
       expect(link).toHaveAttribute("href", "/blog");
     });
   });
