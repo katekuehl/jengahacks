@@ -16,7 +16,6 @@ const packages = [
       "Logo on event website",
       "Social media shoutout",
       "1 mentor pass",
-      "Access to participant resumes",
     ],
   },
   {
@@ -30,6 +29,7 @@ const packages = [
       "Logo on event banners",
       "2 mentor passes",
       "5-minute pitch during opening ceremony",
+      "Access to participant resumes",
       "Branded swag in participant kits",
     ],
   },
@@ -51,7 +51,7 @@ const packages = [
   },
   {
     name: "Platinum",
-    price: "$2,000",
+    price: "$1,000",
     icon: Gem,
     color: "from-violet-500 to-fuchsia-400",
     description: "Maximum exposure and exclusive partnership benefits",
