@@ -8,6 +8,7 @@ import Sponsorship from "./pages/Sponsorship";
 import Blog from "./pages/Blog";
 import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
+import GoogleAnalytics from "./components/GoogleAnalytics";
 
 const queryClient = new QueryClient();
 
@@ -22,6 +23,7 @@ const App = () => (
           v7_relativeSplatPath: true,
         }}
       >
+        <GoogleAnalytics />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/sponsorship" element={<Sponsorship />} />

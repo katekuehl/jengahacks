@@ -21,6 +21,7 @@ import { checkRateLimit, formatRetryAfter, recordSubmission } from "@/lib/rateLi
 import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useTranslation } from "@/hooks/useTranslation";
+import { trackRegistration } from "@/lib/analytics";
 
 const Registration = () => {
   const { t } = useTranslation();
@@ -354,6 +355,7 @@ const Registration = () => {
 
       // Success - record submission and reset form
       recordSubmission();
+      trackRegistration(true);
       toast.success(t("registration.success"));
       setFormData({ fullName: "", email: "", whatsapp: "", linkedIn: "", resume: null });
       setHasLinkedIn(false);
@@ -372,7 +374,9 @@ const Registration = () => {
       if (import.meta.env.DEV) {
       console.error('Registration error:', error);
       }
-      toast.error(error instanceof Error ? error.message : t("registration.errors.failed"));
+      const errorMessage = error instanceof Error ? error.message : t("registration.errors.failed");
+      trackRegistration(false, errorMessage);
+      toast.error(errorMessage);
     } finally {
       setIsSubmitting(false);
     }

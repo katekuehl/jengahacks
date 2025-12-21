@@ -3,6 +3,7 @@ import { ArrowRight, Calendar, MapPin, MessageSquare } from "lucide-react";
 import icon from "@/assets/jengahacks-icon.svg";
 import SocialShare from "@/components/SocialShare";
 import { useTranslation } from "@/hooks/useTranslation";
+import { trackButtonClick } from "@/lib/analytics";
 
 const Hero = () => {
   const { t } = useTranslation();
@@ -57,13 +58,22 @@ const Hero = () => {
           {/* CTA Buttons */}
           <div className="animate-slide-up delay-300 flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto px-4">
             <Button variant="hero" size="lg" className="sm:size-xl w-full sm:w-auto" asChild>
-              <a href="#register" className="flex items-center justify-center gap-2">
+              <a 
+                href="#register" 
+                className="flex items-center justify-center gap-2"
+                onClick={() => trackButtonClick("Register Now", "hero")}
+              >
                 {t("common.register")}
                 <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
               </a>
             </Button>
             <Button variant="outline" size="lg" className="sm:size-xl w-full sm:w-auto" asChild>
-              <a href="#about">{t("common.learnMore")}</a>
+              <a 
+                href="#about"
+                onClick={() => trackButtonClick("Learn More", "hero")}
+              >
+                {t("common.learnMore")}
+              </a>
             </Button>
             <Button 
               variant="outline" 

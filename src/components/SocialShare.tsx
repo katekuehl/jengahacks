@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Share2, Twitter, Facebook, Linkedin, MessageCircle, Link as LinkIcon } from "lucide-react";
 import { toast } from "sonner";
+import { trackSocialShare } from "@/lib/analytics";
 
 interface SocialShareProps {
   title?: string;
@@ -51,6 +52,7 @@ const SocialShare = ({
     if (platform === "copy" || platform === "native") {
       try {
         await navigator.clipboard.writeText(shareUrl);
+        trackSocialShare(platform === "copy" ? "copy_link" : "native_share", "event");
         toast.success("Link copied to clipboard!");
         return;
       } catch (error) {
@@ -59,6 +61,13 @@ const SocialShare = ({
         return;
       }
     }
+
+    // Track social share
+    const platformName = link.includes("twitter") ? "twitter" :
+                         link.includes("facebook") ? "facebook" :
+                         link.includes("linkedin") ? "linkedin" :
+                         link.includes("wa.me") ? "whatsapp" : platform;
+    trackSocialShare(platformName, "event");
 
     // Open share link in new window
     window.open(link, "_blank", "noopener,noreferrer,width=600,height=400");
