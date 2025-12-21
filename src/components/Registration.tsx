@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
-import { Upload, Linkedin, CheckCircle, AlertCircle, XCircle } from "lucide-react";
+import { Upload, Linkedin, CheckCircle, AlertCircle, XCircle, Phone } from "lucide-react";
 import ReCAPTCHA from "react-google-recaptcha";
 import { supabase } from "@/integrations/supabase/client";
 import {
@@ -471,6 +471,50 @@ const Registration = () => {
                   <span>{errors.email}</span>
                 </p>
               )}
+            </div>
+
+            {/* WhatsApp */}
+            <div className="space-y-2">
+              <Label htmlFor="whatsapp" className={cn("flex items-center gap-2", errors.whatsapp && "text-destructive")}>
+                <Phone className="w-4 h-4" />
+                WhatsApp Number
+              </Label>
+              <div className="relative">
+                <Input
+                  id="whatsapp"
+                  name="whatsapp"
+                  type="tel"
+                  placeholder="+254712345678 or 0712345678"
+                  value={formData.whatsapp}
+                  onChange={handleInputChange}
+                  onBlur={handleBlur}
+                  className={cn(
+                    "bg-muted border-border focus:border-primary pr-10",
+                    errors.whatsapp && "border-destructive focus:border-destructive",
+                    touched.whatsapp && !errors.whatsapp && formData.whatsapp && "border-primary"
+                  )}
+                  aria-invalid={!!errors.whatsapp}
+                  aria-describedby={errors.whatsapp ? "whatsapp-error" : undefined}
+                />
+                {touched.whatsapp && formData.whatsapp && (
+                  <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                    {errors.whatsapp ? (
+                      <XCircle className="w-5 h-5 text-destructive" aria-hidden="true" />
+                    ) : (
+                      <CheckCircle className="w-5 h-5 text-primary" aria-hidden="true" />
+                    )}
+                  </div>
+                )}
+              </div>
+              {errors.whatsapp && (
+                <p id="whatsapp-error" className="text-sm text-destructive flex items-center gap-1.5" role="alert">
+                  <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                  <span>{errors.whatsapp}</span>
+                </p>
+              )}
+              <p className="text-xs text-muted-foreground">
+                Optional - We'll use this to contact you about the event
+              </p>
             </div>
 
             {/* Divider */}

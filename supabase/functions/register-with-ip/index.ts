@@ -13,6 +13,7 @@ const corsHeaders = {
 interface RegistrationData {
   full_name: string;
   email: string;
+  whatsapp_number?: string | null;
   linkedin_url?: string | null;
   resume_path?: string | null;
 }
@@ -42,7 +43,7 @@ serve(async (req) => {
       ipAddress = null;
     }
 
-    const { full_name, email, linkedin_url, resume_path }: RegistrationData =
+    const { full_name, email, whatsapp_number, linkedin_url, resume_path }: RegistrationData =
       await req.json();
 
     // Validate required fields
@@ -67,6 +68,7 @@ serve(async (req) => {
       .insert({
         full_name,
         email: email.toLowerCase().trim(),
+        whatsapp_number: whatsapp_number || null,
         linkedin_url: linkedin_url || null,
         resume_path: resume_path || null,
         ip_address: ipAddress,

@@ -22,6 +22,7 @@ export type Database = {
           id: string
           linkedin_url: string | null
           resume_path: string | null
+          whatsapp_number: string | null
         }
         Insert: {
           created_at?: string
@@ -30,6 +31,7 @@ export type Database = {
           id?: string
           linkedin_url?: string | null
           resume_path?: string | null
+          whatsapp_number?: string | null
         }
         Update: {
           created_at?: string
@@ -38,6 +40,7 @@ export type Database = {
           id?: string
           linkedin_url?: string | null
           resume_path?: string | null
+          whatsapp_number?: string | null
         }
         Relationships: []
       }
