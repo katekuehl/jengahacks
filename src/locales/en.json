@@ -22,7 +22,7 @@
   },
   "hero": {
     "tagline": "Built in Nairobi. Ready for the World.",
-    "description": "48 hours of innovation, collaboration, and building solutions that matter.",
+    "description": "36 hours of innovation, collaboration, and building solutions that matter.",
     "cta": "Join East Africa's premier hackathon.",
     "date": "February 21-22, 2026",
     "location": "Nairobi, Kenya",
@@ -42,7 +42,7 @@
     "features": {
       "build": {
         "title": "Build & Ship",
-        "description": "48 hours to turn your ideas into working prototypes with mentorship from industry experts."
+        "description": "36 hours to turn your ideas into working prototypes with mentorship from industry experts."
       },
       "network": {
         "title": "Network",
@@ -224,7 +224,7 @@
     "withJengahacks": "with JengaHacks",
     "connectDescription": "Connect with 200+ talented developers, designers, and innovators building the future of East Africa's tech ecosystem.",
     "participants": "200+ Participants",
-    "hoursInnovation": "48 Hours of Innovation",
+    "hoursInnovation": "36 hours of Innovation",
     "topTalent": "Top Local Tech Talent",
     "mostPopular": "MOST POPULAR",
     "getStarted": "Get Started",
@@ -235,7 +235,7 @@
     "brandVisibility": "Brand Visibility",
     "brandVisibilityDesc": "Position your company as an innovation leader in the growing East African tech ecosystem.",
     "freshIdeas": "Fresh Ideas",
-    "freshIdeasDesc": "See innovative solutions to real problems built in just 48 hours by passionate young developers.",
+    "freshIdeasDesc": "See innovative solutions to real problems built in just 36 hours by passionate young developers.",
     "readyToImpact": "Ready to",
     "makeImpact": "Make an Impact",
     "questionsDescription": "Have questions or need a custom package? We'd love to hear from you.",
@@ -365,6 +365,39 @@
     "stack": "Stack Trace",
     "reload": "Reload Page",
     "goHome": "Go Home"
+  },
+  "thankYou": {
+    "seoTitle": "Registration Confirmed - JengaHacks 2026",
+    "seoDescription": "Thank you for registering for JengaHacks 2026! Add the event to your calendar and learn more about our sponsors.",
+    "title": "Registration Confirmed!",
+    "message": "Thank you for registering for JengaHacks 2026. We're excited to have you join us!",
+    "confirmationEmail": "A confirmation email will be sent to {email}",
+    "eventDetails": "Event Details",
+    "eventDetailsDescription": "Mark your calendar and join us for an amazing hackathon experience.",
+    "date": "Date",
+    "duration": "Duration",
+    "durationValue": "48 hours",
+    "location": "Location",
+    "addToCalendar": "Add to Calendar",
+    "addToCalendarDescription": "Don't forget! Add JengaHacks 2026 to your calendar.",
+    "googleCalendar": "Google Calendar",
+    "outlookCalendar": "Outlook",
+    "addToGoogleCalendar": "Add to Google Calendar",
+    "addToOutlookCalendar": "Add to Outlook Calendar",
+    "downloadICal": "Download iCal file",
+    "calendarReminder": "JengaHacks 2026 starts in 24 hours!",
+    "ourSponsors": "Our Sponsors",
+    "sponsorsDescription": "Thank you to our amazing sponsors who make JengaHacks 2026 possible.",
+    "nextSteps": "What's Next?",
+    "nextStepsDescription": "Here's what you need to know before the event:",
+    "step1Title": "1. Check Your Email",
+    "step1Description": "We'll send you important updates and information about the event via email.",
+    "step2Title": "2. Join Our Community",
+    "step2Description": "Connect with other participants, mentors, and organizers on Discord to stay updated and network.",
+    "step3Title": "3. Prepare for the Event",
+    "step3Description": "Start thinking about your project ideas, form a team, and get ready for 48 hours of innovation!",
+    "backToHome": "Back to Home",
+    "viewBlog": "View Blog"
   }
 }
 

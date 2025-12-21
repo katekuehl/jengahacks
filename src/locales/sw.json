@@ -22,7 +22,7 @@
   },
   "hero": {
     "tagline": "Imejengwa Nairobi. Tayari kwa Ulimwengu.",
-    "description": "Masaa 48 ya ubunifu, ushirikiano, na kujenga suluhisho muhimu.",
+    "description": "Masaa 36 ya ubunifu, ushirikiano, na kujenga suluhisho muhimu.",
     "cta": "Jiunge na hackathon kuu ya Afrika Mashariki.",
     "date": "Februari 21-22, 2026",
     "location": "Nairobi, Kenya",
@@ -42,7 +42,7 @@
     "features": {
       "build": {
         "title": "Jenga na Wasilisha",
-        "description": "Masaa 48 ya kugeuza mawazo yako kuwa mifano ya kazi na uongozi kutoka wataalamu wa tasnia."
+        "description": "Masaa 36 ya kugeuza mawazo yako kuwa mifano ya kazi na uongozi kutoka wataalamu wa tasnia."
       },
       "network": {
         "title": "Mtandao",
@@ -225,7 +225,7 @@
     "withJengahacks": "na JengaHacks",
     "connectDescription": "Ungana na watengenezaji, wabunifu, na wabunifu 200+ wakijenga teknolojia ya baadaye ya mfumo wa teknolojia wa Afrika Mashariki.",
     "participants": "Washiriki 200+",
-    "hoursInnovation": "Masaa 48 ya Ubunifu",
+    "hoursInnovation": "Masaa 36 ya Ubunifu",
     "topTalent": "Talanta ya Juu ya Teknolojia ya Ndani",
     "mostPopular": "INAYOPENDEZA ZAIDI",
     "getStarted": "Anza",
@@ -236,7 +236,7 @@
     "brandVisibility": "Kuonekana kwa Chapa",
     "brandVisibilityDesc": "Weka kampuni yako kama kiongozi wa ubunifu katika mfumo unaokua wa teknolojia wa Afrika Mashariki.",
     "freshIdeas": "Mawazo Mapya",
-    "freshIdeasDesc": "Angalia suluhisho za ubunifu kwa matatizo halisi zilizojengwa kwa masaa 48 tu na watengenezaji vijana wenye shauku.",
+    "freshIdeasDesc": "Angalia suluhisho za ubunifu kwa matatizo halisi zilizojengwa kwa Masaa 36 tu na watengenezaji vijana wenye shauku.",
     "readyToImpact": "Tayari",
     "makeImpact": "Fanya Athari",
     "questionsDescription": "Una maswali au unahitaji kifurushi maalum? Tungependa kusikia kutoka kwako.",
@@ -366,6 +366,39 @@
     "stack": "Ufuatiliaji wa Stack",
     "reload": "Pakia Ukurasa Tena",
     "goHome": "Nenda Nyumbani"
+  },
+  "thankYou": {
+    "seoTitle": "Usajili Umethibitishwa - JengaHacks 2026",
+    "seoDescription": "Asante kwa kujiandikisha kwa JengaHacks 2026! Ongeza tukio kwenye kalenda yako na ujifunze zaidi kuhusu wafadhili wetu.",
+    "title": "Usajili Umethibitishwa!",
+    "message": "Asante kwa kujiandikisha kwa JengaHacks 2026. Tunafurahi kukuwa na wewe!",
+    "confirmationEmail": "Barua pepe ya uthibitisho itatumwa kwa {email}",
+    "eventDetails": "Maelezo ya Tukio",
+    "eventDetailsDescription": "Weka alama kwenye kalenda yako na ujiunge nasi kwa uzoefu wa ajabu wa hackathon.",
+    "date": "Tarehe",
+    "duration": "Muda",
+    "durationValue": "Masaa 48",
+    "location": "Mahali",
+    "addToCalendar": "Ongeza kwenye Kalenda",
+    "addToCalendarDescription": "Usisahau! Ongeza JengaHacks 2026 kwenye kalenda yako.",
+    "googleCalendar": "Kalenda ya Google",
+    "outlookCalendar": "Outlook",
+    "addToGoogleCalendar": "Ongeza kwenye Kalenda ya Google",
+    "addToOutlookCalendar": "Ongeza kwenye Outlook Calendar",
+    "downloadICal": "Pakua faili ya iCal",
+    "calendarReminder": "JengaHacks 2026 inaanza baada ya masaa 24!",
+    "ourSponsors": "Wafadhili Wetu",
+    "sponsorsDescription": "Asante kwa wafadhili wetu wa ajabu ambao wanafanya JengaHacks 2026 iwezekane.",
+    "nextSteps": "Nini Kifuatacho?",
+    "nextStepsDescription": "Hii ndiyo unayohitaji kujua kabla ya tukio:",
+    "step1Title": "1. Angalia Barua Pepe Yako",
+    "step1Description": "Tutakutumia sasisho muhimu na taarifa kuhusu tukio kupitia barua pepe.",
+    "step2Title": "2. Jiunge na Jumuiya Yetu",
+    "step2Description": "Ungana na washiriki wengine, waongozi, na waandaaji kwenye Discord ili kuendelea kupata sasisho na kuungana.",
+    "step3Title": "3. Jitayarishe kwa Tukio",
+    "step3Description": "Anza kufikiria mawazo yako ya mradi, unda timu, na ujiandae kwa masaa 48 ya ubunifu!",
+    "backToHome": "Rudi Nyumbani",
+    "viewBlog": "Angalia Blogu"
   }
 }
 
