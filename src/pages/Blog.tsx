@@ -30,7 +30,7 @@ const Blog = () => {
     };
 
     loadPosts();
-  }, []);
+  }, [t]);
 
   return (
     <>
