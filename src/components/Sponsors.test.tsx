@@ -29,18 +29,18 @@ describe("Sponsors", () => {
 
   it("should render sponsor logos", () => {
     render(<Sponsors />);
+    // Images have aria-hidden="true" and alt="", so find by aria-label on parent links
     expect(
-      screen.getByAltText("Silicon Savannah Solutions")
+      screen.getByLabelText(/Silicon Savannah Solutions/i)
     ).toBeInTheDocument();
-    expect(screen.getByAltText("Adamur - #BeyondCode")).toBeInTheDocument();
-    expect(screen.getByAltText("PromptBI")).toBeInTheDocument();
+    expect(screen.getByLabelText(/Adamur/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/PromptBI/i)).toBeInTheDocument();
   });
 
   it("should have correct links for sponsors", () => {
     render(<Sponsors />);
-    const siliconSavannahLink = screen
-      .getByAltText("Silicon Savannah Solutions")
-      .closest("a");
+    // Find links by aria-label since images have aria-hidden="true"
+    const siliconSavannahLink = screen.getByLabelText(/Silicon Savannah Solutions/i);
     expect(siliconSavannahLink).toHaveAttribute(
       "href",
       "https://siliconsavannah.solutions"
@@ -48,12 +48,12 @@ describe("Sponsors", () => {
     expect(siliconSavannahLink).toHaveAttribute("target", "_blank");
     expect(siliconSavannahLink).toHaveAttribute("rel", "noopener noreferrer");
 
-    const adamurLink = screen.getByAltText("Adamur - #BeyondCode").closest("a");
+    const adamurLink = screen.getByLabelText(/Adamur/i);
     expect(adamurLink).toHaveAttribute("href", "https://adamur.io");
     expect(adamurLink).toHaveAttribute("target", "_blank");
     expect(adamurLink).toHaveAttribute("rel", "noopener noreferrer");
 
-    const promptbiLink = screen.getByAltText("PromptBI").closest("a");
+    const promptbiLink = screen.getByLabelText(/PromptBI/i);
     expect(promptbiLink).toHaveAttribute("href", "https://promptbix.com");
     expect(promptbiLink).toHaveAttribute("target", "_blank");
     expect(promptbiLink).toHaveAttribute("rel", "noopener noreferrer");

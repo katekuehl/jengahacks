@@ -10,24 +10,36 @@ vi.mock("@/assets/jengahacks-logo.png", () => ({
 
 describe("Navbar", () => {
   it("should render the logo", () => {
-    render(<Navbar />);
-    const logo = screen.getByAltText(/JengaHacks/i);
+    const { container } = render(<Navbar />);
+    // Logo has aria-hidden="true" and alt="", so find by aria-label on parent link or by src
+    const logoLink = screen.getByLabelText(/JengaHacks Home/i);
+    expect(logoLink).toBeInTheDocument();
+    const logo = container.querySelector('img[src*="logo"]');
     expect(logo).toBeInTheDocument();
   });
 
   it("should render navigation links", () => {
     render(<Navbar />);
-    expect(screen.getByText("About")).toBeInTheDocument();
-    expect(screen.getByText("Become a Sponsor")).toBeInTheDocument();
-    expect(screen.getByText("Join Now")).toBeInTheDocument();
+    // Multiple links exist (desktop and mobile), so use getAllByText
+    const aboutLinks = screen.getAllByText("About");
+    expect(aboutLinks.length).toBeGreaterThan(0);
+    const sponsorLinks = screen.getAllByText("Become a Sponsor");
+    expect(sponsorLinks.length).toBeGreaterThan(0);
+    // Check for Register Now button (can be in desktop or mobile menu)
+    const registerButtons = screen.getAllByText(/Join Now|Register Now/i);
+    expect(registerButtons.length).toBeGreaterThan(0);
   });
 
   it("should have correct href attributes for anchor links", () => {
     render(<Navbar />);
-    const aboutLink = screen.getByText("About").closest("a");
+    // Get the first About link (desktop navigation)
+    const aboutLinks = screen.getAllByText("About");
+    const aboutLink = aboutLinks[0].closest("a");
     expect(aboutLink).toHaveAttribute("href", "#about");
 
-    const becomeSponsorLink = screen.getByText("Become a Sponsor").closest("a");
+    // Get the first Become a Sponsor link (desktop navigation)
+    const sponsorLinks = screen.getAllByText("Become a Sponsor");
+    const becomeSponsorLink = sponsorLinks[0].closest("a");
     expect(becomeSponsorLink).toHaveAttribute("href", "/sponsorship");
   });
 
@@ -63,7 +75,9 @@ describe("Navbar", () => {
 
   it("should render desktop navigation on larger screens", () => {
     render(<Navbar />);
-    const desktopNav = screen.getByText("About").closest("div");
+    // Get desktop navigation container
+    const desktopNav = screen.getByLabelText("Desktop navigation");
+    expect(desktopNav).toBeInTheDocument();
     expect(desktopNav).toHaveClass("hidden", "md:flex");
   });
 });

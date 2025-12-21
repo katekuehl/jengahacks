@@ -54,8 +54,9 @@ describe("Hero", () => {
   });
 
   it("should render the icon image", () => {
-    render(<Hero />);
-    const icon = screen.getByAltText(/JengaHacks Logo/i);
+    const { container } = render(<Hero />);
+    // Image has aria-hidden="true" and alt="", so find by src attribute
+    const icon = container.querySelector('img[src*="icon"]');
     expect(icon).toBeInTheDocument();
   });
 });
