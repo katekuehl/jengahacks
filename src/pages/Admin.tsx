@@ -9,6 +9,8 @@ import { Download, Users, Mail, Phone, FileText, Calendar, TrendingUp } from "lu
 import RegistrationsTable from "@/components/admin/RegistrationsTable";
 import AnalyticsDashboard from "@/components/admin/AnalyticsDashboard";
 import { toast } from "sonner";
+import { useTranslation } from "@/hooks/useTranslation";
+import { formatDateTimeShort } from "@/lib/i18n";
 
 interface RegistrationStats {
   total: number;
@@ -24,6 +26,7 @@ interface RegistrationStats {
 
 const Admin = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [stats, setStats] = useState<RegistrationStats>({
@@ -53,12 +56,12 @@ const Admin = () => {
         setIsAuthenticated(true);
       } else {
         // Prompt for password
-        const password = prompt("Enter admin password:");
+        const password = prompt(t("admin.enterPassword"));
         if (password === import.meta.env.VITE_ADMIN_PASSWORD || password === "admin123") {
           safeSessionStorage.setItem("admin_authenticated", "authenticated");
           setIsAuthenticated(true);
         } else {
-          toast.error("Unauthorized access");
+          toast.error(t("admin.unauthorized"));
           navigate("/");
         }
       }
@@ -154,7 +157,7 @@ const Admin = () => {
       }
     } catch (error) {
       console.error("Error loading stats:", error);
-      toast.error("Failed to load statistics");
+      toast.error(t("admin.failedLoadStats"));
     }
   };
 
@@ -168,19 +171,19 @@ const Admin = () => {
       if (error) throw error;
 
       if (!registrations || registrations.length === 0) {
-        toast.error("No registrations to export");
+        toast.error(t("admin.noRegistrationsExport"));
         return;
       }
 
       // Create CSV content
       const headers = [
         "ID",
-        "Full Name",
-        "Email",
-        "WhatsApp",
-        "LinkedIn",
-        "Resume",
-        "Registration Date",
+        t("registration.fullName"),
+        t("registration.email"),
+        t("registration.whatsapp"),
+        t("registration.linkedin"),
+        t("adminTable.resume"),
+        t("adminTable.date"),
       ];
       const rows = registrations.map((r) => [
         r.id,
@@ -188,8 +191,8 @@ const Admin = () => {
         r.email,
         r.whatsapp_number || "",
         r.linkedin_url || "",
-        r.resume_path ? "Yes" : "No",
-        new Date(r.created_at).toLocaleString(),
+        r.resume_path ? t("common.yes") : t("common.no"),
+        formatDateTimeShort(r.created_at),
       ]);
 
       const csvContent = [
@@ -212,10 +215,10 @@ const Admin = () => {
       document.body.removeChild(link);
       revokeObjectURL(url);
 
-      toast.success("CSV exported successfully");
+      toast.success(t("admin.csvExported"));
     } catch (error) {
       console.error("Export error:", error);
-      toast.error("Failed to export CSV");
+      toast.error(t("admin.failedExportCSV"));
     }
   };
 
@@ -224,7 +227,7 @@ const Admin = () => {
       <div className="flex min-h-screen items-center justify-center">
         <div className="text-center">
           <div className="mb-4 h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent mx-auto" />
-          <p className="text-muted-foreground">Loading admin portal...</p>
+          <p className="text-muted-foreground">{t("admin.loading")}</p>
         </div>
       </div>
     );
@@ -240,15 +243,15 @@ const Admin = () => {
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-bold">JengaHacks Admin Portal</h1>
+              <h1 className="text-2xl font-bold">{t("admin.title")}</h1>
               <p className="text-sm text-muted-foreground">
-                Registration Management & Analytics
+                {t("admin.subtitle")}
               </p>
             </div>
             <div className="flex gap-2">
               <Button onClick={exportToCSV} variant="outline">
                 <Download className="mr-2 h-4 w-4" />
-                Export CSV
+                {t("admin.exportCSV")}
               </Button>
               <Button
                 onClick={() => {
@@ -257,7 +260,7 @@ const Admin = () => {
                 }}
                 variant="outline"
               >
-                Logout
+                {t("admin.logout")}
               </Button>
             </div>
           </div>
@@ -269,38 +272,38 @@ const Admin = () => {
         <div className="mb-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Registrations</CardTitle>
+              <CardTitle className="text-sm font-medium">{t("admin.totalRegistrations")}</CardTitle>
               <Users className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{stats.total}</div>
-              <p className="text-xs text-muted-foreground">All time</p>
+              <p className="text-xs text-muted-foreground">{t("admin.allTime")}</p>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Today</CardTitle>
+              <CardTitle className="text-sm font-medium">{t("admin.today")}</CardTitle>
               <Calendar className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{stats.today}</div>
               <p className="text-xs text-muted-foreground">
-                {stats.thisWeek > 0 && `+${stats.thisWeek} this week`}
+                {stats.thisWeek > 0 && `+${stats.thisWeek} ${t("admin.thisWeek")}`}
               </p>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">With Resume</CardTitle>
+              <CardTitle className="text-sm font-medium">{t("admin.withResume")}</CardTitle>
               <FileText className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{stats.withResume}</div>
               <p className="text-xs text-muted-foreground">
                 {stats.total > 0
-                  ? `${Math.round((stats.withResume / stats.total) * 100)}% of total`
+                  ? `${Math.round((stats.withResume / stats.total) * 100)}% ${t("admin.ofTotal")}`
                   : "0%"}
               </p>
             </CardContent>
@@ -308,14 +311,14 @@ const Admin = () => {
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">With WhatsApp</CardTitle>
+              <CardTitle className="text-sm font-medium">{t("admin.withWhatsApp")}</CardTitle>
               <Phone className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{stats.withWhatsApp}</div>
               <p className="text-xs text-muted-foreground">
                 {stats.total > 0
-                  ? `${Math.round((stats.withWhatsApp / stats.total) * 100)}% of total`
+                  ? `${Math.round((stats.withWhatsApp / stats.total) * 100)}% ${t("admin.ofTotal")}`
                   : "0%"}
               </p>
             </CardContent>
@@ -325,8 +328,8 @@ const Admin = () => {
         {/* Main Content Tabs */}
         <Tabs defaultValue="registrations" className="space-y-4">
           <TabsList>
-            <TabsTrigger value="registrations">Registrations</TabsTrigger>
-            <TabsTrigger value="analytics">Analytics</TabsTrigger>
+            <TabsTrigger value="registrations">{t("admin.registrations")}</TabsTrigger>
+            <TabsTrigger value="analytics">{t("admin.analytics")}</TabsTrigger>
           </TabsList>
 
           <TabsContent value="registrations" className="space-y-4">

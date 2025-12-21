@@ -4,70 +4,72 @@ import { Check, ArrowLeft, Sparkles, Zap, Crown, Gem } from "lucide-react";
 import { Link } from "react-router-dom";
 import icon from "@/assets/jengahacks-icon.svg";
 import SEO from "@/components/SEO";
-
-const packages = [
-  {
-    name: "Bronze",
-    price: "$100",
-    icon: Zap,
-    color: "from-amber-700 to-amber-500",
-    description: "Perfect for startups looking to connect with emerging talent",
-    features: [
-      "Logo on event website",
-      "Social media shoutout",
-      "1 mentor pass",
-    ],
-  },
-  {
-    name: "Silver",
-    price: "$200",
-    icon: Sparkles,
-    color: "from-slate-400 to-slate-300",
-    description: "Ideal for growing companies seeking visibility",
-    features: [
-      "Everything in Bronze",
-      "Logo on event banners",
-      "2 mentor passes",
-      "Short pitch during opening ceremony",
-      "Branded swag in participant kits",
-    ],
-  },
-  {
-    name: "Gold",
-    price: "$500",
-    icon: Crown,
-    color: "from-yellow-500 to-yellow-300",
-    popular: true,
-    description: "Best value for companies wanting strong brand presence",
-    features: [
-      "Everything in Silver",
-      "Dedicated booth space",
-      "4 mentor passes",
-      "10-minute keynote slot",
-      "Logo on participant t-shirts",
-      "Priority access to top projects",
-      "Access to participant resumes",
-    ],
-  },
-  {
-    name: "Platinum",
-    price: "$1,000",
-    icon: Gem,
-    color: "from-violet-500 to-fuchsia-400",
-    description: "Maximum exposure and exclusive partnership benefits",
-    features: [
-      "Everything in Gold",
-      "Title sponsorship mention",
-      "6 mentor passes",
-      "Exclusive workshop session",
-      "First pick for hiring participants",
-      "Logo on all marketing materials",
-      "VIP dinner with organizers",
-    ],
-  },
-];
+import { useTranslation } from "@/hooks/useTranslation";
 
 const Sponsorship = () => {
+  const { t } = useTranslation();
+  
+  const packages = [
+    {
+      name: t("sponsorship.packages.bronze.name"),
+      price: "$100",
+      icon: Zap,
+      color: "from-amber-700 to-amber-500",
+      description: t("sponsorship.packages.bronze.description"),
+      features: [
+        t("sponsorship.packages.bronze.features.logo"),
+        t("sponsorship.packages.bronze.features.socialMedia"),
+        t("sponsorship.packages.bronze.features.mentorPass"),
+      ],
+    },
+    {
+      name: t("sponsorship.packages.silver.name"),
+      price: "$200",
+      icon: Sparkles,
+      color: "from-slate-400 to-slate-300",
+      description: t("sponsorship.packages.silver.description"),
+      features: [
+        t("sponsorship.packages.silver.features.everythingBronze"),
+        t("sponsorship.packages.silver.features.banners"),
+        t("sponsorship.packages.silver.features.mentorPasses"),
+        t("sponsorship.packages.silver.features.pitch"),
+        t("sponsorship.packages.silver.features.swag"),
+      ],
+    },
+    {
+      name: t("sponsorship.packages.gold.name"),
+      price: "$500",
+      icon: Crown,
+      color: "from-yellow-500 to-yellow-300",
+      popular: true,
+      description: t("sponsorship.packages.gold.description"),
+      features: [
+        t("sponsorship.packages.gold.features.everythingSilver"),
+        t("sponsorship.packages.gold.features.booth"),
+        t("sponsorship.packages.gold.features.mentorPasses"),
+        t("sponsorship.packages.gold.features.keynote"),
+        t("sponsorship.packages.gold.features.tshirts"),
+        t("sponsorship.packages.gold.features.priority"),
+        t("sponsorship.packages.gold.features.resumes"),
+      ],
+    },
+    {
+      name: t("sponsorship.packages.platinum.name"),
+      price: "$1,000",
+      icon: Gem,
+      color: "from-violet-500 to-fuchsia-400",
+      description: t("sponsorship.packages.platinum.description"),
+      features: [
+        t("sponsorship.packages.platinum.features.everythingGold"),
+        t("sponsorship.packages.platinum.features.titleSponsor"),
+        t("sponsorship.packages.platinum.features.mentorPasses"),
+        t("sponsorship.packages.platinum.features.workshop"),
+        t("sponsorship.packages.platinum.features.hiring"),
+        t("sponsorship.packages.platinum.features.marketing"),
+        t("sponsorship.packages.platinum.features.vipDinner"),
+      ],
+    },
+  ];
   return (
     <>
       <SEO 
@@ -81,8 +83,8 @@ const Sponsorship = () => {
         <div className="container mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2 sm:gap-3 text-muted-foreground hover:text-foreground transition-colors text-sm sm:text-base">
             <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" />
-            <span className="hidden sm:inline">Back to Home</span>
-            <span className="sm:hidden">Back</span>
+            <span className="hidden sm:inline">{t("sponsorship.backToHome")}</span>
+            <span className="sm:hidden">{t("sponsorship.back")}</span>
           </Link>
           <Link to="/" className="flex items-center gap-2" aria-label="JengaHacks Home">
             <img src={icon} alt="JengaHacks - East Africa's Premier Hackathon" className="h-8 sm:h-10 w-auto" width="40" height="40" />
@@ -102,23 +104,23 @@ const Sponsorship = () => {
         <div className="container mx-auto px-4 sm:px-6 relative z-10">
           <div className="text-center max-w-3xl mx-auto">
             <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold mb-4 sm:mb-6 px-4">
-              <span className="text-gradient">Partner</span> with JengaHacks
+              <span className="text-gradient">{t("sponsorship.partner")}</span> {t("sponsorship.withJengahacks")}
             </h1>
             <p className="text-base sm:text-lg md:text-xl text-muted-foreground mb-6 sm:mb-8 px-4">
-              Connect with 200+ talented developers, designers, and innovators building the future of East Africa's tech ecosystem.
+              {t("sponsorship.connectDescription")}
             </p>
             <div className="flex flex-wrap justify-center gap-4 sm:gap-6 md:gap-8 text-xs sm:text-sm text-muted-foreground px-4">
               <div className="flex items-center gap-2">
                 <Check className="w-5 h-5 text-primary" />
-                <span>200+ Participants</span>
+                <span>{t("sponsorship.participants")}</span>
               </div>
               <div className="flex items-center gap-2">
                 <Check className="w-5 h-5 text-primary" />
-                <span>48 Hours of Innovation</span>
+                <span>{t("sponsorship.hoursInnovation")}</span>
               </div>
               <div className="flex items-center gap-2">
                 <Check className="w-5 h-5 text-primary" />
-                <span>Top Local Tech Talent</span>
+                <span>{t("sponsorship.topTalent")}</span>
               </div>
             </div>
           </div>
@@ -138,7 +140,7 @@ const Sponsorship = () => {
               >
                 {pkg.popular && (
                   <div className="absolute top-0 right-0 bg-primary text-primary-foreground text-xs font-bold px-2 sm:px-3 py-1 rounded-bl-lg">
-                    MOST POPULAR
+                    {t("sponsorship.mostPopular")}
                   </div>
                 )}
                 <CardHeader className="text-center pb-2 p-4 sm:p-6">
@@ -163,8 +165,8 @@ const Sponsorship = () => {
                     className="w-full"
                     asChild
                   >
-                    <a href="mailto:hello@siliconsavannahsolutions.com?subject=Sponsorship Inquiry - {pkg.name} Package">
-                      Get Started
+                    <a href={`mailto:hello@siliconsavannahsolutions.com?subject=Sponsorship Inquiry - ${pkg.name} Package`}>
+                      {t("sponsorship.getStarted")}
                     </a>
                   </Button>
                 </CardContent>
@@ -178,34 +180,34 @@ const Sponsorship = () => {
       <section className="py-12 sm:py-16 bg-card/50">
         <div className="container mx-auto px-4 sm:px-6">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-8 sm:mb-10 md:mb-12 px-4">
-            Why <span className="text-gradient">Sponsor</span> JengaHacks?
+            {t("sponsorship.whySponsor")} <span className="text-gradient">{t("sponsorship.sponsorJengahacks")}</span>
           </h2>
           <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 max-w-5xl mx-auto">
             <div className="text-center p-4 sm:p-6">
               <div className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-3 sm:mb-4 rounded-full bg-primary/10 flex items-center justify-center">
                 <span className="text-2xl sm:text-3xl">🎯</span>
               </div>
-              <h3 className="text-lg sm:text-xl font-semibold mb-2">Talent Pipeline</h3>
+              <h3 className="text-lg sm:text-xl font-semibold mb-2">{t("sponsorship.talentPipeline")}</h3>
               <p className="text-sm sm:text-base text-muted-foreground">
-                Access top developers and designers from East Africa's leading universities before they hit the job market.
+                {t("sponsorship.talentPipelineDesc")}
               </p>
             </div>
             <div className="text-center p-4 sm:p-6">
               <div className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-3 sm:mb-4 rounded-full bg-primary/10 flex items-center justify-center">
                 <span className="text-2xl sm:text-3xl">🚀</span>
               </div>
-              <h3 className="text-lg sm:text-xl font-semibold mb-2">Brand Visibility</h3>
+              <h3 className="text-lg sm:text-xl font-semibold mb-2">{t("sponsorship.brandVisibility")}</h3>
               <p className="text-sm sm:text-base text-muted-foreground">
-                Position your company as an innovation leader in the growing East African tech ecosystem.
+                {t("sponsorship.brandVisibilityDesc")}
               </p>
             </div>
             <div className="text-center p-4 sm:p-6 sm:col-span-2 md:col-span-1">
               <div className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-3 sm:mb-4 rounded-full bg-primary/10 flex items-center justify-center">
                 <span className="text-2xl sm:text-3xl">💡</span>
               </div>
-              <h3 className="text-lg sm:text-xl font-semibold mb-2">Fresh Ideas</h3>
+              <h3 className="text-lg sm:text-xl font-semibold mb-2">{t("sponsorship.freshIdeas")}</h3>
               <p className="text-sm sm:text-base text-muted-foreground">
-                See innovative solutions to real problems built in just 48 hours by passionate young developers.
+                {t("sponsorship.freshIdeasDesc")}
               </p>
             </div>
           </div>
@@ -216,14 +218,14 @@ const Sponsorship = () => {
       <section className="py-12 sm:py-16 md:py-20">
         <div className="container mx-auto px-4 sm:px-6 text-center">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6 px-4">
-            Ready to <span className="text-gradient">Make an Impact</span>?
+            {t("sponsorship.readyToImpact")} <span className="text-gradient">{t("sponsorship.makeImpact")}</span>?
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-muted-foreground mb-6 sm:mb-8 max-w-2xl mx-auto px-4">
-            Have questions or need a custom package? We'd love to hear from you.
+            {t("sponsorship.questionsDescription")}
           </p>
           <Button variant="hero" size="lg" className="sm:size-xl" asChild>
             <a href="mailto:hello@siliconsavannahsolutions.com">
-              Contact Us
+              {t("sponsorship.contactUs")}
             </a>
           </Button>
         </div>
@@ -232,7 +234,7 @@ const Sponsorship = () => {
       {/* Footer */}
       <footer className="border-t border-border py-6 sm:py-8">
         <div className="container mx-auto px-4 sm:px-6 text-center text-muted-foreground">
-          <p className="text-xs sm:text-sm">© 2026 JengaHacks. Built in Nairobi. Ready for the World.</p>
+          <p className="text-xs sm:text-sm">{t("sponsorship.copyright")}</p>
         </div>
       </footer>
     </div>

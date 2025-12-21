@@ -15,7 +15,10 @@
     "download": "Pakua",
     "search": "Tafuta",
     "filter": "Chuja",
-    "refresh": "Onyesha Upya"
+    "refresh": "Onyesha Upya",
+    "selected": "Imechaguliwa",
+    "yes": "Ndiyo",
+    "no": "Hapana"
   },
   "hero": {
     "tagline": "Imejengwa Nairobi. Tayari kwa Ulimwengu.",
@@ -145,6 +148,152 @@
     "telegram": "Telegram",
     "email": "Barua Pepe",
     "nativeShare": "Shiriki kupitia..."
+  },
+  "admin": {
+    "title": "JengaHacks Portal ya Msimamizi",
+    "subtitle": "Usimamizi wa Usajili na Uchambuzi",
+    "loading": "Inapakia portal ya msimamizi...",
+    "exportCSV": "Hamisha CSV",
+    "logout": "Toka",
+    "totalRegistrations": "Jumla ya Usajili",
+    "allTime": "Wakati wote",
+    "today": "Leo",
+    "thisWeek": "wiki hii",
+    "withResume": "Na Resume",
+    "withWhatsApp": "Na WhatsApp",
+    "ofTotal": "ya jumla",
+    "registrations": "Usajili",
+    "analytics": "Uchambuzi",
+    "unauthorized": "Ufikiaji usioidhinishwa",
+    "enterPassword": "Ingiza nenosiri la msimamizi:",
+    "failedLoadStats": "Imeshindwa kupakia takwimu",
+    "noRegistrationsExport": "Hakuna usajili wa kuhamisha",
+    "csvExported": "CSV imehamishwa kwa mafanikio",
+    "failedExportCSV": "Imeshindwa kuhamisha CSV"
+  },
+  "adminTable": {
+    "loading": "Inapakia usajili...",
+    "searchPlaceholder": "Tafuta kwa jina, barua pepe, WhatsApp, au LinkedIn...",
+    "refresh": "Onyesha Upya",
+    "showing": "Inaonyesha",
+    "of": "ya",
+    "registrations": "usajili",
+    "name": "Jina",
+    "email": "Barua Pepe",
+    "whatsapp": "WhatsApp",
+    "linkedin": "LinkedIn",
+    "resume": "Resume",
+    "date": "Tarehe",
+    "noRegistrations": "Hakuna usajili uliopatikana",
+    "download": "Pakua",
+    "viewProfile": "Angalia Wasifu",
+    "failedLoad": "Imeshindwa kupakia usajili",
+    "failedDownload": "Imeshindwa kupakua resume"
+  },
+  "adminAnalytics": {
+    "profileCompletion": "Ukamilishaji wa Wasifu",
+    "profileCompletionDesc": "Usajili na taarifa za ziada",
+    "withResume": "Na Resume",
+    "withWhatsApp": "Na WhatsApp",
+    "withLinkedIn": "Na LinkedIn",
+    "registrationTrends": "Mienendo ya Usajili",
+    "registrationTrendsDesc": "Usajili kwa muda",
+    "today": "Leo",
+    "thisWeek": "Wiki Hii",
+    "thisMonth": "Mwezi Huu",
+    "total": "Jumla",
+    "profileTypes": "Aina za Wasifu",
+    "profileTypesDesc": "Usambazaji wa ukamilifu wa wasifu",
+    "completeProfile": "Wasifu Kamili",
+    "basicProfile": "Wasifu wa Msingi",
+    "dailyTrends": "Mienendo ya Usajili ya Kila Siku",
+    "dailyTrendsDesc": "Usajili katika siku 30 zilizopita",
+    "hourlyDistribution": "Usambazaji wa Usajili kwa Saa",
+    "hourlyDistributionDesc": "Usajili kwa saa ya siku (UTC)",
+    "detailedStats": "Takwimu za Kina",
+    "detailedStatsDesc": "Uchambuzi kamili wa usajili",
+    "totalRegistrations": "Jumla ya Usajili",
+    "resumeUploadRate": "Kiwango cha Kupakia Resume",
+    "whatsappProvided": "WhatsApp Imetolewa",
+    "linkedinProvided": "LinkedIn Imetolewa"
+  },
+  "sponsorship": {
+    "backToHome": "Rudi Nyumbani",
+    "back": "Rudi",
+    "partner": "Shirikiana",
+    "withJengahacks": "na JengaHacks",
+    "connectDescription": "Ungana na watengenezaji, wabunifu, na wabunifu 200+ wakijenga teknolojia ya baadaye ya mfumo wa teknolojia wa Afrika Mashariki.",
+    "participants": "Washiriki 200+",
+    "hoursInnovation": "Masaa 48 ya Ubunifu",
+    "topTalent": "Talanta ya Juu ya Teknolojia ya Ndani",
+    "mostPopular": "INAYOPENDEZA ZAIDI",
+    "getStarted": "Anza",
+    "whySponsor": "Kwa Nini",
+    "sponsorJengahacks": "Mfadhili JengaHacks?",
+    "talentPipeline": "Mfumo wa Talanta",
+    "talentPipelineDesc": "Pata ufikiaji wa watengenezaji na wabunifu wa juu kutoka vyuo vikuu vya Afrika Mashariki kabla hawajafikia soko la ajira.",
+    "brandVisibility": "Kuonekana kwa Chapa",
+    "brandVisibilityDesc": "Weka kampuni yako kama kiongozi wa ubunifu katika mfumo unaokua wa teknolojia wa Afrika Mashariki.",
+    "freshIdeas": "Mawazo Mapya",
+    "freshIdeasDesc": "Angalia suluhisho za ubunifu kwa matatizo halisi zilizojengwa kwa masaa 48 tu na watengenezaji vijana wenye shauku.",
+    "readyToImpact": "Tayari",
+    "makeImpact": "Fanya Athari",
+    "questionsDescription": "Una maswali au unahitaji kifurushi maalum? Tungependa kusikia kutoka kwako.",
+    "contactUs": "Wasiliana Nasi",
+    "copyright": "© 2026 JengaHacks. Imejengwa Nairobi. Tayari kwa Ulimwengu.",
+    "packages": {
+      "bronze": {
+        "name": "Shaba",
+        "description": "Bora kwa kampuni za kuanza zinazotafuta kuungana na talanta zinazoibuka",
+        "features": {
+          "logo": "Nembo kwenye tovuti ya tukio",
+          "socialMedia": "Matangazo ya mitandao ya kijamii",
+          "mentorPass": "Kupita 1 kwa mkuu"
+        }
+      },
+      "silver": {
+        "name": "Fedha",
+        "description": "Bora kwa kampuni zinazokua zinazotafuta kuonekana",
+        "features": {
+          "everythingBronze": "Kila kitu katika Shaba",
+          "banners": "Nembo kwenye mabango ya tukio",
+          "mentorPasses": "Kupita 2 kwa wakuu",
+          "pitch": "Hotuba fupi wakati wa sherehe ya kufungua",
+          "swag": "Vifaa vilivyowekwa chapa katika vifurushi vya washiriki"
+        }
+      },
+      "gold": {
+        "name": "Dhahabu",
+        "description": "Thamani bora kwa kampuni zinazotaka uwepo wa chapa kali",
+        "features": {
+          "everythingSilver": "Kila kitu katika Fedha",
+          "booth": "Nafasi ya kibao maalum",
+          "mentorPasses": "Kupita 4 kwa wakuu",
+          "keynote": "Nafasi ya dakika 10 ya hotuba kuu",
+          "tshirts": "Nembo kwenye mashati ya washiriki",
+          "priority": "Ufikiaji wa kipaumbele kwa miradi ya juu",
+          "resumes": "Ufikiaji wa resume za washiriki"
+        }
+      },
+      "platinum": {
+        "name": "Platini",
+        "description": "Ufichuaji wa juu na faida za ushirikiano wa kipekee",
+        "features": {
+          "everythingGold": "Kila kitu katika Dhahabu",
+          "titleSponsor": "Kutajwa kwa ufadhili wa kichwa",
+          "mentorPasses": "Kupita 6 kwa wakuu",
+          "workshop": "Kikao cha warsha cha kipekee",
+          "hiring": "Uchaguzi wa kwanza wa kuajiri washiriki",
+          "marketing": "Nembo kwenye nyenzo zote za uuzaji",
+          "vipDinner": "Chakula cha jioni cha VIP na waandaaji"
+        }
+      }
+    }
+  },
+  "notFound": {
+    "title": "404",
+    "message": "Lo! Ukurasa haupatikani",
+    "returnHome": "Rudi Nyumbani"
   }
 }
 

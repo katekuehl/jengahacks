@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Search, ExternalLink, FileText, Mail, Phone } from "lucide-react";
 import { toast } from "sonner";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface Registration {
   id: string;
@@ -31,6 +32,7 @@ interface RegistrationsTableProps {
 }
 
 const RegistrationsTable = ({ onRefresh }: RegistrationsTableProps) => {
+  const { t } = useTranslation();
   const [registrations, setRegistrations] = useState<Registration[]>([]);
   const [filteredRegistrations, setFilteredRegistrations] = useState<Registration[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -60,7 +62,7 @@ const RegistrationsTable = ({ onRefresh }: RegistrationsTableProps) => {
       if (onRefresh) onRefresh();
     } catch (error) {
       console.error("Error loading registrations:", error);
-      toast.error("Failed to load registrations");
+      toast.error(t("adminTable.failedLoad"));
     } finally {
       setIsLoading(false);
     }
@@ -191,7 +193,7 @@ const RegistrationsTable = ({ onRefresh }: RegistrationsTableProps) => {
       revokeObjectURL(url);
     } catch (error) {
       console.error("Error downloading resume:", error);
-      toast.error("Failed to download resume");
+      toast.error(t("adminTable.failedDownload"));
     }
   };
 
@@ -200,7 +202,7 @@ const RegistrationsTable = ({ onRefresh }: RegistrationsTableProps) => {
       <div className="flex items-center justify-center py-12">
         <div className="text-center">
           <div className="mb-4 h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent mx-auto" />
-          <p className="text-muted-foreground">Loading registrations...</p>
+          <p className="text-muted-foreground">{t("adminTable.loading")}</p>
         </div>
       </div>
     );
@@ -213,20 +215,20 @@ const RegistrationsTable = ({ onRefresh }: RegistrationsTableProps) => {
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input
-            placeholder="Search by name, email, WhatsApp, or LinkedIn..."
+            placeholder={t("adminTable.searchPlaceholder")}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="pl-9"
           />
         </div>
         <Button onClick={loadRegistrations} variant="outline">
-          Refresh
+          {t("adminTable.refresh")}
         </Button>
       </div>
 
       {/* Results Count */}
       <div className="text-sm text-muted-foreground">
-        Showing {filteredRegistrations.length} of {registrations.length} registrations
+        {t("adminTable.showing")} {filteredRegistrations.length} {t("adminTable.of")} {registrations.length} {t("adminTable.registrations")}
       </div>
 
       {/* Table */}
@@ -238,22 +240,22 @@ const RegistrationsTable = ({ onRefresh }: RegistrationsTableProps) => {
                 className="cursor-pointer hover:bg-muted"
                 onClick={() => handleSort("name")}
               >
-                Name {sortBy === "name" && (sortOrder === "asc" ? "↑" : "↓")}
+                {t("adminTable.name")} {sortBy === "name" && (sortOrder === "asc" ? "↑" : "↓")}
               </TableHead>
               <TableHead
                 className="cursor-pointer hover:bg-muted"
                 onClick={() => handleSort("email")}
               >
-                Email {sortBy === "email" && (sortOrder === "asc" ? "↑" : "↓")}
+                {t("adminTable.email")} {sortBy === "email" && (sortOrder === "asc" ? "↑" : "↓")}
               </TableHead>
-              <TableHead>WhatsApp</TableHead>
-              <TableHead>LinkedIn</TableHead>
-              <TableHead>Resume</TableHead>
+              <TableHead>{t("adminTable.whatsapp")}</TableHead>
+              <TableHead>{t("adminTable.linkedin")}</TableHead>
+              <TableHead>{t("adminTable.resume")}</TableHead>
               <TableHead
                 className="cursor-pointer hover:bg-muted"
                 onClick={() => handleSort("date")}
               >
-                Date {sortBy === "date" && (sortOrder === "asc" ? "↑" : "↓")}
+                {t("adminTable.date")} {sortBy === "date" && (sortOrder === "asc" ? "↑" : "↓")}
               </TableHead>
             </TableRow>
           </TableHeader>
@@ -261,7 +263,7 @@ const RegistrationsTable = ({ onRefresh }: RegistrationsTableProps) => {
             {filteredRegistrations.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
-                  No registrations found
+                  {t("adminTable.noRegistrations")}
                 </TableCell>
               </TableRow>
             ) : (
@@ -295,7 +297,7 @@ const RegistrationsTable = ({ onRefresh }: RegistrationsTableProps) => {
                         className="flex items-center gap-2 text-primary hover:underline"
                       >
                         <ExternalLink className="h-4 w-4" />
-                        View Profile
+                        {t("adminTable.viewProfile")}
                       </a>
                     ) : (
                       <span className="text-muted-foreground">—</span>
@@ -315,7 +317,7 @@ const RegistrationsTable = ({ onRefresh }: RegistrationsTableProps) => {
                         className="flex items-center gap-2"
                       >
                         <FileText className="h-4 w-4" />
-                        Download
+                        {t("adminTable.download")}
                       </Button>
                     ) : (
                       <span className="text-muted-foreground">—</span>

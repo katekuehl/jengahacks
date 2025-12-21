@@ -15,7 +15,10 @@
     "download": "Download",
     "search": "Search",
     "filter": "Filter",
-    "refresh": "Refresh"
+    "refresh": "Refresh",
+    "selected": "Selected",
+    "yes": "Yes",
+    "no": "No"
   },
   "hero": {
     "tagline": "Built in Nairobi. Ready for the World.",
@@ -145,6 +148,152 @@
     "telegram": "Telegram",
     "email": "Email",
     "nativeShare": "Share via..."
+  },
+  "admin": {
+    "title": "JengaHacks Admin Portal",
+    "subtitle": "Registration Management & Analytics",
+    "loading": "Loading admin portal...",
+    "exportCSV": "Export CSV",
+    "logout": "Logout",
+    "totalRegistrations": "Total Registrations",
+    "allTime": "All time",
+    "today": "Today",
+    "thisWeek": "this week",
+    "withResume": "With Resume",
+    "withWhatsApp": "With WhatsApp",
+    "ofTotal": "of total",
+    "registrations": "Registrations",
+    "analytics": "Analytics",
+    "unauthorized": "Unauthorized access",
+    "enterPassword": "Enter admin password:",
+    "failedLoadStats": "Failed to load statistics",
+    "noRegistrationsExport": "No registrations to export",
+    "csvExported": "CSV exported successfully",
+    "failedExportCSV": "Failed to export CSV"
+  },
+  "adminTable": {
+    "loading": "Loading registrations...",
+    "searchPlaceholder": "Search by name, email, WhatsApp, or LinkedIn...",
+    "refresh": "Refresh",
+    "showing": "Showing",
+    "of": "of",
+    "registrations": "registrations",
+    "name": "Name",
+    "email": "Email",
+    "whatsapp": "WhatsApp",
+    "linkedin": "LinkedIn",
+    "resume": "Resume",
+    "date": "Date",
+    "noRegistrations": "No registrations found",
+    "download": "Download",
+    "viewProfile": "View Profile",
+    "failedLoad": "Failed to load registrations",
+    "failedDownload": "Failed to download resume"
+  },
+  "adminAnalytics": {
+    "profileCompletion": "Profile Completion",
+    "profileCompletionDesc": "Registrations with additional information",
+    "withResume": "With Resume",
+    "withWhatsApp": "With WhatsApp",
+    "withLinkedIn": "With LinkedIn",
+    "registrationTrends": "Registration Trends",
+    "registrationTrendsDesc": "Registrations over time",
+    "today": "Today",
+    "thisWeek": "This Week",
+    "thisMonth": "This Month",
+    "total": "Total",
+    "profileTypes": "Profile Types",
+    "profileTypesDesc": "Distribution of profile completeness",
+    "completeProfile": "Complete Profile",
+    "basicProfile": "Basic Profile",
+    "dailyTrends": "Daily Registration Trends",
+    "dailyTrendsDesc": "Registrations over the last 30 days",
+    "hourlyDistribution": "Hourly Registration Distribution",
+    "hourlyDistributionDesc": "Registrations by hour of the day (UTC)",
+    "detailedStats": "Detailed Statistics",
+    "detailedStatsDesc": "Comprehensive registration analytics",
+    "totalRegistrations": "Total Registrations",
+    "resumeUploadRate": "Resume Upload Rate",
+    "whatsappProvided": "WhatsApp Provided",
+    "linkedinProvided": "LinkedIn Provided"
+  },
+  "sponsorship": {
+    "backToHome": "Back to Home",
+    "back": "Back",
+    "partner": "Partner",
+    "withJengahacks": "with JengaHacks",
+    "connectDescription": "Connect with 200+ talented developers, designers, and innovators building the future of East Africa's tech ecosystem.",
+    "participants": "200+ Participants",
+    "hoursInnovation": "48 Hours of Innovation",
+    "topTalent": "Top Local Tech Talent",
+    "mostPopular": "MOST POPULAR",
+    "getStarted": "Get Started",
+    "whySponsor": "Why",
+    "sponsorJengahacks": "Sponsor JengaHacks?",
+    "talentPipeline": "Talent Pipeline",
+    "talentPipelineDesc": "Access top developers and designers from East Africa's leading universities before they hit the job market.",
+    "brandVisibility": "Brand Visibility",
+    "brandVisibilityDesc": "Position your company as an innovation leader in the growing East African tech ecosystem.",
+    "freshIdeas": "Fresh Ideas",
+    "freshIdeasDesc": "See innovative solutions to real problems built in just 48 hours by passionate young developers.",
+    "readyToImpact": "Ready to",
+    "makeImpact": "Make an Impact",
+    "questionsDescription": "Have questions or need a custom package? We'd love to hear from you.",
+    "contactUs": "Contact Us",
+    "copyright": "© 2026 JengaHacks. Built in Nairobi. Ready for the World.",
+    "packages": {
+      "bronze": {
+        "name": "Bronze",
+        "description": "Perfect for startups looking to connect with emerging talent",
+        "features": {
+          "logo": "Logo on event website",
+          "socialMedia": "Social media shoutout",
+          "mentorPass": "1 mentor pass"
+        }
+      },
+      "silver": {
+        "name": "Silver",
+        "description": "Ideal for growing companies seeking visibility",
+        "features": {
+          "everythingBronze": "Everything in Bronze",
+          "banners": "Logo on event banners",
+          "mentorPasses": "2 mentor passes",
+          "pitch": "Short pitch during opening ceremony",
+          "swag": "Branded swag in participant kits"
+        }
+      },
+      "gold": {
+        "name": "Gold",
+        "description": "Best value for companies wanting strong brand presence",
+        "features": {
+          "everythingSilver": "Everything in Silver",
+          "booth": "Dedicated booth space",
+          "mentorPasses": "4 mentor passes",
+          "keynote": "10-minute keynote slot",
+          "tshirts": "Logo on participant t-shirts",
+          "priority": "Priority access to top projects",
+          "resumes": "Access to participant resumes"
+        }
+      },
+      "platinum": {
+        "name": "Platinum",
+        "description": "Maximum exposure and exclusive partnership benefits",
+        "features": {
+          "everythingGold": "Everything in Gold",
+          "titleSponsor": "Title sponsorship mention",
+          "mentorPasses": "6 mentor passes",
+          "workshop": "Exclusive workshop session",
+          "hiring": "First pick for hiring participants",
+          "marketing": "Logo on all marketing materials",
+          "vipDinner": "VIP dinner with organizers"
+        }
+      }
+    }
+  },
+  "notFound": {
+    "title": "404",
+    "message": "Oops! Page not found",
+    "returnHome": "Return to Home"
   }
 }
 

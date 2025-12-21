@@ -15,6 +15,7 @@ import {
   Legend
 } from "recharts";
 import { formatDateShort } from "@/lib/i18n";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface RegistrationStats {
   total: number;
@@ -35,23 +36,25 @@ interface AnalyticsDashboardProps {
 const COLORS = ["#65bb3a", "#8b5cf6", "#3b82f6", "#f59e0b"];
 
 const AnalyticsDashboard = ({ stats }: AnalyticsDashboardProps) => {
+  const { t } = useTranslation();
+  
   // Prepare data for charts
   const completionData = [
-    { name: "With Resume", value: stats.withResume, percentage: stats.total > 0 ? Math.round((stats.withResume / stats.total) * 100) : 0 },
-    { name: "With WhatsApp", value: stats.withWhatsApp, percentage: stats.total > 0 ? Math.round((stats.withWhatsApp / stats.total) * 100) : 0 },
-    { name: "With LinkedIn", value: stats.withLinkedIn, percentage: stats.total > 0 ? Math.round((stats.withLinkedIn / stats.total) * 100) : 0 },
+    { name: t("adminAnalytics.withResume"), value: stats.withResume, percentage: stats.total > 0 ? Math.round((stats.withResume / stats.total) * 100) : 0 },
+    { name: t("adminAnalytics.withWhatsApp"), value: stats.withWhatsApp, percentage: stats.total > 0 ? Math.round((stats.withWhatsApp / stats.total) * 100) : 0 },
+    { name: t("adminAnalytics.withLinkedIn"), value: stats.withLinkedIn, percentage: stats.total > 0 ? Math.round((stats.withLinkedIn / stats.total) * 100) : 0 },
   ];
 
   const timeSeriesData = [
-    { period: "Today", count: stats.today },
-    { period: "This Week", count: stats.thisWeek },
-    { period: "This Month", count: stats.thisMonth },
-    { period: "Total", count: stats.total },
+    { period: t("adminAnalytics.today"), count: stats.today },
+    { period: t("adminAnalytics.thisWeek"), count: stats.thisWeek },
+    { period: t("adminAnalytics.thisMonth"), count: stats.thisMonth },
+    { period: t("adminAnalytics.total"), count: stats.total },
   ];
 
   const pieData = [
-    { name: "Complete Profile", value: stats.withResume + stats.withWhatsApp + stats.withLinkedIn },
-    { name: "Basic Profile", value: stats.total - (stats.withResume + stats.withWhatsApp + stats.withLinkedIn) },
+    { name: t("adminAnalytics.completeProfile"), value: stats.withResume + stats.withWhatsApp + stats.withLinkedIn },
+    { name: t("adminAnalytics.basicProfile"), value: stats.total - (stats.withResume + stats.withWhatsApp + stats.withLinkedIn) },
   ];
 
   // Prepare daily trends data (last 30 days)
@@ -66,8 +69,8 @@ const AnalyticsDashboard = ({ stats }: AnalyticsDashboardProps) => {
       <div className="grid gap-4 md:grid-cols-3">
         <Card>
           <CardHeader>
-            <CardTitle>Profile Completion</CardTitle>
-            <CardDescription>Registrations with additional information</CardDescription>
+            <CardTitle>{t("adminAnalytics.profileCompletion")}</CardTitle>
+            <CardDescription>{t("adminAnalytics.profileCompletionDesc")}</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-2">
@@ -86,8 +89,8 @@ const AnalyticsDashboard = ({ stats }: AnalyticsDashboardProps) => {
 
         <Card>
           <CardHeader>
-            <CardTitle>Registration Trends</CardTitle>
-            <CardDescription>Registrations over time</CardDescription>
+            <CardTitle>{t("adminAnalytics.registrationTrends")}</CardTitle>
+            <CardDescription>{t("adminAnalytics.registrationTrendsDesc")}</CardDescription>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={200}>
@@ -104,8 +107,8 @@ const AnalyticsDashboard = ({ stats }: AnalyticsDashboardProps) => {
 
         <Card>
           <CardHeader>
-            <CardTitle>Profile Types</CardTitle>
-            <CardDescription>Distribution of profile completeness</CardDescription>
+            <CardTitle>{t("adminAnalytics.profileTypes")}</CardTitle>
+            <CardDescription>{t("adminAnalytics.profileTypesDesc")}</CardDescription>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={200}>
@@ -135,8 +138,8 @@ const AnalyticsDashboard = ({ stats }: AnalyticsDashboardProps) => {
       {dailyTrendsData.length > 0 && (
         <Card>
           <CardHeader>
-            <CardTitle>Daily Registration Trends</CardTitle>
-            <CardDescription>Registrations over the last 30 days</CardDescription>
+            <CardTitle>{t("adminAnalytics.dailyTrends")}</CardTitle>
+            <CardDescription>{t("adminAnalytics.dailyTrendsDesc")}</CardDescription>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={300}>
@@ -173,8 +176,8 @@ const AnalyticsDashboard = ({ stats }: AnalyticsDashboardProps) => {
       {hourlyData.length > 0 && (
         <Card>
           <CardHeader>
-            <CardTitle>Hourly Registration Distribution</CardTitle>
-            <CardDescription>When do people register? (24-hour format)</CardDescription>
+            <CardTitle>{t("adminAnalytics.hourlyDistribution")}</CardTitle>
+            <CardDescription>{t("adminAnalytics.hourlyDistributionDesc")}</CardDescription>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={300}>
@@ -182,13 +185,12 @@ const AnalyticsDashboard = ({ stats }: AnalyticsDashboardProps) => {
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis 
                   dataKey="hour" 
-                  label={{ value: 'Hour of Day', position: 'insideBottom', offset: -5 }}
                   tickFormatter={(value) => `${value}:00`}
                 />
                 <YAxis />
                 <Tooltip 
-                  labelFormatter={(value) => `Hour: ${value}:00`}
-                  formatter={(value: number) => [value, 'Registrations']}
+                  labelFormatter={(value) => `${value}:00`}
+                  formatter={(value: number) => [value, t("admin.registrations")]}
                 />
                 <Bar dataKey="count" fill="#8b5cf6" radius={[4, 4, 0, 0]} />
               </BarChart>
@@ -200,29 +202,29 @@ const AnalyticsDashboard = ({ stats }: AnalyticsDashboardProps) => {
       {/* Detailed Statistics */}
       <Card>
         <CardHeader>
-          <CardTitle>Detailed Statistics</CardTitle>
-          <CardDescription>Comprehensive registration analytics</CardDescription>
+          <CardTitle>{t("adminAnalytics.detailedStats")}</CardTitle>
+          <CardDescription>{t("adminAnalytics.detailedStatsDesc")}</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             <div className="space-y-1">
-              <p className="text-sm text-muted-foreground">Total Registrations</p>
+              <p className="text-sm text-muted-foreground">{t("adminAnalytics.totalRegistrations")}</p>
               <p className="text-2xl font-bold">{stats.total}</p>
             </div>
             <div className="space-y-1">
-              <p className="text-sm text-muted-foreground">Resume Upload Rate</p>
+              <p className="text-sm text-muted-foreground">{t("adminAnalytics.resumeUploadRate")}</p>
               <p className="text-2xl font-bold">
                 {stats.total > 0 ? Math.round((stats.withResume / stats.total) * 100) : 0}%
               </p>
             </div>
             <div className="space-y-1">
-              <p className="text-sm text-muted-foreground">WhatsApp Provided</p>
+              <p className="text-sm text-muted-foreground">{t("adminAnalytics.whatsappProvided")}</p>
               <p className="text-2xl font-bold">
                 {stats.total > 0 ? Math.round((stats.withWhatsApp / stats.total) * 100) : 0}%
               </p>
             </div>
             <div className="space-y-1">
-              <p className="text-sm text-muted-foreground">LinkedIn Provided</p>
+              <p className="text-sm text-muted-foreground">{t("adminAnalytics.linkedinProvided")}</p>
               <p className="text-2xl font-bold">
                 {stats.total > 0 ? Math.round((stats.withLinkedIn / stats.total) * 100) : 0}%
               </p>
