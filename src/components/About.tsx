@@ -1,4 +1,5 @@
-import { Code, Users, Trophy, Lightbulb } from "lucide-react";
+import { Code, Users, Trophy, Lightbulb, MessageSquare, ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const features = [
   {
@@ -67,6 +68,36 @@ const About = () => {
                 {track}
               </div>
             ))}
+          </div>
+        </div>
+
+        {/* Community CTA */}
+        <div className="mt-12 sm:mt-16 md:mt-20 text-center px-4">
+          <div className="inline-block p-6 sm:p-8 bg-gradient-to-br from-indigo-500/10 to-purple-500/10 border border-indigo-500/20 rounded-xl sm:rounded-2xl max-w-md mx-auto">
+            <div className="flex items-center justify-center mb-3">
+              <MessageSquare className="w-8 h-8 sm:w-10 sm:h-10 text-indigo-400" />
+            </div>
+            <h3 className="text-lg sm:text-xl font-semibold mb-2">Join Our Community</h3>
+            <p className="text-sm sm:text-base text-muted-foreground mb-4">
+              Connect with participants, mentors, and organizers on Discord. Get updates, ask questions, and network!
+            </p>
+            <Button 
+              variant="outline" 
+              size="lg"
+              className="border-indigo-500/50 hover:bg-indigo-500/10 hover:border-indigo-500 hover:text-indigo-400"
+              asChild
+            >
+              <a 
+                href={import.meta.env.VITE_DISCORD_URL || "https://discord.gg/jengahacks"} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2"
+              >
+                <MessageSquare className="w-4 h-4" />
+                Join Discord Server
+                <ArrowRight className="w-4 h-4" />
+              </a>
+            </Button>
           </div>
         </div>
       </div>

@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Calendar, MapPin } from "lucide-react";
+import { ArrowRight, Calendar, MapPin, MessageSquare } from "lucide-react";
 import icon from "@/assets/jengahacks-icon.svg";
+import SocialShare from "@/components/SocialShare";
 
 const Hero = () => {
   return (
@@ -62,6 +63,22 @@ const Hero = () => {
             <Button variant="outline" size="lg" className="sm:size-xl w-full sm:w-auto" asChild>
               <a href="#about">Learn More</a>
             </Button>
+            <Button 
+              variant="outline" 
+              size="lg" 
+              className="sm:size-xl w-full sm:w-auto border-indigo-500/50 hover:bg-indigo-500/10 hover:border-indigo-500 hover:text-indigo-400" 
+              asChild
+            >
+              <a 
+                href={import.meta.env.VITE_DISCORD_URL || "https://discord.gg/jengahacks"} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2"
+              >
+                <MessageSquare className="w-4 h-4 sm:w-5 sm:h-5" />
+                Join Discord
+              </a>
+            </Button>
           </div>
 
           {/* Stats */}
@@ -74,6 +91,11 @@ const Hero = () => {
               <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-gradient">48</div>
               <div className="text-xs sm:text-sm text-muted-foreground mt-1">Hours</div>
             </div>
+          </div>
+
+          {/* Social Sharing */}
+          <div className="animate-slide-up delay-500 mt-8 sm:mt-12">
+            <SocialShare variant="compact" />
           </div>
         </div>
       </div>

@@ -1,5 +1,6 @@
-import { Github, Twitter, Linkedin, Mail } from "lucide-react";
+import { Github, Twitter, Linkedin, Mail, MessageSquare } from "lucide-react";
 import mimisirobotiLogo from "@/assets/mimisiroboti-logo.png";
+import SocialShare from "@/components/SocialShare";
 
 const Footer = () => {
   return (
@@ -48,23 +49,37 @@ const Footer = () => {
             >
               <Mail className="w-4 h-4 sm:w-5 sm:h-5" />
             </a>
+            <a
+              href={import.meta.env.VITE_DISCORD_URL || "https://discord.gg/jengahacks"}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-muted hover:bg-indigo-500 hover:text-white transition-colors"
+              aria-label="Join Discord Community"
+            >
+              <MessageSquare className="w-4 h-4 sm:w-5 sm:h-5" />
+            </a>
           </div>
         </div>
 
-        <div className="mt-6 sm:mt-8 pt-6 sm:pt-8 border-t border-border text-center">
-          <p className="text-xs sm:text-sm text-muted-foreground mb-3">
-            © {new Date().getFullYear()} JengaHacks. All rights reserved.
-          </p>
-          <a 
-            href="https://www.linkedin.com/company/mimisiroboti" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground transition-colors"
-          >
-            <span>Run by</span>
-            <img src={mimisirobotiLogo} alt="Mimi Si Roboti" className="h-6 w-auto" />
-            <span className="font-medium">Mimi Si Roboti</span>
-          </a>
+        <div className="mt-6 sm:mt-8 pt-6 sm:pt-8 border-t border-border">
+          <div className="mb-4">
+            <SocialShare variant="compact" className="justify-center" />
+          </div>
+          <div className="text-center">
+            <p className="text-xs sm:text-sm text-muted-foreground mb-3">
+              © {new Date().getFullYear()} JengaHacks. All rights reserved.
+            </p>
+            <a 
+              href="https://www.linkedin.com/company/mimisiroboti" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <span>Run by</span>
+              <img src={mimisirobotiLogo} alt="Mimi Si Roboti" className="h-6 w-auto" />
+              <span className="font-medium">Mimi Si Roboti</span>
+            </a>
+          </div>
         </div>
       </div>
     </footer>
