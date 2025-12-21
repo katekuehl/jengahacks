@@ -65,6 +65,7 @@
 
   /* Enhanced focus styles for keyboard navigation */
   *:focus-visible {
+    /* stylelint-disable-next-line at-rule-no-unknown */
     @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
   }
 
