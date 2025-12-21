@@ -5,7 +5,7 @@
 
 import { safeLocalStorage } from "./polyfills";
 
-export type SupportedLocale = "en-KE" | "sw-KE";
+export type SupportedLocale = "en-UK" | "sw-KE";
 
 export interface LocaleInfo {
   code: SupportedLocale;
@@ -15,8 +15,8 @@ export interface LocaleInfo {
 }
 
 export const SUPPORTED_LOCALES: Record<SupportedLocale, LocaleInfo> = {
-  "en-KE": {
-    code: "en-KE",
+  "en-UK": {
+    code: "en-UK",
     name: "English",
     nativeName: "English",
     flag: "🇬🇧",
@@ -39,7 +39,7 @@ export const getStoredLocale = (): SupportedLocale => {
   if (stored && stored in SUPPORTED_LOCALES) {
     return stored as SupportedLocale;
   }
-  return "en-KE"; // Default
+  return "en-UK"; // Default
 };
 
 /**

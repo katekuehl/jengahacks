@@ -6,7 +6,7 @@
 import { getStoredLocale } from "./locale";
 
 // Default locale for JengaHacks (Kenya/East Africa)
-const DEFAULT_LOCALE = "en-KE";
+const DEFAULT_LOCALE = "en-UK";
 const DEFAULT_TIMEZONE = "Africa/Nairobi";
 
 // Current locale state (can be updated via setLocale)
@@ -62,8 +62,11 @@ export const setLocale = (locale: string): void => {
   currentLocale = locale;
   // Also update storage for persistence
   if (typeof window !== "undefined") {
-    const { setStoredLocale } = require("./locale");
-    setStoredLocale(locale as any);
+    // Use static import for setStoredLocale to persist locale preference
+    import("./locale").then(({ setStoredLocale }) => {
+      // Cast locale to SupportedLocale since this function expects it
+      setStoredLocale(locale as import("./locale").SupportedLocale);
+    });
   }
 };
 
