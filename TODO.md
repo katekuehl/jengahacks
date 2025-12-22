@@ -56,7 +56,7 @@
 - [x] Add autocomplete attributes for better UX
 - [x] Add React Router v7 future flags (v7_startTransition, v7_relativeSplatPath)
 - [x] Add animations and transitions (PageTransition, ScrollReveal components, custom animations)
-- [x] Add success/error animations (AnimatedIcon, AnimatedMessage components)
+- [x] Add success/error animations (AnimatedIcon, AnimatedMessage components) - Components removed (unused)
 - [x] Add keyboard navigation improvements (SkipLink, useKeyboardShortcuts, useFocusTrap, useArrowKeyNavigation)
 - [x] Improve accessibility (ARIA labels, screen reader support, LiveRegion component)
 - [x] Update logo to JengaHack logo on left side of navbar
@@ -73,7 +73,7 @@
 - [x] Add unit tests for utility functions (`src/lib/utils.test.ts`)
 - [x] Add unit tests for SocialShare component (12 tests)
 - [x] Add unit tests for Google Analytics integration (`src/lib/analytics.test.ts` - 11 tests)
-- [x] Add unit tests for BlogPreview component (5 tests)
+- [x] Add unit tests for BlogPreview component (5 tests) - Component removed (unused)
 - [x] Fix all test failures and ensure all tests pass (47 tests passing)
 - [x] Add integration tests for registration flow (`src/components/Registration.integration.test.tsx` - 14 tests)
 - [x] Add E2E tests (Playwright) - Registration, Navigation, Homepage, Blog tests
