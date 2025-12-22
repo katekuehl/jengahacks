@@ -1,18 +1,20 @@
-import { useEffect } from "react";
+import { useEffect, lazy, Suspense } from "react";
 import { useLocation } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
-import About from "@/components/About";
-import Sponsors from "@/components/Sponsors";
-import Prizes from "@/components/Prizes";
-import JudgesMentors from "@/components/JudgesMentors";
-import FAQ from "@/components/FAQ";
-import Registration from "@/components/Registration";
-import Footer from "@/components/Footer";
 import SEO from "@/components/SEO";
 import StructuredData from "@/components/StructuredData";
 import ScrollReveal from "@/components/ScrollReveal";
 import SkipLink from "@/components/SkipLink";
+
+// Lazy load below-fold components for better initial load performance
+const About = lazy(() => import("@/components/About"));
+const Sponsors = lazy(() => import("@/components/Sponsors"));
+const Prizes = lazy(() => import("@/components/Prizes"));
+const JudgesMentors = lazy(() => import("@/components/JudgesMentors"));
+const FAQ = lazy(() => import("@/components/FAQ"));
+const Registration = lazy(() => import("@/components/Registration"));
+const Footer = lazy(() => import("@/components/Footer"));
 
 const Index = () => {
   const location = useLocation();
@@ -39,28 +41,32 @@ const Index = () => {
         <Navbar />
         <main id="main-content" tabIndex={-1}>
           <Hero />
-          <ScrollReveal direction="up" delay={100}>
-            <About />
-          </ScrollReveal>
-          <ScrollReveal direction="up" delay={200}>
-            <Sponsors />
-          </ScrollReveal>
-          <ScrollReveal direction="up" delay={300}>
-            <Prizes />
-          </ScrollReveal>
-          <ScrollReveal direction="up" delay={400}>
-            <JudgesMentors />
-          </ScrollReveal>
-          <ScrollReveal direction="up" delay={500}>
-            <FAQ />
-          </ScrollReveal>
-          <ScrollReveal direction="up" delay={600}>
-            <Registration />
-          </ScrollReveal>
+          <Suspense fallback={null}>
+            <ScrollReveal direction="up" delay={100}>
+              <About />
+            </ScrollReveal>
+            <ScrollReveal direction="up" delay={200}>
+              <Sponsors />
+            </ScrollReveal>
+            <ScrollReveal direction="up" delay={300}>
+              <Prizes />
+            </ScrollReveal>
+            <ScrollReveal direction="up" delay={400}>
+              <JudgesMentors />
+            </ScrollReveal>
+            <ScrollReveal direction="up" delay={500}>
+              <FAQ />
+            </ScrollReveal>
+            <ScrollReveal direction="up" delay={600}>
+              <Registration />
+            </ScrollReveal>
+          </Suspense>
         </main>
-        <ScrollReveal direction="up" delay={500}>
-          <Footer />
-        </ScrollReveal>
+        <Suspense fallback={null}>
+          <ScrollReveal direction="up" delay={500}>
+            <Footer />
+          </ScrollReveal>
+        </Suspense>
       </div>
     </>
   );

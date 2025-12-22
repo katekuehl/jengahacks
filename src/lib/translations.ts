@@ -3,16 +3,19 @@
  */
 
 import { getStoredLocale, type SupportedLocale } from "./locale";
-import enTranslations from "../locales/en.json";
-import swTranslations from "../locales/sw.json";
 
 type TranslationKey = string;
 type TranslationParams = Record<string, string | number>;
 
-const translations: Record<SupportedLocale, typeof enTranslations> = {
+// Load translations synchronously for now (needed for synchronous t() function)
+// In the future, this could be optimized to lazy load per-locale
+import enTranslations from "../locales/en.json";
+import swTranslations from "../locales/sw.json";
+
+const translations = {
   "en-KE": enTranslations,
   "sw-KE": swTranslations,
-};
+} as Record<SupportedLocale, typeof enTranslations>;
 
 /**
  * Get translation for a key

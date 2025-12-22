@@ -471,8 +471,10 @@ test.describe('Performance Tests', () => {
           let clsValue = 0;
           const clsObserver = new PerformanceObserver((list) => {
             for (const entry of list.getEntries()) {
-              if (!(entry as any).hadRecentInput) {
-                clsValue += (entry as any).value;
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              const layoutShiftEntry = entry as any;
+              if (!layoutShiftEntry.hadRecentInput) {
+                clsValue += layoutShiftEntry.value;
               }
             }
             vitals.cls = clsValue;

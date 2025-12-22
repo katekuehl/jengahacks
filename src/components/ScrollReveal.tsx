@@ -24,6 +24,9 @@ const ScrollReveal = ({
 
   useEffect(() => {
     let timeoutId: NodeJS.Timeout | null = null;
+    const currentRef = ref.current;
+
+    if (!currentRef) return;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -36,18 +39,13 @@ const ScrollReveal = ({
       { threshold }
     );
 
-    if (ref.current) {
-      observer.observe(ref.current);
-    }
+    observer.observe(currentRef);
 
     return () => {
       if (timeoutId) {
         clearTimeout(timeoutId);
       }
-      const currentRef = ref.current;
-      if (currentRef) {
-        observer.unobserve(currentRef);
-      }
+      observer.unobserve(currentRef);
     };
   }, [delay, threshold]);
 
