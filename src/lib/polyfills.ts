@@ -173,6 +173,7 @@ export const revokeObjectURL = (url: string): void => {
  * Array.includes polyfill for older browsers
  */
 if (!Array.prototype.includes) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   Array.prototype.includes = function (searchElement: any, fromIndex?: number): boolean {
     const O = Object(this);
     const len = parseInt(String(O.length)) || 0;
@@ -181,6 +182,7 @@ if (!Array.prototype.includes) {
     }
     const n = fromIndex !== undefined ? fromIndex : 0;
     let k = n >= 0 ? n : Math.max(len + n, 0);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     function sameValueZero(x: any, y: any): boolean {
       return (
         x === y ||
@@ -201,6 +203,7 @@ if (!Array.prototype.includes) {
  * Object.entries polyfill for older browsers
  */
 if (!Object.entries) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   Object.entries = function <T extends Record<string, any>>(obj: T): [string, any][] {
     const ownProps = Object.keys(obj);
     let i = ownProps.length;
@@ -216,6 +219,7 @@ if (!Object.entries) {
  * Object.values polyfill for older browsers
  */
 if (!Object.values) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   Object.values = function <T extends Record<string, any>>(obj: T): any[] {
     const ownProps = Object.keys(obj);
     let i = ownProps.length;

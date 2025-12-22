@@ -29,6 +29,7 @@ export const t = (
 
   // Navigate nested object using dot notation
   const keys = key.split(".");
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let value: any = translation;
 
   for (const k of keys) {
@@ -65,11 +66,12 @@ export const t = (
 export const getTranslations = (
   namespace: string,
   locale?: SupportedLocale
-): Record<string, any> => {
+): Record<string, unknown> => {
   const currentLocale = locale || getStoredLocale();
   const translation = translations[currentLocale] || translations["en-KE"];
 
   const keys = namespace.split(".");
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let value: any = translation;
 
   for (const k of keys) {
@@ -91,6 +93,7 @@ export const hasTranslation = (key: TranslationKey, locale?: SupportedLocale): b
   const translation = translations[currentLocale] || translations["en-KE"];
 
   const keys = key.split(".");
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let value: any = translation;
 
   for (const k of keys) {

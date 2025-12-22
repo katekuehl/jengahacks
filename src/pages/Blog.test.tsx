@@ -53,6 +53,7 @@ describe("Blog", () => {
       },
     ];
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     vi.mocked(blogLib.fetchBlogPosts).mockResolvedValue(mockPosts as any);
 
     render(<Blog />);
@@ -84,6 +85,7 @@ describe("Blog", () => {
       },
     ];
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     vi.mocked(blogLib.fetchBlogPosts).mockResolvedValue(mockPosts as any);
 
     render(<Blog />);

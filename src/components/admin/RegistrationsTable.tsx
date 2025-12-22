@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { createObjectURL, revokeObjectURL, safeSessionStorage } from "@/lib/polyfills";
 import { formatDateTimeShort } from "@/lib/i18n";
@@ -40,15 +40,7 @@ const RegistrationsTable = ({ onRefresh }: RegistrationsTableProps) => {
   const [sortBy, setSortBy] = useState<"name" | "email" | "date">("date");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
 
-  useEffect(() => {
-    loadRegistrations();
-  }, []);
-
-  useEffect(() => {
-    filterAndSort();
-  }, [registrations, searchQuery, sortBy, sortOrder]);
-
-  const loadRegistrations = async () => {
+  const loadRegistrations = useCallback(async () => {
     try {
       setIsLoading(true);
       const { data, error } = await supabase
@@ -66,9 +58,9 @@ const RegistrationsTable = ({ onRefresh }: RegistrationsTableProps) => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [onRefresh, t]);
 
-  const filterAndSort = () => {
+  const filterAndSort = useCallback(() => {
     let filtered = [...registrations];
 
     // Apply search filter
@@ -112,7 +104,15 @@ const RegistrationsTable = ({ onRefresh }: RegistrationsTableProps) => {
     });
 
     setFilteredRegistrations(filtered);
-  };
+  }, [registrations, searchQuery, sortBy, sortOrder]);
+
+  useEffect(() => {
+    loadRegistrations();
+  }, [loadRegistrations]);
+
+  useEffect(() => {
+    filterAndSort();
+  }, [filterAndSort]);
 
   const handleSort = (column: "name" | "email" | "date") => {
     if (sortBy === column) {

@@ -28,6 +28,7 @@ describe("translations", () => {
     });
 
     it("should fallback to English if key not found in current locale", () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       vi.mocked(localeLib.getStoredLocale).mockReturnValue("sw-KE" as any);
       // If Swahili translation is missing, should fallback to English
       const result = t("common.register");

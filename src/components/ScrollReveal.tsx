@@ -44,8 +44,9 @@ const ScrollReveal = ({
       if (timeoutId) {
         clearTimeout(timeoutId);
       }
-      if (ref.current) {
-        observer.unobserve(ref.current);
+      const currentRef = ref.current;
+      if (currentRef) {
+        observer.unobserve(currentRef);
       }
     };
   }, [delay, threshold]);

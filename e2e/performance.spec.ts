@@ -156,8 +156,10 @@ test.describe('Performance Tests', () => {
           let clsValue = 0;
           const observer = new PerformanceObserver((list) => {
             for (const entry of list.getEntries()) {
-              if (!(entry as any).hadRecentInput) {
-                clsValue += (entry as any).value;
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              const layoutShiftEntry = entry as any;
+              if (!layoutShiftEntry.hadRecentInput) {
+                clsValue += layoutShiftEntry.value;
               }
             }
             resolve(clsValue);
@@ -185,7 +187,9 @@ test.describe('Performance Tests', () => {
           const observer = new PerformanceObserver((list) => {
             const entries = list.getEntries();
             const lastEntry = entries[entries.length - 1];
-            resolve((lastEntry as any).renderTime || (lastEntry as any).loadTime);
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const lcpEntry = lastEntry as any;
+            resolve(lcpEntry.renderTime || lcpEntry.loadTime);
           });
           
           observer.observe({ type: 'largest-contentful-paint', buffered: true });
@@ -254,7 +258,8 @@ test.describe('Performance Tests', () => {
       
       // Get initial memory usage
       const initialMemory = await page.evaluate(() => {
-        return (performance as any).memory?.usedJSHeapSize || 0;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        return ((performance as any).memory?.usedJSHeapSize as number) || 0;
       });
       
       // Interact with the page
@@ -265,7 +270,8 @@ test.describe('Performance Tests', () => {
       
       // Get memory after interactions
       const finalMemory = await page.evaluate(() => {
-        return (performance as any).memory?.usedJSHeapSize || 0;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        return ((performance as any).memory?.usedJSHeapSize as number) || 0;
       });
       
       // Memory increase should be reasonable (less than 10MB)
@@ -444,7 +450,9 @@ test.describe('Performance Tests', () => {
           const lcpObserver = new PerformanceObserver((list) => {
             const entries = list.getEntries();
             const lastEntry = entries[entries.length - 1];
-            vitals.lcp = (lastEntry as any).renderTime || (lastEntry as any).loadTime;
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const lcpEntry = lastEntry as any;
+            vitals.lcp = lcpEntry.renderTime || lcpEntry.loadTime;
           });
           lcpObserver.observe({ type: 'largest-contentful-paint', buffered: true });
           
@@ -452,7 +460,9 @@ test.describe('Performance Tests', () => {
           const fidObserver = new PerformanceObserver((list) => {
             const entries = list.getEntries();
             if (entries.length > 0) {
-              vitals.fid = (entries[0] as any).processingStart - (entries[0] as any).startTime;
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              const fidEntry = entries[0] as any;
+              vitals.fid = fidEntry.processingStart - fidEntry.startTime;
             }
           });
           fidObserver.observe({ type: 'first-input', buffered: true });

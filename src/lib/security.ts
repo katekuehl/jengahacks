@@ -120,7 +120,7 @@ export const isValidWhatsAppNumber = (phone: string): boolean => {
     return false; // Empty is invalid (use null/undefined for optional)
   }
 
-  const cleaned = phone.trim().replace(/[\s\-\(\)]/g, ''); // Remove spaces, dashes, parentheses
+  const cleaned = phone.trim().replace(/[\s\-()]/g, ''); // Remove spaces, dashes, parentheses
   
   // Must be between 7 and 15 digits (E.164 standard allows up to 15 digits)
   // Allow optional + prefix
@@ -137,7 +137,7 @@ export const normalizeWhatsAppNumber = (phone: string): string | null => {
     return null;
   }
 
-  const cleaned = phone.trim().replace(/[\s\-\(\)]/g, '');
+  const cleaned = phone.trim().replace(/[\s\-()]/g, '');
   
   // If it doesn't start with +, add it
   if (!cleaned.startsWith('+')) {
