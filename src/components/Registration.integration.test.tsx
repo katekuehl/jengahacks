@@ -34,6 +34,7 @@ vi.mock("@/integrations/supabase/client", () => ({
     functions: {
       invoke: vi.fn(),
     },
+    rpc: vi.fn(),
   },
 }));
 
@@ -163,6 +164,9 @@ describe("Registration Integration Tests", () => {
         options?: Parameters<typeof supabase.functions.invoke>[1]
       ) => ReturnType<typeof supabase.functions.invoke>
     );
+
+    // Set up default rpc mock - returns { data, error } format
+    vi.mocked(supabase.rpc).mockResolvedValue({ data: null, error: null });
   });
 
   afterEach(() => {

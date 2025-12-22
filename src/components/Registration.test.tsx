@@ -20,6 +20,7 @@ vi.mock("@/integrations/supabase/client", () => ({
     functions: {
       invoke: vi.fn(),
     },
+    rpc: vi.fn(),
   },
 }));
 
@@ -104,6 +105,9 @@ describe("Registration", () => {
     vi.clearAllMocks();
     // Mock environment variable for CAPTCHA
     vi.stubEnv("VITE_RECAPTCHA_SITE_KEY", "test-site-key");
+    
+    // Set up default rpc mock - returns { data, error } format
+    vi.mocked(supabase.rpc).mockResolvedValue({ data: null, error: null });
   });
 
   it("should render the registration form", () => {
