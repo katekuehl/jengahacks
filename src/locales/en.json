@@ -403,7 +403,38 @@
     "step3Title": "3. Prepare for the Event",
     "step3Description": "Start thinking about your project ideas, form a team, and get ready for 36 hours of innovation!",
     "backToHome": "Back to Home",
-    "viewBlog": "View Blog"
+    "viewBlog": "View Blog",
+    "manageRegistration": "Manage Registration",
+    "manageRegistrationDescription": "You can update your information or cancel your registration using the link below."
+  },
+  "manageRegistration": {
+    "title": "Manage Your Registration",
+    "subtitle": "Update your registration information or cancel if needed",
+    "formTitle": "Registration Details",
+    "formDescription": "Update your information below. Email cannot be changed.",
+    "waitlistNotice": "You are currently on the waitlist. We'll notify you if a spot becomes available.",
+    "emailReadOnly": "Email cannot be changed after registration",
+    "currentResume": "Current resume",
+    "update": "Update Registration",
+    "updating": "Updating...",
+    "cancel": "Cancel Registration",
+    "cancelling": "Cancelling...",
+    "success": {
+      "updated": "Registration updated successfully!",
+      "cancelled": "Registration cancelled successfully. You will be redirected to the homepage."
+    },
+    "errors": {
+      "loadFailed": "Failed to load registration. Please check your link.",
+      "notFound": "Registration not found",
+      "invalidToken": "Invalid or expired registration link. Please check your email for the correct link.",
+      "validationFailed": "Please fix the errors in the form",
+      "resumeUploadFailed": "Failed to upload resume. Please try again.",
+      "updateFailed": "Failed to update registration. Please try again.",
+      "cancelFailed": "Failed to cancel registration. Please try again."
+    },
+    "cancel": {
+      "confirm": "Are you sure you want to cancel your registration? This action cannot be undone."
+    }
   }
 }
 

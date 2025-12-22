@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Calendar, MapPin, Clock, CheckCircle2, Download, ExternalLink, ArrowLeft } from "lucide-react";
+import { Calendar, MapPin, Clock, CheckCircle2, Download, ExternalLink, ArrowLeft, Settings } from "lucide-react";
 import siliconSavannahLogo from "@/assets/silicon-savannah-logo.png";
 import adamurLogo from "@/assets/adamur-logo.png";
 import promptbiLogo from "@/assets/promptbi-logo.svg";
@@ -17,6 +17,7 @@ const ThankYou = () => {
   const email = searchParams.get("email");
   const isWaitlist = searchParams.get("waitlist") === "true";
   const waitlistPosition = searchParams.get("position");
+  const token = searchParams.get("token");
 
   useEffect(() => {
     // Track page view
@@ -241,6 +242,29 @@ const ThankYou = () => {
                 </CardContent>
               </Card>
             </ScrollReveal>
+
+            {/* Manage Registration */}
+            {token && (
+              <ScrollReveal direction="up" delay={250}>
+                <Card className="mb-8 sm:mb-12 max-w-2xl mx-auto">
+                  <CardHeader>
+                    <CardTitle className="text-2xl">{t("thankYou.manageRegistration")}</CardTitle>
+                    <CardDescription>{t("thankYou.manageRegistrationDescription")}</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <Button variant="outline" asChild className="w-full">
+                      <Link 
+                        to={`/manage-registration?token=${encodeURIComponent(token)}`}
+                        className="flex items-center gap-2"
+                      >
+                        <Settings className="w-4 h-4" aria-hidden="true" />
+                        {t("thankYou.manageRegistration")}
+                      </Link>
+                    </Button>
+                  </CardContent>
+                </Card>
+              </ScrollReveal>
+            )}
 
             {/* Sponsors Section */}
             <ScrollReveal direction="up" delay={300}>

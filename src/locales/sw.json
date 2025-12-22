@@ -404,7 +404,38 @@
     "step3Title": "3. Jitayarishe kwa Tukio",
     "step3Description": "Anza kufikiria mawazo yako ya mradi, unda timu, na ujiandae kwa masaa 36 ya ubunifu!",
     "backToHome": "Rudi Nyumbani",
-    "viewBlog": "Angalia Blogu"
+    "viewBlog": "Angalia Blogu",
+    "manageRegistration": "Simamia Usajili Wako",
+    "manageRegistrationDescription": "Unaweza kusasisha taarifa zako au kughairi usajili wako kwa kutumia kiungo hapa chini."
+  },
+  "manageRegistration": {
+    "title": "Simamia Usajili Wako",
+    "subtitle": "Sasisha taarifa za usajili wako au ughairi ikiwa unahitaji",
+    "formTitle": "Maelezo ya Usajili",
+    "formDescription": "Sasisha taarifa zako hapa chini. Barua pepe haiwezi kubadilishwa.",
+    "waitlistNotice": "Kwa sasa uko kwenye orodha ya kusubiri. Tutakujulisha ikiwa nafasi itapatikana.",
+    "emailReadOnly": "Barua pepe haiwezi kubadilishwa baada ya usajili",
+    "currentResume": "Resume ya sasa",
+    "update": "Sasisha Usajili",
+    "updating": "Inasasisha...",
+    "cancel": "Ghairi Usajili",
+    "cancelling": "Inaghairi...",
+    "success": {
+      "updated": "Usajili umesasishwa kwa mafanikio!",
+      "cancelled": "Usajili umefutwa kwa mafanikio. Utarudishwa kwenye ukurasa wa nyumbani."
+    },
+    "errors": {
+      "loadFailed": "Imeshindwa kupakia usajili. Tafadhali angalia kiungo chako.",
+      "notFound": "Usajili haujapatikana",
+      "invalidToken": "Kiungo cha usajili si halali au kimeisha muda. Tafadhali angalia barua pepe yako kwa kiungo sahihi.",
+      "validationFailed": "Tafadhali rekebisha makosa kwenye fomu",
+      "resumeUploadFailed": "Imeshindwa kupakia resume. Tafadhali jaribu tena.",
+      "updateFailed": "Imeshindwa kusasisha usajili. Tafadhali jaribu tena.",
+      "cancelFailed": "Imeshindwa kughairi usajili. Tafadhali jaribu tena."
+    },
+    "cancel": {
+      "confirm": "Je, una uhakika unataka kughairi usajili wako? Kitendo hiki hakiwezi kufutwa."
+    }
   }
 }
 
