@@ -17,6 +17,7 @@ const BlogPost = lazy(() => import("./pages/BlogPost"));
 const Admin = lazy(() => import("./pages/Admin"));
 const ThankYou = lazy(() => import("./pages/ThankYou"));
 const ManageRegistration = lazy(() => import("./pages/ManageRegistration"));
+const Health = lazy(() => import("./pages/Health"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 // Loading fallback component
@@ -49,6 +50,7 @@ const AnimatedRoutes = () => {
           <Route path="/admin" element={<Admin />} />
           <Route path="/thank-you" element={<ThankYou />} />
           <Route path="/manage-registration" element={<ManageRegistration />} />
+          <Route path="/health" element={<Health />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

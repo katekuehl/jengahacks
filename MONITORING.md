@@ -199,17 +199,20 @@ The monitoring system automatically tracks:
 
 No additional configuration needed.
 
-## Health Check Component
+## Health Check Data
 
-Use the `HealthCheck` component to display system health:
+Access health check data programmatically:
 
 ```typescript
-import HealthCheck from '@/components/HealthCheck';
+import { monitor } from '@/lib/monitoring';
 
-<HealthCheck />
+// Get health checks
+const healthChecks = monitor.getHealthChecks();
+const healthStatus = monitor.getHealthStatus();
+const performanceSummary = monitor.getPerformanceSummary();
 ```
 
-The component displays:
+The data includes:
 - Overall system health status
 - Performance summary (page load, API response times, error rate, memory)
 - Individual health check statuses
