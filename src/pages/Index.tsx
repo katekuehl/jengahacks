@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
@@ -13,6 +15,21 @@ import ScrollReveal from "@/components/ScrollReveal";
 import SkipLink from "@/components/SkipLink";
 
 const Index = () => {
+  const location = useLocation();
+
+  // Handle hash navigation from other pages
+  useEffect(() => {
+    if (location.hash) {
+      // Wait for page to render, then scroll to section
+      setTimeout(() => {
+        const element = document.querySelector(location.hash);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 100);
+    }
+  }, [location.hash]);
+
   return (
     <>
       <SEO />

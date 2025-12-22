@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
-import { Link } from "react-router-dom";
-import logo from "@/assets/jengahacks-logo.png";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import logo from "@/assets/JengaHack.png";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { useTranslation } from "@/hooks/useTranslation";
 import { cn } from "@/lib/utils";
@@ -12,6 +12,8 @@ import { useArrowKeyNavigation } from "@/hooks/useArrowKeyNavigation";
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { t } = useTranslation();
+  const location = useLocation();
+  const navigate = useNavigate();
   const trapRef = useFocusTrap(isOpen);
   const arrowNavRef = useArrowKeyNavigation({
     enabled: isOpen,
@@ -45,6 +47,25 @@ const Navbar = () => {
     }
   }, [isOpen]);
 
+  // Handle hash link clicks - navigate to homepage first if not already there
+  const handleHashLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, hash: string) => {
+    e.preventDefault();
+    
+    if (location.pathname !== '/') {
+      // Navigate to homepage with hash
+      navigate(`/${hash}`);
+    } else {
+      // On homepage, just scroll to section
+      const element = document.querySelector(hash);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+    
+    // Close mobile menu if open
+    setIsOpen(false);
+  };
+
     const navLinks = [
       { href: "#about", label: t("nav.about") },
       { href: "#prizes", label: t("nav.prizes") },
@@ -63,7 +84,7 @@ const Navbar = () => {
       <div className="container mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-14 sm:h-16">
           <a href="/" className="flex items-center gap-2" aria-label={t("aria.homeLink")}>
-            <img src={logo} alt="" className="h-8 sm:h-10 w-auto" width="120" height="40" aria-hidden="true" />
+            <img src={logo} alt="JengaHack" className="h-10 sm:h-12 w-auto" width="180" height="48" />
           </a>
 
           {/* Desktop Navigation */}
@@ -91,6 +112,7 @@ const Navbar = () => {
                 <a
                   key={link.href}
                   href={link.href}
+                  onClick={(e) => handleHashLinkClick(e, link.href)}
                   className="text-muted-foreground hover:text-primary transition-all duration-300 font-medium relative group"
                 >
                   {link.label}
@@ -172,10 +194,10 @@ const Navbar = () => {
                     href={link.href}
                     role="menuitem"
                     className="text-muted-foreground hover:text-primary transition-all duration-300 font-medium transform hover:translate-x-1 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background rounded px-2 py-1"
-                    onClick={() => setIsOpen(false)}
+                    onClick={(e) => handleHashLinkClick(e, link.href)}
                     onKeyDown={(e) => {
                       if (e.key === "Enter" || e.key === " ") {
-                        setIsOpen(false);
+                        handleHashLinkClick(e as unknown as React.MouseEvent<HTMLAnchorElement>, link.href);
                       }
                     }}
                   >
