@@ -99,7 +99,6 @@ graph TD
         About[About]
         Registration[Registration]
         Sponsors[Sponsors]
-        BlogPreview[BlogPreview]
         Footer[Footer]
         SEO[SEO]
         StructuredData[StructuredData]
@@ -137,7 +136,6 @@ graph TD
     Index --> About
     Index --> Registration
     Index --> Sponsors
-    Index --> BlogPreview
     Index --> Footer
     Index --> SEO
     Index --> StructuredData
@@ -1037,7 +1035,6 @@ graph TD
     Index --> About[About]
     Index --> Registration[Registration]
     Index --> Sponsors[Sponsors]
-    Index --> BlogPreview[BlogPreview]
     Index --> Footer[Footer]
     Index --> SEO[SEO]
     Index --> StructuredData[StructuredData]
