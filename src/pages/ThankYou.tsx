@@ -15,14 +15,17 @@ const ThankYou = () => {
   const { t } = useTranslation();
   const [searchParams] = useSearchParams();
   const email = searchParams.get("email");
+  const isWaitlist = searchParams.get("waitlist") === "true";
+  const waitlistPosition = searchParams.get("position");
 
   useEffect(() => {
     // Track page view
     trackEvent("thank_you_page_view", {
       category: "engagement",
       email_provided: !!email,
+      is_waitlist: isWaitlist,
     });
-  }, [email]);
+  }, [email, isWaitlist]);
 
   // Event details
   const eventDate = "2026-02-21";
@@ -147,11 +150,16 @@ const ThankYou = () => {
                   <CheckCircle2 className="w-10 h-10 sm:w-12 sm:h-12 text-primary" aria-hidden="true" />
                 </div>
                 <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
-                  {t("thankYou.title")}
+                  {isWaitlist ? t("thankYou.waitlistTitle") : t("thankYou.title")}
                 </h1>
                 <p className="text-lg sm:text-xl text-muted-foreground mb-2">
-                  {t("thankYou.message")}
+                  {isWaitlist ? t("thankYou.waitlistMessage") : t("thankYou.message")}
                 </p>
+                {isWaitlist && waitlistPosition && (
+                  <p className="text-base sm:text-lg font-semibold text-primary mb-2">
+                    {t("registration.waitlistPosition", { position: waitlistPosition })}
+                  </p>
+                )}
                 {email && (
                   <p className="text-sm sm:text-base text-muted-foreground">
                     {t("thankYou.confirmationEmail", { email })}

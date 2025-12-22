@@ -23,6 +23,7 @@ export type Database = {
           linkedin_url: string | null
           resume_path: string | null
           whatsapp_number: string | null
+          is_waitlist: boolean
         }
         Insert: {
           created_at?: string
@@ -32,6 +33,7 @@ export type Database = {
           linkedin_url?: string | null
           resume_path?: string | null
           whatsapp_number?: string | null
+          is_waitlist?: boolean
         }
         Update: {
           created_at?: string
@@ -41,6 +43,7 @@ export type Database = {
           linkedin_url?: string | null
           resume_path?: string | null
           whatsapp_number?: string | null
+          is_waitlist?: boolean
         }
         Relationships: []
       }

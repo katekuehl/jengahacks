@@ -287,13 +287,33 @@ const Registration = () => {
       // Normalize WhatsApp number if provided
       const whatsappNumber = whatsapp ? normalizeWhatsAppNumber(whatsapp) : null;
 
+      // Check if registration should go to waitlist
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const { data: shouldWaitlist, error: waitlistCheckError } = await (supabase.rpc as any)('should_add_to_waitlist');
+
+      if (waitlistCheckError) {
+        // Log error but continue with registration attempt
+        if (import.meta.env.DEV) {
+          console.error('Waitlist check error:', waitlistCheckError);
+        }
+      }
+
+      const isWaitlist = shouldWaitlist === true;
+
+      // Generate access token for registration management
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const { data: accessToken } = await (supabase.rpc as any)('generate_access_token');
+
       // Insert registration into database (always attempt, even if resume upload failed)
       const registrationData = {
         full_name: fullName,
         email: email,
         whatsapp_number: whatsappNumber,
         linkedin_url: linkedInUrl,
-          resume_path: resumePath,
+        resume_path: resumePath,
+        is_waitlist: isWaitlist,
+        access_token: accessToken || null,
+        status: 'active',
       };
 
       // Try to use Edge Function for IP capture if available, otherwise use direct insert
@@ -360,7 +380,18 @@ const Registration = () => {
       // Success - record submission and navigate to thank you page
       recordSubmission();
       trackRegistration(true);
-      const successMessage = t("registration.success");
+      
+      // Get waitlist position if on waitlist
+      let waitlistPosition: number | null = null;
+      if (isWaitlist) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const { data: position } = await (supabase.rpc as any)('get_waitlist_position', { p_email: email } as any);
+        waitlistPosition = position || null;
+      }
+      
+      const successMessage = isWaitlist 
+        ? t("registration.waitlistSuccess")
+        : t("registration.success");
       toast.success(successMessage);
       setLiveMessage(successMessage);
       
@@ -378,8 +409,14 @@ const Registration = () => {
       }
       recaptchaRef.current?.reset();
 
-      // Navigate to thank you page with email parameter
-      const emailParam = email ? `?email=${encodeURIComponent(email)}` : '';
+      // Navigate to thank you page with email, waitlist, and token parameters
+      const params = new URLSearchParams();
+      if (email) params.set('email', email);
+      if (isWaitlist) params.set('waitlist', 'true');
+      if (waitlistPosition !== null) params.set('position', waitlistPosition.toString());
+      if (accessToken) params.set('token', accessToken);
+      const queryString = params.toString();
+      const emailParam = queryString ? `?${queryString}` : '';
       setTimeout(() => {
         navigate(`/thank-you${emailParam}`);
       }, 1000); // Small delay to show success toast

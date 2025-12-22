@@ -18,6 +18,7 @@ interface RegistrationData {
   whatsapp_number?: string | null;
   linkedin_url?: string | null;
   resume_path?: string | null;
+  is_waitlist?: boolean;
 }
 
 serve(async (req) => {
@@ -45,7 +46,7 @@ serve(async (req) => {
       ipAddress = null;
     }
 
-    const { full_name, email, whatsapp_number, linkedin_url, resume_path }: RegistrationData =
+    const { full_name, email, whatsapp_number, linkedin_url, resume_path, is_waitlist }: RegistrationData =
       await req.json();
 
     // Validate required fields
@@ -66,6 +67,13 @@ serve(async (req) => {
     const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
+    // Check if registration should go to waitlist (if not already specified)
+    let shouldWaitlist = is_waitlist;
+    if (shouldWaitlist === undefined) {
+      const { data: waitlistCheck } = await supabase.rpc("should_add_to_waitlist");
+      shouldWaitlist = waitlistCheck === true;
+    }
+
     // Insert registration with IP address
     const { data, error } = await supabase
       .from("registrations")
@@ -76,6 +84,7 @@ serve(async (req) => {
         linkedin_url: linkedin_url || null,
         resume_path: resume_path || null,
         ip_address: ipAddress,
+        is_waitlist: shouldWaitlist || false,
       })
       .select()
       .single();
