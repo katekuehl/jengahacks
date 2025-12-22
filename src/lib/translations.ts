@@ -12,8 +12,10 @@ type TranslationParams = Record<string, string | number>;
 import enTranslations from "../locales/en.json";
 import swTranslations from "../locales/sw.json";
 
+// Map translation files to locale codes
+// Note: Translation files use "en-KE" but locale type uses "en-UK"
 const translations = {
-  "en-KE": enTranslations,
+  "en-UK": enTranslations,
   "sw-KE": swTranslations,
 } as Record<SupportedLocale, typeof enTranslations>;
 
@@ -28,7 +30,7 @@ export const t = (
   locale?: SupportedLocale
 ): string => {
   const currentLocale = locale || getStoredLocale();
-  const translation = translations[currentLocale] || translations["en-KE"];
+  const translation = translations[currentLocale] || translations["en-UK"];
 
   // Navigate nested object using dot notation
   const keys = key.split(".");
@@ -40,8 +42,8 @@ export const t = (
       value = value[k];
     } else {
       // Fallback to English if key not found
-      if (currentLocale !== "en-KE") {
-        return t(key, params, "en-KE");
+      if (currentLocale !== "en-UK") {
+        return t(key, params, "en-UK");
       }
       console.warn(`Translation key not found: ${key}`);
       return key;
@@ -71,7 +73,7 @@ export const getTranslations = (
   locale?: SupportedLocale
 ): Record<string, unknown> => {
   const currentLocale = locale || getStoredLocale();
-  const translation = translations[currentLocale] || translations["en-KE"];
+  const translation = translations[currentLocale] || translations["en-UK"];
 
   const keys = namespace.split(".");
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -93,7 +95,7 @@ export const getTranslations = (
  */
 export const hasTranslation = (key: TranslationKey, locale?: SupportedLocale): boolean => {
   const currentLocale = locale || getStoredLocale();
-  const translation = translations[currentLocale] || translations["en-KE"];
+  const translation = translations[currentLocale] || translations["en-UK"];
 
   const keys = key.split(".");
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
