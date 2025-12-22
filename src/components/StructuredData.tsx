@@ -12,7 +12,7 @@ const eventStructuredData = {
   "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
   "location": {
     "@type": "Place",
-    "name": "iHub",
+    "name": "Nairobi, Kenya",
     "address": {
       "@type": "PostalAddress",
       "addressLocality": "Nairobi",
