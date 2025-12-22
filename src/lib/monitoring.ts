@@ -652,6 +652,3 @@ class Monitoring {
 // Create singleton instance
 export const monitor = new Monitoring();
 
-// Export types
-export type { MonitoringConfig, Metric, Alert, HealthCheck };
-
