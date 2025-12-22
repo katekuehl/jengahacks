@@ -470,6 +470,171 @@ VITE_SENTRY_RELEASE=abc123def456
 
 ---
 
+### Monitoring & Alerting Variables
+
+#### `VITE_MONITORING_ENABLED`
+
+**Type:** `boolean`  
+**Required:** ❌ No  
+**Default:** `true` (development), `false` (production)  
+**Example:** `true`  
+**Description:** Enable or disable the monitoring system.
+
+**Usage:**
+- Automatically enabled in development mode
+- Set to `true` in production to enable monitoring
+- Controls metrics tracking, health checks, and alerting
+
+---
+
+#### `VITE_MONITORING_ALERTS`
+
+**Type:** `boolean`  
+**Required:** ❌ No  
+**Default:** `false`  
+**Example:** `true`  
+**Description:** Enable or disable alerting system.
+
+**Usage:**
+- When enabled, alerts are sent to Sentry and webhooks
+- Set to `true` to receive alerts for threshold violations
+- Requires `VITE_MONITORING_ENABLED=true`
+
+---
+
+#### `VITE_MONITORING_HEALTH`
+
+**Type:** `boolean`  
+**Required:** ❌ No  
+**Default:** `true` (development), `false` (production)  
+**Example:** `true`  
+**Description:** Enable or disable health checks.
+
+**Usage:**
+- Automatically enabled in development mode
+- Periodic health checks monitor system status
+- Set to `true` in production for continuous monitoring
+
+---
+
+#### `VITE_MONITORING_WEBHOOK_URL`
+
+**Type:** `string`  
+**Required:** ❌ No  
+**Example:** `https://hooks.slack.com/services/YOUR/WEBHOOK/URL`  
+**Description:** Webhook URL for sending alerts.
+
+**Usage:**
+- Alerts are sent as POST requests with JSON payload
+- Useful for Slack, Discord, or custom integrations
+- Requires `VITE_MONITORING_ALERTS=true`
+
+**Alert Payload Format:**
+```json
+{
+  "alert": {
+    "id": "alert_id",
+    "severity": "high",
+    "message": "Alert message",
+    "timestamp": "2025-01-01T00:00:00Z",
+    "context": {}
+  },
+  "source": "jengahacks-monitoring"
+}
+```
+
+---
+
+#### `VITE_MONITORING_ERROR_RATE_THRESHOLD`
+
+**Type:** `number` (float)  
+**Required:** ❌ No  
+**Default:** `0.1` (10%)  
+**Example:** `0.15`  
+**Description:** Error rate threshold for alerts (0-1).
+
+**Usage:**
+- Alerts are triggered when error rate exceeds this threshold
+- Value is a ratio (0.1 = 10%, 0.15 = 15%)
+- Set lower for stricter monitoring
+
+---
+
+#### `VITE_MONITORING_RESPONSE_TIME_THRESHOLD`
+
+**Type:** `number` (milliseconds)  
+**Required:** ❌ No  
+**Default:** `2000` (2 seconds)  
+**Example:** `3000`  
+**Description:** API response time threshold for alerts.
+
+**Usage:**
+- Alerts are triggered when response time exceeds this threshold
+- Measured in milliseconds
+- Set based on your performance requirements
+
+---
+
+#### `VITE_MONITORING_MEMORY_THRESHOLD`
+
+**Type:** `number` (megabytes)  
+**Required:** ❌ No  
+**Default:** `100` (100MB)  
+**Example:** `150`  
+**Description:** Memory usage threshold for alerts.
+
+**Usage:**
+- Alerts are triggered when memory usage exceeds this threshold
+- Measured in megabytes
+- Monitor for memory leaks
+
+---
+
+#### `VITE_MONITORING_API_ERROR_RATE_THRESHOLD`
+
+**Type:** `number` (float)  
+**Required:** ❌ No  
+**Default:** `0.05` (5%)  
+**Example:** `0.1`  
+**Description:** API error rate threshold for alerts (0-1).
+
+**Usage:**
+- Alerts are triggered when API error rate exceeds this threshold
+- Separate from general error rate
+- Value is a ratio (0.05 = 5%, 0.1 = 10%)
+
+---
+
+#### `VITE_MONITORING_HEALTH_CHECK_INTERVAL`
+
+**Type:** `number` (milliseconds)  
+**Required:** ❌ No  
+**Default:** `60000` (60 seconds)  
+**Example:** `30000`  
+**Description:** Interval between health checks.
+
+**Usage:**
+- Health checks run periodically at this interval
+- Lower values provide more frequent monitoring
+- Higher values reduce overhead
+
+---
+
+#### `VITE_MONITORING_METRICS_RETENTION`
+
+**Type:** `number`  
+**Required:** ❌ No  
+**Default:** `1000`  
+**Example:** `2000`  
+**Description:** Maximum number of metrics to keep in memory.
+
+**Usage:**
+- Older metrics are automatically removed when limit is reached
+- Increase for longer monitoring sessions
+- Higher values use more memory
+
+---
+
 ## Server-Side Variables (Edge Functions)
 
 These variables are set in Supabase Edge Function secrets and are **never exposed** to the client.

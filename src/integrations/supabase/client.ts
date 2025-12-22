@@ -115,7 +115,7 @@ const supabase = isDevelopment ? {
       const result = baseClient.functions.invoke<T>(functionName, options);
       
       return result.then(
-        (data) => {
+        async (data) => {
           const duration = performance.now() - startTime;
           requestLogger.log({
             type: 'function',
@@ -125,9 +125,18 @@ const supabase = isDevelopment ? {
             response: data,
             duration: Math.round(duration),
           });
+          
+          // Track in monitoring system
+          try {
+            const { monitor } = await import('@/lib/monitoring');
+            monitor.trackApiResponseTime(`functions/${functionName}`, Math.round(duration), true);
+          } catch {
+            // Monitoring not available, ignore
+          }
+          
           return data;
         },
-        (error) => {
+        async (error) => {
           const duration = performance.now() - startTime;
           requestLogger.log({
             type: 'function',
@@ -137,6 +146,18 @@ const supabase = isDevelopment ? {
             error,
             duration: Math.round(duration),
           });
+          
+          // Track in monitoring system
+          try {
+            const { monitor } = await import('@/lib/monitoring');
+            monitor.trackApiResponseTime(`functions/${functionName}`, Math.round(duration), false);
+            if (error instanceof Error) {
+              monitor.trackError(error, { endpoint: `functions/${functionName}` });
+            }
+          } catch {
+            // Monitoring not available, ignore
+          }
+          
           return Promise.reject(error);
         }
       );

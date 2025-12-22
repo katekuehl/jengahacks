@@ -11,11 +11,17 @@ import { logger } from "./lib/logger";
 // Initialize Sentry error tracking
 initSentry();
 
+// Initialize monitoring
+import { monitor } from './lib/monitoring';
+
 // Log application startup
 logger.info('Application starting', {
   environment: import.meta.env.MODE,
   version: import.meta.env.VITE_APP_VERSION || 'unknown',
 });
+
+// Track application startup
+monitor.trackMetric('app_start', 1, { environment: import.meta.env.MODE });
 
 const container = document.getElementById("root");
 if (!container) {
