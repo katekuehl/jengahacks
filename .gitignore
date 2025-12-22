@@ -7,6 +7,7 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dependencies
 node_modules
 dist
 dist-ssr
@@ -23,13 +24,29 @@ dist-ssr
 *.sln
 *.sw?
 
-# Playwright
-/test-results/
-/playwright-report/
-/playwright/.cache/
-/playwright/.screenshots/
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Backup files
+backups/
+*.sql
+*.sql.gz
+*.tar.gz
+*.backup
 
 # Supabase
-supabase/.temp/
+.branches
+.temp
 
-.env
+# Testing
+coverage
+.nyc_output
+
+# Build outputs
+*.tsbuildinfo
+
+# Misc
+.cache
+.turbo
