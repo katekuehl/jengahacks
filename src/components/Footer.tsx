@@ -1,4 +1,3 @@
-import { Github, Twitter, Linkedin, Mail, MessageSquare } from "lucide-react";
 import mimisirobotiLogo from "@/assets/mimisiroboti-logo.png";
 import SocialShare from "@/components/SocialShare";
 import { useTranslation } from "@/hooks/useTranslation";
@@ -15,52 +14,6 @@ const Footer = () => {
               {t("footer.tagline")}
             </p>
           </div>
-
-          <nav className="flex items-center gap-3 sm:gap-4" aria-label="Social media links">
-            <a
-              href="https://x.com/mimisiroboti"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-muted hover:bg-primary hover:text-primary-foreground transition-colors"
-              aria-label="Follow us on Twitter - Opens in new tab"
-            >
-              <Twitter className="w-4 h-4 sm:w-5 sm:h-5" aria-hidden="true" />
-            </a>
-            <a
-              href="https://www.linkedin.com/company/mimisiroboti"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-muted hover:bg-primary hover:text-primary-foreground transition-colors"
-              aria-label="Follow us on LinkedIn - Opens in new tab"
-            >
-              <Linkedin className="w-4 h-4 sm:w-5 sm:h-5" aria-hidden="true" />
-            </a>
-            <a
-              href="https://github.com/jengahacks"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-muted hover:bg-primary hover:text-primary-foreground transition-colors"
-              aria-label="View our GitHub repository - Opens in new tab"
-            >
-              <Github className="w-4 h-4 sm:w-5 sm:h-5" aria-hidden="true" />
-            </a>
-            <a
-              href="mailto:hello@siliconsavannahsolutions.com"
-              className="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-muted hover:bg-primary hover:text-primary-foreground transition-colors"
-              aria-label="Send us an email"
-            >
-              <Mail className="w-4 h-4 sm:w-5 sm:h-5" aria-hidden="true" />
-            </a>
-            <a
-              href={import.meta.env.VITE_DISCORD_URL || "https://discord.gg/jengahacks"}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-muted hover:bg-indigo-500 hover:text-white transition-colors"
-              aria-label="Join our Discord Community - Opens in new tab"
-            >
-              <MessageSquare className="w-4 h-4 sm:w-5 sm:h-5" aria-hidden="true" />
-            </a>
-          </nav>
         </div>
 
         <div className="mt-6 sm:mt-8 pt-6 sm:pt-8 border-t border-border">
