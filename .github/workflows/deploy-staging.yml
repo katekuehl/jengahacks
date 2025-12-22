@@ -19,9 +19,10 @@ jobs:
   deploy-staging:
     name: Deploy to Staging
     runs-on: ubuntu-latest
-    environment:
-      name: staging
-      url: ${{ steps.deploy.outputs.url }}
+    # Note: Create 'staging' environment in GitHub Settings → Environments
+    # environment:
+    #   name: staging
+    #   url: ${{ steps.deploy.outputs.url }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -81,7 +82,7 @@ jobs:
       # Alternative: Deploy to Netlify (staging)
       - name: Deploy to Netlify (Staging)
         if: env.NETLIFY_AUTH_TOKEN != '' && env.VERCEL_TOKEN == ''
-        uses: netlify/actions/cli@master
+        uses: netlify/actions/cli@v2.0.0
         with:
           args: deploy --dir=dist --prod=false
         env:

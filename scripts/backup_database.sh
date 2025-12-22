@@ -39,10 +39,17 @@ fi
 log "Starting database backup"
 
 # Get project reference from environment or config
-PROJECT_REF="${SUPABASE_PROJECT_REF:-$(grep 'project_id' supabase/config.toml 2>/dev/null | cut -d'"' -f2 || echo '')}"
+# Allow override via command line argument
+if [ -n "$1" ]; then
+    PROJECT_REF="$1"
+    log "Using project reference from argument: $PROJECT_REF"
+else
+    PROJECT_REF="${SUPABASE_PROJECT_REF:-$(grep 'project_id' supabase/config.toml 2>/dev/null | cut -d'"' -f2 || echo '')}"
+fi
 
 if [ -z "$PROJECT_REF" ]; then
-    log "ERROR: SUPABASE_PROJECT_REF not set. Set it in .env or supabase/config.toml"
+    log "ERROR: SUPABASE_PROJECT_REF not set. Set it in .env, supabase/config.toml, or pass as argument"
+    log "Usage: $0 [project-ref]"
     exit 1
 fi
 

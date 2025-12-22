@@ -68,6 +68,7 @@ JengaHacks is a 36-hour hackathon event taking place in Nairobi, Kenya, bringing
 - **[Deployment Guide](./DEPLOYMENT.md)** - Step-by-step guide for deploying to production
 - **[Staging Setup](./STAGING_SETUP.md)** - Complete guide for setting up staging environment
 - **[Backup Strategy](./BACKUP_STRATEGY.md)** - Backup and disaster recovery procedures
+- **[Backup Implementation](./BACKUP_IMPLEMENTATION.md)** - Implemented backup system details
 - **[Environment Variables](./ENVIRONMENT_VARIABLES.md)** - Complete reference for all environment variables
 - **[Troubleshooting Guide](./TROUBLESHOOTING.md)** - Solutions for common issues and errors
 - **[Contributing Guidelines](./CONTRIBUTING.md)** - Guidelines for contributing to the project

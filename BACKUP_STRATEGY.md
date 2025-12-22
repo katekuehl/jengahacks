@@ -147,9 +147,11 @@ supabase functions download <function-name>
 
 ## Automated Backup Scripts
 
+All backup scripts are located in the `scripts/` directory. See `scripts/README.md` for detailed usage.
+
 ### Database Backup Script
 
-Create `scripts/backup_database.sh`:
+`scripts/backup_database.sh`:
 
 ```bash
 #!/bin/bash
@@ -204,7 +206,7 @@ echo "Backup completed at $(date)"
 
 ### Storage Backup Script
 
-Create `scripts/backup_storage.py`:
+`scripts/backup_storage.py`:
 
 ```python
 #!/usr/bin/env python3
@@ -335,24 +337,50 @@ if __name__ == "__main__":
 | Backup Type | Frequency | Method | Retention |
 |------------|-----------|--------|-----------|
 | Database (Automated) | Daily | Supabase Pro | 7 days |
+| Database (GitHub Actions) | Daily | Automated Workflow | 30 days |
 | Database (Manual) | Weekly | pg_dump/Supabase CLI | 1 year |
 | Storage Buckets | Weekly | Custom Script | 90 days |
+| Full Backup | Weekly | backup_all.sh | 90 days |
 | Edge Functions | On Deploy | Git | Permanent |
 | Migrations | On Commit | Git | Permanent |
 | Environment Config | On Change | Encrypted Storage | Permanent |
 
-### Cron Schedule Example
+### Automated Setup
+
+**Quick Setup (Recommended):**
+```bash
+# Interactive setup script
+./scripts/setup-backup-cron.sh
+```
+
+**Manual Cron Schedule:**
 
 ```bash
 # Daily database backup at 2 AM
-0 2 * * * /path/to/scripts/backup_database.sh >> /var/log/backup.log 2>&1
+0 2 * * * cd /path/to/project && ./scripts/backup_database.sh >> backups/backup.log 2>&1
 
 # Weekly storage backup on Sundays at 3 AM
-0 3 * * 0 /path/to/scripts/backup_storage.py >> /var/log/backup.log 2>&1
+0 3 * * 0 cd /path/to/project && python3 scripts/backup_storage.py >> backups/backup.log 2>&1
 
-# Monthly full backup on 1st of month at 1 AM
-0 1 1 * * /path/to/scripts/backup_full.sh >> /var/log/backup.log 2>&1
+# Weekly full backup on Sundays at 4 AM
+0 4 * * 0 cd /path/to/project && ./scripts/backup_all.sh >> backups/backup.log 2>&1
 ```
+
+### GitHub Actions Automated Backups
+
+The `.github/workflows/backup-database.yml` workflow provides:
+- **Daily automated backups** at 2 AM UTC
+- **Manual trigger** via workflow_dispatch
+- **Production and staging** support
+- **Cloud storage upload** (AWS S3, GCS)
+- **Artifact retention** (30 days)
+- **Integrity verification**
+- **Backup summaries**
+
+**Setup:**
+1. Set GitHub Secrets (see workflow file)
+2. Workflow runs automatically on schedule
+3. Or trigger manually: Actions → Backup Database → Run workflow
 
 ## Backup Storage Locations
 

@@ -77,6 +77,104 @@ Database restore script (use with caution).
 - Supabase Dashboard → Database → Backups (point-in-time recovery)
 - `psql` with connection string
 
+### `backup_all.sh`
+
+Comprehensive backup script that backs up database, storage, and configuration.
+
+**Usage:**
+```bash
+./scripts/backup_all.sh
+```
+
+**Features:**
+- Database backup (compressed)
+- Storage backup (if Python available)
+- Configuration backup (migrations, workflows, config files)
+- Creates backup manifest (JSON)
+- Automatic cleanup of old backups
+- Detailed logging
+
+**Schedule with cron:**
+```bash
+# Weekly full backup on Sundays at 4 AM
+0 4 * * 0 cd /path/to/project && ./scripts/backup_all.sh
+```
+
+### `setup-backup-cron.sh`
+
+Interactive script to set up automated backup cron jobs.
+
+**Usage:**
+```bash
+./scripts/setup-backup-cron.sh
+```
+
+**What it does:**
+- Sets up daily database backup (2 AM)
+- Sets up weekly storage backup (Sundays 3 AM)
+- Sets up weekly full backup (Sundays 4 AM)
+- Backs up existing crontab before making changes
+
+### `backup_all.sh`
+
+Comprehensive backup script that backs up database, storage, and configuration.
+
+**Usage:**
+```bash
+./scripts/backup_all.sh
+```
+
+**Features:**
+- Database backup (compressed)
+- Storage backup (if Python available)
+- Configuration backup (migrations, workflows, config files)
+- Creates backup manifest (JSON)
+- Automatic cleanup of old backups
+- Detailed logging
+
+**Schedule with cron:**
+```bash
+# Weekly full backup on Sundays at 4 AM
+0 4 * * 0 cd /path/to/project && ./scripts/backup_all.sh
+```
+
+### `setup-backup-cron.sh`
+
+Interactive script to set up automated backup cron jobs.
+
+**Usage:**
+```bash
+./scripts/setup-backup-cron.sh
+```
+
+**What it does:**
+- Sets up daily database backup (2 AM)
+- Sets up weekly storage backup (Sundays 3 AM)
+- Sets up weekly full backup (Sundays 4 AM)
+- Backs up existing crontab before making changes
+
+### `check-backup-health.sh`
+
+Monitor backup health and alert on issues.
+
+**Usage:**
+```bash
+./scripts/check-backup-health.sh
+```
+
+**Checks:**
+- Backup age (alerts if > 25 hours old)
+- Backup size (alerts if suspiciously small)
+- Backup integrity (gzip test)
+- Table count
+- Critical tables presence
+
+**Schedule with cron:**
+```bash
+# Check backup health daily at 3 AM (after backup runs)
+0 3 * * * cd /path/to/project && ./scripts/check-backup-health.sh
+```
+
 ### `verify_backup.sh`
 
 Verify backup file integrity and contents.
