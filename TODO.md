@@ -40,13 +40,13 @@
 - [x] Add WhatsApp number validation and normalization
 - [x] Add autocomplete attributes to form fields (email, name, tel, url)
 - [ ] Add email confirmation for registrations
-- [ ] Add registration confirmation page/thank you page
+- [x] Add registration confirmation page/thank you page
 - [x] Implement admin dashboard for viewing registrations (`/admin` route with authentication)
 - [x] Add export functionality for registrations (CSV export in admin dashboard)
 - [ ] Add registration status tracking
-- [ ] Implement waitlist functionality if registrations exceed limit
-- [ ] Add ability to update/cancel registrations
-- [ ] Add registration QR code generation
+- [x] Implement waitlist functionality if registrations exceed limit
+- [x] Add ability to update/cancel registrations
+- [x] Add registration QR code generation
 
 ### UI/UX Improvements
 - [x] Add loading states for better UX
