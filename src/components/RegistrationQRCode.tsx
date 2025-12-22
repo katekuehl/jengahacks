@@ -1,5 +1,4 @@
 import { useMemo } from "react";
-// @ts-expect-error - qrcode.react types may not be available
 import { QRCodeSVG } from "qrcode.react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";

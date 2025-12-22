@@ -176,11 +176,23 @@ const RegistrationsTable = ({ onRefresh }: RegistrationsTableProps) => {
       }
 
       // Download using signed URL
-      const response = await fetch(functionData.url);
+      const urlString =
+        typeof functionData === "object" &&
+        functionData !== null &&
+        "url" in functionData
+          ? (functionData as { url: string }).url
+          : null;
+
+      if (!urlString) {
+        throw new Error("Failed to retrieve resume download URL");
+      }
+
+      const response = await fetch(urlString);
       if (!response.ok) throw new Error("Failed to download file");
       const blob = await response.blob();
 
       const url = createObjectURL(blob);
+
       if (!url) {
         throw new Error("Failed to create object URL");
       }

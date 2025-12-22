@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -24,6 +24,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import { useTranslation } from "@/hooks/useTranslation";
 import { trackRegistration } from "@/lib/analytics";
 import LiveRegion from "@/components/LiveRegion";
+import { logIncompleteRegistration, markIncompleteRegistrationCompleted } from "@/lib/incompleteRegistration";
 
 const Registration = () => {
   const { t } = useTranslation();
@@ -56,8 +57,43 @@ const Registration = () => {
   const [liveMessage, setLiveMessage] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
   const recaptchaRef = useRef<ReCAPTCHA>(null);
+  const emailDebounceTimerRef = useRef<number | null>(null);
+  const whatsappDebounceTimerRef = useRef<number | null>(null);
+  const hasCompletedRef = useRef(false);
   
   const RECAPTCHA_SITE_KEY = import.meta.env.VITE_RECAPTCHA_SITE_KEY || "";
+
+  // Cleanup effect to log incomplete registration on unmount
+  useEffect(() => {
+    return () => {
+      // Cleanup: log incomplete registration if user leaves without completing
+      if (emailDebounceTimerRef.current) {
+        window.clearTimeout(emailDebounceTimerRef.current);
+      }
+      if (whatsappDebounceTimerRef.current) {
+        window.clearTimeout(whatsappDebounceTimerRef.current);
+      }
+      
+      // Log if email or WhatsApp number was entered but registration not completed
+      const hasEmail = formData.email.trim() && isValidEmail(formData.email.trim());
+      const hasWhatsApp = formData.whatsapp.trim() && isValidWhatsAppNumber(formData.whatsapp.trim());
+      
+      if (!hasCompletedRef.current && (hasEmail || hasWhatsApp)) {
+        logIncompleteRegistration({
+          email: hasEmail ? formData.email.trim() : undefined,
+          whatsappNumber: hasWhatsApp ? formData.whatsapp.trim() : undefined,
+          fullName: formData.fullName.trim() || undefined,
+          formData: {
+            hasWhatsApp: !!formData.whatsapp.trim(),
+            hasLinkedIn: !!formData.linkedIn.trim(),
+            hasResume: !!formData.resume,
+          },
+        }).catch(() => {
+          // Silently fail - non-critical logging
+        });
+      }
+    };
+  }, [formData.email, formData.fullName, formData.whatsapp, formData.linkedIn, formData.resume]);
 
   const validateField = (name: string, value: string): string | undefined => {
     switch (name) {
@@ -114,6 +150,58 @@ const Registration = () => {
       setHasLinkedIn(true);
     } else if (name === "linkedIn") {
       setHasLinkedIn(false);
+    }
+
+    // Track email entry for incomplete registration logging
+    if (name === "email" && value.trim() && isValidEmail(value.trim())) {
+      // Clear existing timer
+      if (emailDebounceTimerRef.current) {
+        window.clearTimeout(emailDebounceTimerRef.current);
+      }
+
+      // Debounce logging (wait 2 seconds after user stops typing)
+      emailDebounceTimerRef.current = window.setTimeout(() => {
+        if (!hasCompletedRef.current) {
+          logIncompleteRegistration({
+            email: value.trim(),
+            whatsappNumber: formData.whatsapp.trim() || undefined,
+            fullName: formData.fullName.trim() || undefined,
+            formData: {
+              hasWhatsApp: !!formData.whatsapp.trim(),
+              hasLinkedIn: !!formData.linkedIn.trim(),
+              hasResume: !!formData.resume,
+            },
+          }).catch(() => {
+            // Silently fail - non-critical logging
+          });
+        }
+      }, 2000);
+    }
+
+    // Track WhatsApp number entry for incomplete registration logging
+    if (name === "whatsapp" && value.trim() && isValidWhatsAppNumber(value.trim())) {
+      // Clear existing timer
+      if (whatsappDebounceTimerRef.current) {
+        window.clearTimeout(whatsappDebounceTimerRef.current);
+      }
+
+      // Debounce logging (wait 2 seconds after user stops typing)
+      whatsappDebounceTimerRef.current = window.setTimeout(() => {
+        if (!hasCompletedRef.current) {
+          logIncompleteRegistration({
+            email: formData.email.trim() || undefined,
+            whatsappNumber: value.trim(),
+            fullName: formData.fullName.trim() || undefined,
+            formData: {
+              hasWhatsApp: true,
+              hasLinkedIn: !!formData.linkedIn.trim(),
+              hasResume: !!formData.resume,
+            },
+          }).catch(() => {
+            // Silently fail - non-critical logging
+          });
+        }
+      }, 2000);
     }
   };
 
@@ -391,6 +479,14 @@ const Registration = () => {
       // Success - record submission and navigate to thank you page
       recordSubmission();
       trackRegistration(true);
+      
+      // Mark incomplete registration as completed if it exists
+      hasCompletedRef.current = true;
+      if (email || whatsappNumber) {
+        markIncompleteRegistrationCompleted(email, whatsappNumber).catch(() => {
+          // Silently fail - non-critical
+        });
+      }
       
       // Get waitlist position if on waitlist
       let waitlistPosition: number | null = null;
