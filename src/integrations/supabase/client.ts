@@ -167,11 +167,12 @@ const supabase = isDevelopment ? {
   // Wrap rpc() for RPC calls
   rpc: <T = unknown>(fnName: string, args?: Record<string, unknown>) => {
     const startTime = performance.now();
-    // @ts-expect-error - Development-only wrapper, type safety handled at runtime
-    const result = baseClient.rpc(fnName, args);
+    // Type assertion needed because baseClient.rpc has complex generic types
+    // The actual type safety is ensured by the typed wrapper in src/lib/supabaseRpc.ts
+    // PostgrestFilterBuilder is thenable but TypeScript doesn't recognize it as Promise, so cast through unknown
+    const result = baseClient.rpc(fnName as never, args as never) as unknown as Promise<T>;
     
     return result.then(
-      // @ts-expect-error - Development-only wrapper
       (data: T) => {
         const duration = performance.now() - startTime;
         requestLogger.log({
