@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { createObjectURL, revokeObjectURL, safeSessionStorage } from "@/lib/polyfills";
 import { formatDateTimeShort } from "@/lib/i18n";
+import { logger } from "@/lib/logger";
 import {
   Table,
   TableBody,
@@ -53,7 +54,7 @@ const RegistrationsTable = ({ onRefresh }: RegistrationsTableProps) => {
       setRegistrations(data || []);
       if (onRefresh) onRefresh();
     } catch (error) {
-      console.error("Error loading registrations:", error);
+      logger.error("Error loading registrations", error instanceof Error ? error : new Error(String(error)), { component: "RegistrationsTable" });
       toast.error(t("adminTable.failedLoad"));
     } finally {
       setIsLoading(false);
@@ -171,17 +172,13 @@ const RegistrationsTable = ({ onRefresh }: RegistrationsTableProps) => {
       }
 
       // Use signed URL from Edge Function
-      if (!functionData?.url) {
+      const functionResponse = functionData as { url?: string } | null;
+      if (!functionResponse?.url) {
         throw new Error("No download URL received");
       }
 
       // Download using signed URL
-      const urlString =
-        typeof functionData === "object" &&
-        functionData !== null &&
-        "url" in functionData
-          ? (functionData as { url: string }).url
-          : null;
+      const urlString = functionResponse.url;
 
       if (!urlString) {
         throw new Error("Failed to retrieve resume download URL");
@@ -204,7 +201,7 @@ const RegistrationsTable = ({ onRefresh }: RegistrationsTableProps) => {
       document.body.removeChild(link);
       revokeObjectURL(url);
     } catch (error) {
-      console.error("Error downloading resume:", error);
+      logger.error("Error downloading resume", error instanceof Error ? error : new Error(String(error)), { resumePath, fileName });
       toast.error(t("adminTable.failedDownload"));
     }
   };

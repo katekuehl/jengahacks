@@ -25,6 +25,7 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { trackRegistration } from "@/lib/analytics";
 import LiveRegion from "@/components/LiveRegion";
 import { logIncompleteRegistration, markIncompleteRegistrationCompleted } from "@/lib/incompleteRegistration";
+import { logger } from "@/lib/logger";
 
 const Registration = () => {
   const { t } = useTranslation();
@@ -345,20 +346,14 @@ const Registration = () => {
             .upload(fileName, resume);
 
         if (uploadError) {
-            // Log error details only in development, not in production
-            if (import.meta.env.DEV) {
-          console.error('Upload error:', uploadError);
-            }
+            logger.error('Resume upload error', uploadError instanceof Error ? uploadError : new Error(String(uploadError)), { fileName, resumePath });
             resumeUploadFailed = true;
             toast.error(t("registration.errors.failed"));
           } else {
             resumePath = fileName;
           }
         } catch (uploadErr) {
-          // Log error details only in development
-          if (import.meta.env.DEV) {
-            console.error('Resume upload exception:', uploadErr);
-          }
+          logger.error('Resume upload exception', uploadErr instanceof Error ? uploadErr : new Error(String(uploadErr)), { fileName });
           resumeUploadFailed = true;
           toast.error('Resume upload failed, but registration will continue');
         }
@@ -380,10 +375,7 @@ const Registration = () => {
       const { data: shouldWaitlist, error: waitlistCheckError } = await (supabase.rpc as any)('should_add_to_waitlist');
 
       if (waitlistCheckError) {
-        // Log error but continue with registration attempt
-        if (import.meta.env.DEV) {
-          console.error('Waitlist check error:', waitlistCheckError);
-        }
+        logger.error('Waitlist check error', waitlistCheckError instanceof Error ? waitlistCheckError : new Error(String(waitlistCheckError)), { email });
       }
 
       const isWaitlist = shouldWaitlist === true;
@@ -393,11 +385,7 @@ const Registration = () => {
       const { data: accessToken, error: tokenError } = await (supabase.rpc as any)('generate_access_token');
 
       if (tokenError) {
-        // Log error but continue with registration attempt
-        // The database trigger will generate a token automatically, but user won't have immediate access
-        if (import.meta.env.DEV) {
-          console.error('Access token generation error:', tokenError);
-        }
+        logger.error('Access token generation error', tokenError instanceof Error ? tokenError : new Error(String(tokenError)), { email });
       }
 
       // Insert registration into database (always attempt, even if resume upload failed)
@@ -459,10 +447,7 @@ const Registration = () => {
       }
 
       if (insertError) {
-        // Log error details only in development
-        if (import.meta.env.DEV) {
-        console.error('Insert error:', insertError);
-        }
+        logger.error('Registration insert error', insertError instanceof Error ? insertError : new Error(String(insertError)), { email, fullName });
         
         // Check for rate limit violation (custom error code or message)
         if (insertError.message?.includes('rate limit') || insertError.message?.includes('too many')) {
@@ -506,10 +491,7 @@ const Registration = () => {
             waitlistPosition = position;
           }
         } catch (error) {
-          // Log but don't prevent navigation
-          if (import.meta.env.DEV) {
-            console.warn('Failed to get waitlist position:', error);
-          }
+          logger.warn('Failed to get waitlist position', { email, error: error instanceof Error ? error.message : String(error) });
         }
       }
       
@@ -547,10 +529,7 @@ const Registration = () => {
       // Navigate immediately - toast will still be visible during navigation
       navigate(`/thank-you${emailParam}`);
     } catch (error) {
-      // Log error details only in development
-      if (import.meta.env.DEV) {
-      console.error('Registration error:', error);
-      }
+      logger.error('Registration error', error instanceof Error ? error : new Error(String(error)), { email, fullName });
       const errorMessage = error instanceof Error ? error.message : t("registration.errors.failed");
       trackRegistration(false, errorMessage);
       toast.error(errorMessage);
@@ -876,7 +855,7 @@ const Registration = () => {
                       }}
                       onError={(error) => {
                         setCaptchaToken(null);
-                        console.error("reCAPTCHA error:", error);
+                        logger.error("reCAPTCHA error", error instanceof Error ? error : new Error(String(error)));
                         // Check for specific error types
                         if (error?.toString().includes("Invalid key type")) {
                           setErrors((prev) => ({ ...prev, captcha: t("registration.errors.captchaFailed") }));
