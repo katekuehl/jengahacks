@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Calendar, MapPin, Clock, CheckCircle2, Download, ExternalLink, ArrowLeft, Settings } from "lucide-react";
+import { Calendar, MapPin, Clock, CheckCircle2, Download, ExternalLink, ArrowLeft, Settings, QrCode } from "lucide-react";
 import siliconSavannahLogo from "@/assets/silicon-savannah-logo.png";
 import adamurLogo from "@/assets/adamur-logo.png";
 import promptbiLogo from "@/assets/promptbi-logo.svg";
@@ -10,14 +10,17 @@ import { useTranslation } from "@/hooks/useTranslation";
 import SEO from "@/components/SEO";
 import ScrollReveal from "@/components/ScrollReveal";
 import { trackEvent } from "@/lib/analytics";
+import RegistrationQRCode from "@/components/RegistrationQRCode";
 
 const ThankYou = () => {
   const { t } = useTranslation();
   const [searchParams] = useSearchParams();
   const email = searchParams.get("email");
+  const fullName = searchParams.get("name");
   const isWaitlist = searchParams.get("waitlist") === "true";
   const waitlistPosition = searchParams.get("position");
   const token = searchParams.get("token");
+  const registrationId = searchParams.get("id");
 
   useEffect(() => {
     // Track page view
@@ -243,9 +246,23 @@ const ThankYou = () => {
               </Card>
             </ScrollReveal>
 
+            {/* QR Code */}
+            {registrationId && email && fullName && (
+              <ScrollReveal direction="up" delay={250}>
+                <div className="mb-8 sm:mb-12 max-w-md mx-auto">
+                  <RegistrationQRCode
+                    registrationId={registrationId}
+                    email={email}
+                    fullName={fullName}
+                    token={token}
+                  />
+                </div>
+              </ScrollReveal>
+            )}
+
             {/* Manage Registration */}
             {token && (
-              <ScrollReveal direction="up" delay={250}>
+              <ScrollReveal direction="up" delay={300}>
                 <Card className="mb-8 sm:mb-12 max-w-2xl mx-auto">
                   <CardHeader>
                     <CardTitle className="text-2xl">{t("thankYou.manageRegistration")}</CardTitle>

@@ -320,18 +320,22 @@ const Registration = () => {
       const USE_EDGE_FUNCTION = import.meta.env.VITE_USE_REGISTRATION_EDGE_FUNCTION === 'true';
       
       let insertError: { message?: string; code?: string } | null = null;
+      let registrationId: string | null = null;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      let functionData: any = null;
       
       if (USE_EDGE_FUNCTION) {
         // Use Edge Function to capture IP address
-        const { data: functionData, error: functionError } = await supabase.functions.invoke(
+        const response = await supabase.functions.invoke(
           'register-with-ip',
           {
             body: registrationData,
           }
         );
 
-        if (functionError) {
-          insertError = functionError;
+        functionData = response.data;
+        if (response.error) {
+          insertError = response.error;
         } else if (functionData?.error) {
           // Handle Edge Function error response
           if (functionData.code === 'RATE_LIMIT_EXCEEDED') {
@@ -341,14 +345,21 @@ const Registration = () => {
             throw new Error(functionData.error || t("registration.errors.duplicateEmail"));
           }
           throw new Error(functionData.error || t("registration.errors.failed"));
+        } else if (functionData?.data?.id) {
+          registrationId = functionData.data.id;
         }
       } else {
         // Direct database insert (IP will be NULL, but email-based rate limiting still applies)
-        const { error: dbError } = await supabase
+        const { data: insertedData, error: dbError } = await supabase
           .from('registrations')
-          .insert(registrationData);
+          .insert(registrationData)
+          .select('id')
+          .single();
 
         insertError = dbError;
+        if (insertedData?.id) {
+          registrationId = insertedData.id;
+        }
       }
 
       if (insertError) {
@@ -409,12 +420,14 @@ const Registration = () => {
       }
       recaptchaRef.current?.reset();
 
-      // Navigate to thank you page with email, waitlist, and token parameters
+      // Navigate to thank you page with email, waitlist, token, registration ID, and full name parameters
       const params = new URLSearchParams();
       if (email) params.set('email', email);
+      if (fullName) params.set('name', fullName);
       if (isWaitlist) params.set('waitlist', 'true');
       if (waitlistPosition !== null) params.set('position', waitlistPosition.toString());
       if (accessToken) params.set('token', accessToken);
+      if (registrationId) params.set('id', registrationId);
       const queryString = params.toString();
       const emailParam = queryString ? `?${queryString}` : '';
       setTimeout(() => {

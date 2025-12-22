@@ -21,6 +21,7 @@ import SEO from "@/components/SEO";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ScrollReveal from "@/components/ScrollReveal";
+import RegistrationQRCode from "@/components/RegistrationQRCode";
 
 interface RegistrationData {
   id: string;
@@ -71,7 +72,7 @@ const ManageRegistration = () => {
 
       try {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const { data, error } = await (supabase.rpc as any)('get_registration_by_token', { p_token: token });
+        const { data, error } = await (supabase.rpc as any)('get_registration_by_token', { p_token: token } as any);
 
         if (error) {
           console.error('Error loading registration:', error);
@@ -242,6 +243,7 @@ const ManageRegistration = () => {
           p_whatsapp_number: whatsappNumber,
           p_linkedin_url: linkedInUrl,
           p_resume_path: resumePath,
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } as any
       );
 
@@ -380,6 +382,18 @@ const ManageRegistration = () => {
                   </div>
                 )}
               </div>
+
+              {/* QR Code */}
+              {registration && (
+                <div className="mb-6">
+                  <RegistrationQRCode
+                    registrationId={registration.id}
+                    email={registration.email}
+                    fullName={registration.full_name}
+                    token={token}
+                  />
+                </div>
+              )}
 
               <Card>
                 <CardHeader>
