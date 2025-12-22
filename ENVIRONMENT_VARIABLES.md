@@ -635,6 +635,116 @@ VITE_SENTRY_RELEASE=abc123def456
 
 ---
 
+#### `VITE_LOG_AGGREGATION_ENABLED`
+
+**Type:** `boolean`  
+**Required:** ❌ No  
+**Default:** `false`  
+**Description:** Enable log aggregation to external services.
+
+**Usage:**
+- Set to `true` to enable log forwarding
+- Requires `VITE_LOG_AGGREGATION_PROVIDER` to be configured
+
+---
+
+#### `VITE_LOG_AGGREGATION_PROVIDER`
+
+**Type:** `string`  
+**Required:** ❌ No  
+**Default:** `none`  
+**Options:** `logtail`, `datadog`, `logdna`, `custom`, `none`  
+**Description:** Log aggregation service provider.
+
+**Usage:**
+- `logtail` - Better Stack Logtail (recommended)
+- `datadog` - Datadog Logs
+- `logdna` - LogDNA
+- `custom` - Custom endpoint
+- `none` - Disabled
+
+---
+
+#### `VITE_LOG_AGGREGATION_ENDPOINT`
+
+**Type:** `string`  
+**Required:** ✅ Yes (if aggregation enabled)  
+**Description:** Log aggregation service endpoint URL.
+
+**Examples:**
+- Logtail: `https://in.logtail.com`
+- Datadog: `https://http-intake.logs.datadoghq.com/api/v2/logs`
+- LogDNA: `https://logs.logdna.com/logs/ingest`
+
+---
+
+#### `VITE_LOG_AGGREGATION_API_KEY`
+
+**Type:** `string`  
+**Required:** ✅ Yes (if aggregation enabled)  
+**Description:** API key for log aggregation service.
+
+**Security:**
+- ⚠️ **Never commit to Git**
+- ✅ Store in environment variables
+- ✅ Use different keys for dev/staging/prod
+
+---
+
+#### `VITE_LOG_AGGREGATION_SOURCE`
+
+**Type:** `string`  
+**Required:** ❌ No  
+**Default:** `jengahacks-hub`  
+**Description:** Source identifier for logs in aggregation service.
+
+**Usage:**
+- Helps identify logs from this application
+- Useful when aggregating logs from multiple services
+
+---
+
+#### `VITE_LOG_AGGREGATION_BATCH_SIZE`
+
+**Type:** `number`  
+**Required:** ❌ No  
+**Default:** `10`  
+**Description:** Number of logs to batch before sending.
+
+**Usage:**
+- Higher values reduce API calls but increase memory
+- Lower values send logs more frequently
+- Recommended: 10-20
+
+---
+
+#### `VITE_LOG_AGGREGATION_FLUSH_INTERVAL`
+
+**Type:** `number`  
+**Required:** ❌ No  
+**Default:** `5000`  
+**Description:** Time in milliseconds to wait before flushing batched logs.
+
+**Usage:**
+- Higher values reduce API calls
+- Lower values send logs more frequently
+- Recommended: 5000-10000ms
+
+---
+
+#### `VITE_LOG_AGGREGATION_BATCHING`
+
+**Type:** `boolean`  
+**Required:** ❌ No  
+**Default:** `true`  
+**Description:** Enable log batching to reduce API calls.
+
+**Usage:**
+- Set to `false` to send logs immediately
+- Useful for critical errors that need immediate visibility
+
+---
+
 ## Server-Side Variables (Edge Functions)
 
 These variables are set in Supabase Edge Function secrets and are **never exposed** to the client.
@@ -677,6 +787,77 @@ Or via Supabase Dashboard:
 **Security:**
 - ⚠️ **NEVER expose this to the client**
 - ⚠️ Only used in Edge Functions
+
+---
+
+#### `LOG_AGGREGATION_PROVIDER`
+
+**Type:** `string`  
+**Required:** ❌ No  
+**Default:** `logtail`  
+**Options:** `logtail`, `datadog`, `none`  
+**Description:** Log aggregation provider for Edge Function log forwarder.
+
+**Usage:**
+- Set in Edge Function secrets
+- Used by `log-forwarder` Edge Function
+
+---
+
+#### `LOGTAIL_ENDPOINT`
+
+**Type:** `string`  
+**Required:** ✅ Yes (if using Logtail)  
+**Description:** Logtail ingestion endpoint URL.
+
+**Example:** `https://in.logtail.com`
+
+---
+
+#### `LOGTAIL_API_KEY`
+
+**Type:** `string`  
+**Required:** ✅ Yes (if using Logtail)  
+**Description:** Logtail API key for authentication.
+
+**Security:**
+- ⚠️ **NEVER expose to client**
+- ✅ Store in Edge Function secrets
+
+---
+
+#### `DATADOG_ENDPOINT`
+
+**Type:** `string`  
+**Required:** ✅ Yes (if using Datadog)  
+**Description:** Datadog logs ingestion endpoint URL.
+
+**Example:** `https://http-intake.logs.datadoghq.com/api/v2/logs`
+
+---
+
+#### `DATADOG_API_KEY`
+
+**Type:** `string`  
+**Required:** ✅ Yes (if using Datadog)  
+**Description:** Datadog API key for authentication.
+
+**Security:**
+- ⚠️ **NEVER expose to client**
+- ✅ Store in Edge Function secrets
+
+---
+
+#### `ENVIRONMENT`
+
+**Type:** `string`  
+**Required:** ❌ No  
+**Default:** `production`  
+**Description:** Environment name for log tagging.
+
+**Usage:**
+- Used to tag logs with environment
+- Helps filter logs by environment in aggregation service
 - ⚠️ Has full database access (bypasses RLS)
 
 **Note:** This is automatically provided by Supabase - you don't need to set it manually.

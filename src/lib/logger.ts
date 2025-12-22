@@ -297,6 +297,16 @@ class Logger {
 // Create singleton instance
 export const logger = new Logger();
 
+// Integrate with log aggregation if enabled
+if (import.meta.env.VITE_LOG_AGGREGATION_ENABLED === 'true') {
+  // Dynamic import to avoid circular dependencies
+  import('./logAggregation').then(({ integrateWithLogger }) => {
+    integrateWithLogger(logger);
+  }).catch(() => {
+    // Silently fail if aggregation module is not available
+  });
+}
+
 // Export for testing
 export { Logger };
 
