@@ -10,7 +10,7 @@ const NotFound = () => {
 
   useEffect(() => {
     // Log 404 errors for monitoring (logger respects log level configuration)
-    logger.warn("404 Error: User attempted to access non-existent route", { pathname: location.pathname });
+    logger.warn("404 Error: User attempted to access non-existent route");
   }, [location.pathname]);
 
   return (
