@@ -16,7 +16,7 @@
   - [ ] `VITE_USE_REGISTRATION_EDGE_FUNCTION` (set to `true` for IP rate limiting)
 
 ### Security
-- [ ] Set up reCAPTCHA v2 Checkbox in production
+- [ ] Set up reCAPTCHA Checkbox in production
   - [ ] Create site in [Google reCAPTCHA Admin](https://www.google.com/recaptcha/admin)
   - [ ] Add production domain to allowed domains
   - [ ] Configure site key in production environment
@@ -24,7 +24,7 @@
 - [ ] Configure security headers (X-Frame-Options, X-Content-Type-Options, etc.)
 - [ ] Enable HTTPS enforcement in production
 - [ ] Set up server-side CAPTCHA verification (optional but recommended)
-- [ ] Install Synk
+- [x] Install Snyk (Synk) Security Tool
 
 ### Deployment
 - [ ] Deploy to production hosting
@@ -39,11 +39,10 @@
 - [x] Add WhatsApp number field to registration form
 - [x] Add WhatsApp number validation and normalization
 - [x] Add autocomplete attributes to form fields (email, name, tel, url)
-- [ ] Add email confirmation for registrations
+- [/] Add email confirmation for registrations
 - [x] Add registration confirmation page/thank you page
 - [x] Implement admin dashboard for viewing registrations (`/admin` route with authentication)
 - [x] Add export functionality for registrations (CSV export in admin dashboard)
-- [ ] Add registration status tracking
 - [x] Implement waitlist functionality if registrations exceed limit
 - [x] Add ability to update/cancel registrations
 - [x] Add registration QR code generation
