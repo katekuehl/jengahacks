@@ -62,7 +62,7 @@ describe("blog utilities", () => {
       const originalEnv = import.meta.env;
       vi.stubEnv("VITE_BLOG_API_URL", "");
       vi.stubEnv("VITE_BLOG_RSS_URL", "");
-      vi.stubEnv("DEV", "true");
+      vi.stubEnv("DEV", true);
 
       const posts = await fetchBlogPosts();
       expect(posts.length).toBeGreaterThan(0);
@@ -71,7 +71,7 @@ describe("blog utilities", () => {
     it("should handle API fetch errors gracefully", async () => {
       global.fetch = vi.fn().mockRejectedValue(new Error("Network error"));
       vi.stubEnv("VITE_BLOG_API_URL", "https://api.example.com/posts");
-      vi.stubEnv("DEV", "true");
+      vi.stubEnv("DEV", true);
 
       const posts = await fetchBlogPosts();
       // Should fallback to mock posts in dev

@@ -11,8 +11,8 @@ import SkipLink from "@/components/SkipLink";
 const About = lazy(() => import("@/components/About"));
 const Sponsors = lazy(() => import("@/components/Sponsors"));
 const Prizes = lazy(() => import("@/components/Prizes"));
-const JudgesMentors = lazy(() => import("@/components/JudgesMentors"));
-const FAQ = lazy(() => import("@/components/FAQ"));
+
+
 const Registration = lazy(() => import("@/components/Registration"));
 const Footer = lazy(() => import("@/components/Footer"));
 
@@ -53,12 +53,7 @@ const Index = () => {
               <Prizes />
             </ScrollReveal> 
             */}
-            <ScrollReveal direction="up" delay={400}>
-              <JudgesMentors />
-            </ScrollReveal>
-            <ScrollReveal direction="up" delay={500}>
-              <FAQ />
-            </ScrollReveal>
+
             <ScrollReveal direction="up" delay={600}>
               <Registration />
             </ScrollReveal>

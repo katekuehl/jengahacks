@@ -20,6 +20,16 @@ export default defineConfig(({ mode }) => ({
     cssTarget: ["chrome64", "firefox67", "safari12"],
     minify: "esbuild",
     polyfillModulePreload: true,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          "vendor-core": ["react", "react-dom", "react-router-dom"],
+          "vendor-supabase": ["@supabase/supabase-js"],
+          "vendor-ui": ["lucide-react", "framer-motion", "clsx", "tailwind-merge"],
+          "vendor-utils": ["@tanstack/react-query", "date-fns", "i18next", "react-i18next"],
+        },
+      },
+    },
   },
   test: {
     globals: true,
