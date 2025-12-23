@@ -140,16 +140,16 @@ const Admin = () => {
 
         const stats: RegistrationStats = {
           total: registrations.length,
-          withLinkedIn: (registrations as any[]).filter((r) => (r as any).linkedin_url).length,
-          withWhatsApp: (registrations as any[]).filter((r) => (r as any).whatsapp_number).length,
-          withResume: (registrations as any[]).filter((r) => r.resume_path).length,
-          today: (registrations as any[]).filter(
+          withLinkedIn: registrations.filter((r) => r.linkedin_url).length,
+          withWhatsApp: registrations.filter((r) => r.whatsapp_number).length,
+          withResume: registrations.filter((r) => r.resume_path).length,
+          today: registrations.filter(
             (r) => new Date(r.created_at) >= today
           ).length,
-          thisWeek: (registrations as any[]).filter(
+          thisWeek: registrations.filter(
             (r) => new Date(r.created_at) >= thisWeek
           ).length,
-          thisMonth: (registrations as any[]).filter(
+          thisMonth: registrations.filter(
             (r) => new Date(r.created_at) >= thisMonth
           ).length,
           dailyTrends,
@@ -158,8 +158,8 @@ const Admin = () => {
         };
 
         // Fetch incomplete registrations count for conversion tracking
-        const { count: incompleteCount, error: incompleteError } = await (supabase
-          .from("incomplete_registrations" as any) as any)
+        const { count: incompleteCount, error: incompleteError } = await supabase
+          .from("incomplete_registrations")
           .select("*", { count: 'exact', head: true });
         
         if (!incompleteError && incompleteCount !== null) {
@@ -202,8 +202,8 @@ const Admin = () => {
         r.id,
         r.full_name,
         r.email,
-        (r as any).whatsapp_number || "",
-        (r as any).linkedin_url || "",
+        r.whatsapp_number || "",
+        r.linkedin_url || "",
         r.resume_path ? t("common.yes") : t("common.no"),
         formatDateTimeShort(r.created_at),
       ]);

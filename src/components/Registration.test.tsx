@@ -109,11 +109,11 @@ describe("Registration", () => {
     uploadMock = vi.fn().mockResolvedValue({ data: { path: "resumes/test.pdf" }, error: null });
     
     // Set up chained insert mock
-    const mockSingle = vi.fn().mockResolvedValue({ data: { id: "mock-id" }, error: null });
+    const mockSingle = vi.fn().mockResolvedValue({ data: { id: "mock-id" }, error: null, count: null, status: 200, statusText: "OK" });
     const mockSelect = vi.fn().mockReturnValue({ single: mockSingle });
     insertMock = vi.fn().mockReturnValue({ select: mockSelect });
     
-    invokeMock = vi.fn().mockResolvedValue({ data: null, error: null });
+    invokeMock = vi.fn().mockResolvedValue({ data: null, error: null, count: null, status: 200, statusText: "OK" });
 
     vi.mocked(supabase.storage.from).mockReturnValue({
       upload: uploadMock,
@@ -134,7 +134,7 @@ describe("Registration", () => {
     vi.mocked(supabase.functions.invoke).mockImplementation(invokeMock);
     
     // Set up default rpc mock
-    vi.mocked(supabase.rpc).mockResolvedValue({ data: null, error: null });
+    vi.mocked(supabase.rpc).mockResolvedValue({ data: null, error: null, count: null, status: 200, statusText: "OK" });
   });
 
   it("should render the registration form", () => {
@@ -249,7 +249,7 @@ describe("Registration", () => {
 
     // Use the mocks set up in beforeEach
     // But we need to make sure insertMock returns a builder that works for registrationService
-    const mockSingle = vi.fn().mockResolvedValue({ data: { id: "mock-id" }, error: null });
+    const mockSingle = vi.fn().mockResolvedValue({ data: { id: "mock-id" }, error: null, count: null, status: 200, statusText: "OK" });
     const mockSelect = vi.fn().mockReturnValue({ single: mockSingle });
     insertMock.mockReturnValue({ select: mockSelect });
 

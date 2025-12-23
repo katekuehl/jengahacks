@@ -22,7 +22,7 @@ import { trackRegistration } from "@/lib/analytics";
 
 // Mock Supabase with improved chaining support
 vi.mock("@/integrations/supabase/client", () => {
-  const mockSingle = vi.fn().mockResolvedValue({ data: { id: "mock-id" }, error: null });
+  const mockSingle = vi.fn().mockResolvedValue({ data: { id: "mock-id" }, error: null, count: null, status: 200, statusText: "OK" });
   const mockSelect = vi.fn().mockImplementation(() => ({
     single: mockSingle,
     eq: vi.fn().mockReturnThis(),
@@ -44,7 +44,7 @@ vi.mock("@/integrations/supabase/client", () => {
     supabase: {
       storage: {
         from: vi.fn(() => ({
-          upload: vi.fn().mockResolvedValue({ error: null }),
+          upload: vi.fn().mockResolvedValue({ data: { path: "test.pdf" }, error: null, count: null, status: 200, statusText: "OK" }),
         })),
       },
       from: mockFrom,
@@ -164,11 +164,11 @@ describe("Registration Integration Tests", () => {
     uploadMock = vi.fn().mockResolvedValue({ error: null });
     
     // Create a chained mock for supabase.from().insert().select().single()
-    const mockSingle = vi.fn().mockResolvedValue({ data: { id: "mock-id" }, error: null });
+    const mockSingle = vi.fn().mockResolvedValue({ data: { id: "mock-id" }, error: null, count: null, status: 200, statusText: "OK" });
     const mockSelect = vi.fn().mockReturnValue({ single: mockSingle });
     insertMock = vi.fn().mockReturnValue({ select: mockSelect });
     
-    mockFunctionsInvoke = vi.fn().mockResolvedValue({ data: null, error: null });
+    mockFunctionsInvoke = vi.fn().mockResolvedValue({ data: null, error: null, count: null, status: 200, statusText: "OK" });
 
     // Set up mocked functions for supabase.storage.from to fully match StorageFileApi 
      
@@ -207,7 +207,7 @@ describe("Registration Integration Tests", () => {
     );
 
     // Set up default rpc mock - returns { data, error } format
-    vi.mocked(supabase.rpc).mockResolvedValue({ data: null, error: null });
+    vi.mocked(supabase.rpc).mockResolvedValue({ data: null, error: null, count: null, status: 200, statusText: "OK" });
   });
 
   afterEach(() => {
