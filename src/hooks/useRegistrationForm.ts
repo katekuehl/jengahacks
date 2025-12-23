@@ -96,7 +96,7 @@ export const useRegistrationForm = () => {
   const handleInputChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const { name, value } = e.target;
-      const sanitizedValue = name === "fullName" ? sanitizeInput(value, 100) : value;
+      const sanitizedValue = name === "fullName" ? sanitizeInput(value, 100, false) : value;
 
       setFormData((prev) => ({ ...prev, [name]: sanitizedValue }));
 

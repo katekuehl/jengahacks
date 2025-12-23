@@ -4,17 +4,17 @@ import userEvent from "@testing-library/user-event";
 import Navbar from "./Navbar";
 
 // Mock the logo image
-vi.mock("@/assets/jengahacks-logo.png", () => ({
+vi.mock("@/assets/JengaHack.png", () => ({
   default: "mock-logo.png",
 }));
 
 describe("Navbar", () => {
   it("should render the logo", () => {
     const { container } = render(<Navbar />);
-    // Logo has aria-hidden="true" and alt="", so find by aria-label on parent link or by src
-    const logoLink = screen.getByLabelText(/JengaHacks Home/i);
+    // Logo has aria-label on parent link
+    const logoLink = screen.getByLabelText(/Home|JengaHacks Home/i);
     expect(logoLink).toBeInTheDocument();
-    const logo = container.querySelector('img[src*="logo"]');
+    const logo = container.querySelector('img');
     expect(logo).toBeInTheDocument();
   });
 

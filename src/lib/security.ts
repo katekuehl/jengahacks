@@ -76,10 +76,11 @@ export const validateAndSanitizeUrl = (url: string): string | null => {
 /**
  * Sanitize user input to prevent XSS
  */
-export const sanitizeInput = (input: string, maxLength: number = 1000): string => {
+export const sanitizeInput = (input: string, maxLength: number = 1000, shouldTrim: boolean = true): string => {
   if (!input) return '';
 
-  return input
+  const processed = shouldTrim ? input.trim() : input;
+  return processed
     .substring(0, maxLength)
     .replace(/[<>]/g, ''); // Remove potential HTML tags
 };

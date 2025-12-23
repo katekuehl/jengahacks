@@ -20,12 +20,25 @@ import { toast } from "sonner";
 import { checkRateLimit, clearRateLimit } from "@/lib/rateLimit";
 import { trackRegistration } from "@/lib/analytics";
 
-// Mock Supabase
+// Mock Supabase with improved chaining support
 vi.mock("@/integrations/supabase/client", () => {
   const mockSingle = vi.fn().mockResolvedValue({ data: { id: "mock-id" }, error: null });
-  const mockSelect = vi.fn().mockReturnValue({ single: mockSingle });
-  const mockInsert = vi.fn().mockReturnValue({ select: mockSelect });
-  const mockFrom = vi.fn().mockReturnValue({ insert: mockInsert });
+  const mockSelect = vi.fn().mockImplementation(() => ({
+    single: mockSingle,
+    eq: vi.fn().mockReturnThis(),
+    order: vi.fn().mockReturnThis(),
+    limit: vi.fn().mockReturnThis(),
+  }));
+  const mockInsert = vi.fn().mockImplementation(() => ({
+    select: mockSelect,
+    single: mockSingle,
+  }));
+  const mockFrom = vi.fn().mockImplementation(() => ({
+    insert: mockInsert,
+    select: mockSelect,
+    update: vi.fn().mockReturnThis(),
+    delete: vi.fn().mockReturnThis(),
+  }));
   
   return {
     supabase: {

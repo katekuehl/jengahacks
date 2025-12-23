@@ -36,14 +36,14 @@ vi.mock("@/components/StructuredData", () => ({
 }));
 
 describe("Index Page", () => {
-  it("should render all main sections", () => {
+  it("should render all main sections", async () => {
     render(<Index />);
-    expect(screen.getByTestId("navbar")).toBeInTheDocument();
-    expect(screen.getByTestId("hero")).toBeInTheDocument();
-    expect(screen.getByTestId("about")).toBeInTheDocument();
-    expect(screen.getByTestId("sponsors")).toBeInTheDocument();
-    expect(screen.getByTestId("registration")).toBeInTheDocument();
-    expect(screen.getByTestId("footer")).toBeInTheDocument();
+    expect(await screen.findByTestId("navbar")).toBeInTheDocument();
+    expect(await screen.findByTestId("hero")).toBeInTheDocument();
+    expect(await screen.findByTestId("about")).toBeInTheDocument();
+    expect(await screen.findByTestId("sponsors")).toBeInTheDocument();
+    expect(await screen.findByTestId("registration")).toBeInTheDocument();
+    expect(await screen.findByTestId("footer")).toBeInTheDocument();
   });
 
   it("should have main element", () => {
