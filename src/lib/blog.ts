@@ -95,50 +95,20 @@ const fetchRSSFeed = async (rssUrl: string): Promise<BlogPost[]> => {
   }
 };
 
+import blogData from "@/content/blog.json";
+
 /**
- * Get mock blog posts for development/testing
+ * Get blog posts from static JSON file
  */
 export const getPosts = (limit?: number): BlogPost[] => {
-  const Posts: BlogPost[] = [
-    {
-      id: "1",
-      title: "JengaHacks 2026: What to Expect",
-      excerpt: "Get ready for East Africa's premier hackathon! Learn about the tracks, prizes, and what makes JengaHacks special.",
-      author: "JengaHacks Team",
-      publishedAt: "2025-12-15T10:00:00Z",
-      readTime: 5,
-      tags: ["announcement", "event"],
-    },
-    {
-      id: "2",
-      title: "Meet Our Sponsors: Building the Future Together",
-      excerpt: "We're thrilled to introduce our amazing sponsors who are making JengaHacks 2026 possible.",
-      author: "JengaHacks Team",
-      publishedAt: "2025-12-10T14:30:00Z",
-      readTime: 3,
-      tags: ["sponsors", "partners"],
-    },
-    {
-      id: "3",
-      title: "Hackathon Tips: How to Make the Most of 36 Hours",
-      excerpt: "Expert advice on time management, team formation, and building a winning project at JengaHacks.",
-      author: "JengaHacks Team",
-      publishedAt: "2025-12-05T09:15:00Z",
-      readTime: 7,
-      tags: ["tips", "guide"],
-    },
-    {
-      id: "4",
-      title: "Registration Now Open: Secure Your Spot",
-      excerpt: "Registration for JengaHacks 2026 is now open! Limited to 200 participants. Don't miss out on this incredible opportunity.",
-      author: "JengaHacks Team",
-      publishedAt: "2025-12-21T08:00:00Z",
-      readTime: 2,
-      tags: ["registration", "announcement"],
-    },
-  ];
+  const posts = blogData as BlogPost[];
 
-  return limit ? Posts.slice(0, limit) : Posts;
+  // Sort by date descending
+  const sortedPosts = [...posts].sort((a, b) =>
+    new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
+  );
+
+  return limit ? sortedPosts.slice(0, limit) : sortedPosts;
 };
 
 import { formatDate as i18nFormatDate, formatDateShort as i18nFormatDateShort } from "./i18n";

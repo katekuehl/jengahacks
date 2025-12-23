@@ -16,6 +16,7 @@ Thank you for your interest in contributing to JengaHacks 2026! This document pr
 - [Pull Request Process](#pull-request-process)
 - [Code Review Guidelines](#code-review-guidelines)
 - [Project Structure](#project-structure)
+- [Blog Management](./BLOG_MANAGEMENT.md)
 - [Style Guide](#style-guide)
 
 ## Code of Conduct
