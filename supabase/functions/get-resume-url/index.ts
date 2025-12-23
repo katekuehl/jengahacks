@@ -1,32 +1,18 @@
-// Supabase Edge Function to generate signed URLs for resume access
-// This provides secure, time-limited access to resume files
-
-// @ts-expect-error - Deno types are available in Supabase Edge Functions runtime
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-// @ts-expect-error - Deno ESM imports are available in Supabase Edge Functions runtime
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers":
-    "authorization, x-client-info, apikey, content-type",
-};
+import { handleCORS, createResponse, createErrorResponse } from "../_shared/utils.ts";
 
 interface GetResumeUrlRequest {
   resume_path: string;
   admin_password?: string;
 }
 
-serve(async (req) => {
-  // Handle CORS preflight
-  if (req.method === "OPTIONS") {
-    return new Response("ok", { headers: corsHeaders });
-  }
+serve(async (req: Request) => {
+  const corsResponse = handleCORS(req);
+  if (corsResponse) return corsResponse;
 
   try {
-    // @ts-expect-error - Deno global is available in Supabase Edge Functions runtime
     const supabaseUrl = Deno.env.get("SUPABASE_URL") ?? "";
-    // @ts-expect-error - Deno global is available in Supabase Edge Functions runtime
     const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
 
     if (!supabaseUrl || !supabaseServiceKey) {
@@ -43,51 +29,29 @@ serve(async (req) => {
 
     // Get authorization header (optional - for future Supabase Auth integration)
     const authHeader = req.headers.get("Authorization");
-    
+
     // For now, allow access if admin password is provided in request body
-    // In production, implement proper Supabase Auth or service role verification
     const { admin_password, resume_path }: GetResumeUrlRequest = await req.json();
-    
-    // Basic admin password check (in production, use proper authentication)
-    // @ts-expect-error - Deno global is available in Supabase Edge Functions runtime
+
+    // Basic admin password check
     const expectedPassword = Deno.env.get("ADMIN_PASSWORD") || "admin123";
-    
+
     if (admin_password !== expectedPassword && !authHeader) {
-      return new Response(
-        JSON.stringify({ error: "Unauthorized - Admin access required" }),
-        {
-          status: 401,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        }
-      );
+      return createErrorResponse("Unauthorized - Admin access required", 401);
     }
 
-    // If auth header is provided, verify Supabase Auth token (for future use)
+    // If auth header is provided, verify Supabase Auth token
     if (authHeader) {
       const token = authHeader.replace("Bearer ", "");
       const { data: { user }, error: authError } = await supabaseAdmin.auth.getUser(token);
-      
+
       if (authError || !user) {
-        return new Response(
-          JSON.stringify({ error: "Unauthorized - Invalid token" }),
-          {
-            status: 401,
-            headers: { ...corsHeaders, "Content-Type": "application/json" },
-          }
-        );
+        return createErrorResponse("Unauthorized - Invalid token", 401);
       }
     }
 
-    // resume_path already extracted above
-
     if (!resume_path || typeof resume_path !== "string") {
-      return new Response(
-        JSON.stringify({ error: "Invalid request - resume_path required" }),
-        {
-          status: 400,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        }
-      );
+      return createErrorResponse("Invalid request - resume_path required", 400);
     }
 
     // Verify the resume exists and belongs to a registration
@@ -98,13 +62,7 @@ serve(async (req) => {
       .single();
 
     if (regError || !registration) {
-      return new Response(
-        JSON.stringify({ error: "Resume not found" }),
-        {
-          status: 404,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        }
-      );
+      return createErrorResponse("Resume not found", 404);
     }
 
     // Generate signed URL with 1 hour expiration
@@ -114,36 +72,19 @@ serve(async (req) => {
 
     if (urlError || !signedUrlData) {
       console.error("Error creating signed URL:", urlError);
-      return new Response(
-        JSON.stringify({ error: "Failed to generate download URL" }),
-        {
-          status: 500,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        }
-      );
+      return createErrorResponse("Failed to generate download URL", 500);
     }
 
-    return new Response(
-      JSON.stringify({
-        url: signedUrlData.signedUrl,
-        expires_at: new Date(Date.now() + 3600 * 1000).toISOString(),
-      }),
-      {
-        status: 200,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      }
-    );
+    return createResponse({
+      success: true,
+      url: signedUrlData.signedUrl,
+      expires_at: new Date(Date.now() + 3600 * 1000).toISOString(),
+    });
   } catch (error) {
     console.error("Error in get-resume-url function:", error);
-    return new Response(
-      JSON.stringify({
-        error: "Internal server error",
-        message: error instanceof Error ? error.message : "Unknown error",
-      }),
-      {
-        status: 500,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      }
+    return createErrorResponse(
+      error instanceof Error ? error.message : "Internal server error",
+      500
     );
   }
 });

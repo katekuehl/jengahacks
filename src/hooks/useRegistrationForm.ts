@@ -10,13 +10,7 @@ import {
 import { validateField } from "@/lib/validation";
 import { useTranslation } from "@/hooks/useTranslation";
 
-export interface RegistrationFormData {
-  fullName: string;
-  email: string;
-  whatsapp: string;
-  linkedIn: string;
-  resume: File | null;
-}
+import { RegistrationFormData } from "@/types/registration";
 
 export interface FormErrors {
   fullName?: string;

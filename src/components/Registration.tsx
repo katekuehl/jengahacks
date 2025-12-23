@@ -21,12 +21,12 @@ import ReCAPTCHA from "react-google-recaptcha";
 import { normalizeWhatsAppNumber } from "@/lib/security";
 import { DEBOUNCE_DELAY_MS } from "@/lib/constants";
 
+import { RegistrationField } from "@/components/RegistrationField";
+
 const Registration = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const recaptchaRef = useRef<ReCAPTCHA>(null);
-  const emailDebounceTimerRef = useRef<number | null>(null);
-  const whatsappDebounceTimerRef = useRef<number | null>(null);
   const hasCompletedRef = useRef(false);
 
   const RECAPTCHA_SITE_KEY = import.meta.env.VITE_RECAPTCHA_SITE_KEY || "";
@@ -52,38 +52,6 @@ const Registration = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const [liveMessage, setLiveMessage] = useState("");
-
-  // Cleanup effect to log incomplete registration on unmount
-  useEffect(() => {
-    return () => {
-      // Cleanup: log incomplete registration if user leaves without completing
-      if (emailDebounceTimerRef.current) {
-        window.clearTimeout(emailDebounceTimerRef.current);
-      }
-      if (whatsappDebounceTimerRef.current) {
-        window.clearTimeout(whatsappDebounceTimerRef.current);
-      }
-
-      // Log if email or WhatsApp number was entered but registration not completed
-      const hasEmail = formData.email.trim() && formData.email.trim().includes("@");
-      const hasWhatsApp = formData.whatsapp.trim().length > 0;
-
-      if (!hasCompletedRef.current && (hasEmail || hasWhatsApp)) {
-        logIncompleteRegistration({
-          email: hasEmail ? formData.email.trim() : undefined,
-          whatsappNumber: hasWhatsApp ? formData.whatsapp.trim() : undefined,
-          fullName: formData.fullName.trim() || undefined,
-          formData: {
-            hasWhatsApp: !!formData.whatsapp.trim(),
-            hasLinkedIn: !!formData.linkedIn.trim(),
-            hasResume: !!formData.resume,
-          },
-        }).catch((err) => {
-          logger.error("Failed to log incomplete registration", err);
-        });
-      }
-    };
-  }, [formData.email, formData.fullName, formData.whatsapp, formData.linkedIn, formData.resume]);
 
   // Consolidated debounced logging for incomplete registrations
   useEffect(() => {
@@ -268,226 +236,66 @@ const Registration = () => {
             }}
           >
             {/* Full Name */}
-            <div className="space-y-2">
-              <Label htmlFor="fullName" className={cn(errors.fullName && "text-destructive")}>
-                {t("registration.fullName")} *
-              </Label>
-              <div className="relative">
-                <Input
-                  id="fullName"
-                  name="fullName"
-                  type="text"
-                  autoComplete="name"
-                  placeholder="John Doe"
-                  value={formData.fullName}
-                  onChange={handleInputChange}
-                  onBlur={handleBlur}
-                  className={cn(
-                    "bg-muted border-border focus:border-primary pr-10 transition-all duration-300",
-                    errors.fullName &&
-                      "border-destructive focus:border-destructive animate-error-flash",
-                    touched.fullName && !errors.fullName && formData.fullName && "border-primary"
-                  )}
-                  required
-                  aria-invalid={!!errors.fullName}
-                  aria-describedby={errors.fullName ? "fullName-error" : undefined}
-                />
-                {touched.fullName && (
-                  <div className="absolute right-3 top-1/2 -translate-y-1/2">
-                    {errors.fullName ? (
-                      <XCircle
-                        className="w-5 h-5 text-destructive animate-bounce-in"
-                        aria-hidden="true"
-                      />
-                    ) : formData.fullName ? (
-                      <CheckCircle
-                        className="w-5 h-5 text-primary animate-success-pulse"
-                        aria-hidden="true"
-                        id="fullName-success"
-                        data-testid="fullName-success"
-                      />
-                    ) : null}
-                  </div>
-                )}
-              </div>
-              {errors.fullName && (
-                <p
-                  id="fullName-error"
-                  className="text-sm text-destructive flex items-center gap-1.5"
-                  role="alert"
-                >
-                  <AlertCircle className="w-4 h-4 flex-shrink-0" />
-                  <span>{errors.fullName}</span>
-                </p>
-              )}
-            </div>
+            <RegistrationField
+              id="fullName"
+              name="fullName"
+              label={t("registration.fullName")}
+              placeholder="John Doe"
+              value={formData.fullName}
+              onChange={handleInputChange}
+              onBlur={handleBlur}
+              error={errors.fullName}
+              touched={touched.fullName}
+              required
+              autoComplete="name"
+            />
 
             {/* Email */}
-            <div className="space-y-2">
-              <Label htmlFor="email" className={cn(errors.email && "text-destructive")}>
-                {t("registration.email")} *
-              </Label>
-              <div className="relative">
-                <Input
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  placeholder="john.doe@example.com"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  onBlur={handleBlur}
-                  className={cn(
-                    "bg-muted border-border focus:border-primary pr-10 transition-all duration-300",
-                    errors.email && "border-destructive focus:border-destructive animate-error-flash",
-                    touched.email && !errors.email && formData.email && "border-primary"
-                  )}
-                  required
-                  aria-invalid={!!errors.email}
-                  aria-describedby={errors.email ? "email-error" : undefined}
-                />
-                {touched.email && (
-                  <div className="absolute right-3 top-1/2 -translate-y-1/2">
-                    {errors.email ? (
-                      <XCircle
-                        className="w-5 h-5 text-destructive animate-bounce-in"
-                        aria-hidden="true"
-                      />
-                    ) : formData.email ? (
-                      <CheckCircle
-                        className="w-5 h-5 text-primary animate-success-pulse"
-                        aria-hidden="true"
-                        id="email-success"
-                        data-testid="email-success"
-                      />
-                    ) : null}
-                  </div>
-                )}
-              </div>
-              {errors.email && (
-                <p
-                  id="email-error"
-                  className="text-sm text-destructive flex items-center gap-1.5"
-                  role="alert"
-                >
-                  <AlertCircle className="w-4 h-4 flex-shrink-0" />
-                  <span>{errors.email}</span>
-                </p>
-              )}
-            </div>
+            <RegistrationField
+              id="email"
+              name="email"
+              label={t("registration.email")}
+              type="email"
+              placeholder="john.doe@example.com"
+              value={formData.email}
+              onChange={handleInputChange}
+              onBlur={handleBlur}
+              error={errors.email}
+              touched={touched.email}
+              required
+              autoComplete="email"
+            />
 
             {/* WhatsApp */}
-            <div className="space-y-2">
-              <Label htmlFor="whatsapp" className={cn(errors.whatsapp && "text-destructive")}>
-                <MessageCircle className="w-4 h-4 inline mr-1.5" aria-hidden="true" />
-                {t("registration.whatsapp")}
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Info className="w-4 h-4 inline ml-1.5 text-muted-foreground cursor-help" />
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>{t("registration.optionalWhatsApp")}</p>
-                  </TooltipContent>
-                </Tooltip>
-              </Label>
-              <Input
-                id="whatsapp"
-                name="whatsapp"
-                type="tel"
-                autoComplete="tel"
-                placeholder="+254 700 000000"
-                value={formData.whatsapp}
-                onChange={handleInputChange}
-                onBlur={handleBlur}
-                className={cn(
-                  "bg-muted border-border focus:border-primary transition-all duration-300",
-                  errors.whatsapp &&
-                    "border-destructive focus:border-destructive animate-error-flash",
-                  touched.whatsapp && !errors.whatsapp && formData.whatsapp && "border-primary"
-                )}
-                aria-invalid={!!errors.whatsapp}
-                aria-describedby={errors.whatsapp ? "whatsapp-error" : undefined}
-              />
-              {touched.whatsapp && formData.whatsapp && !errors.whatsapp && (
-                <div className="absolute right-3 top-[38px] -translate-y-1/2">
-                   <CheckCircle
-                    className="w-5 h-5 text-primary animate-success-pulse"
-                    aria-hidden="true"
-                    id="whatsapp-success"
-                    data-testid="whatsapp-success"
-                  />
-                </div>
-              )}
-              {errors.whatsapp && (
-                <p
-                  id="whatsapp-error"
-                  className="text-sm text-destructive flex items-center gap-1.5"
-                  role="alert"
-                >
-                  <AlertCircle className="w-4 h-4 flex-shrink-0" />
-                  <span>{errors.whatsapp}</span>
-                </p>
-              )}
-            </div>
+            <RegistrationField
+              id="whatsapp"
+              name="whatsapp"
+              label={t("registration.whatsapp")}
+              type="tel"
+              placeholder="+254 700 000000"
+              value={formData.whatsapp}
+              onChange={handleInputChange}
+              onBlur={handleBlur}
+              error={errors.whatsapp}
+              touched={touched.whatsapp}
+              icon={<MessageCircle className="w-4 h-4 inline" />}
+              autoComplete="tel"
+            />
 
             {/* LinkedIn */}
-            <div className="space-y-2">
-              <Label htmlFor="linkedIn" className={cn(errors.linkedIn && "text-destructive")}>
-                <Linkedin className="w-4 h-4 inline mr-1.5" aria-hidden="true" />
-                {t("registration.linkedin")}
-                {hasLinkedIn && !errors.linkedIn && (
-                  <CheckCircle
-                    className="w-4 h-4 inline ml-1.5 text-primary animate-success-pulse"
-                    aria-label={t("aria.linkedinProvided")}
-                    aria-hidden="false"
-                  />
-                )}
-              </Label>
-              <div className="relative">
-                <Input
-                  id="linkedIn"
-                  name="linkedIn"
-                  type="text"
-                  autoComplete="url"
-                  placeholder="linkedin.com/in/yourprofile"
-                  value={formData.linkedIn}
-                  onChange={handleInputChange}
-                  onBlur={handleBlur}
-                  className={cn(
-                    "bg-muted border-border focus:border-primary pr-10 transition-all duration-300",
-                    errors.linkedIn &&
-                      "border-destructive focus:border-destructive animate-error-flash",
-                    touched.linkedIn && !errors.linkedIn && formData.linkedIn && "border-primary"
-                  )}
-                  aria-invalid={!!errors.linkedIn}
-                  aria-describedby={errors.linkedIn ? "linkedIn-error" : undefined}
-                />
-                {touched.linkedIn && formData.linkedIn && (
-                  <div className="absolute right-3 top-1/2 -translate-y-1/2">
-                    {errors.linkedIn ? (
-                      <XCircle className="w-5 h-5 text-destructive" aria-hidden="true" />
-                    ) : (
-                      <CheckCircle 
-                        className="w-5 h-5 text-primary" 
-                        aria-hidden="true" 
-                        id="linkedIn-success"
-                        data-testid="linkedIn-success"
-                      />
-                    )}
-                  </div>
-                )}
-              </div>
-              {errors.linkedIn && (
-                <p
-                  id="linkedIn-error"
-                  className="text-sm text-destructive flex items-center gap-1.5"
-                  role="alert"
-                >
-                  <AlertCircle className="w-4 h-4 flex-shrink-0" />
-                  <span>{errors.linkedIn}</span>
-                </p>
-              )}
-            </div>
+            <RegistrationField
+              id="linkedIn"
+              name="linkedIn"
+              label={t("registration.linkedin")}
+              placeholder="linkedin.com/in/yourprofile"
+              value={formData.linkedIn}
+              onChange={handleInputChange}
+              onBlur={handleBlur}
+              error={errors.linkedIn}
+              touched={touched.linkedIn}
+              icon={<Linkedin className="w-4 h-4 inline" />}
+              autoComplete="url"
+            />
 
             {/* Resume Upload */}
             <FileUploadField

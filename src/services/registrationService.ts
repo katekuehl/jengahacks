@@ -5,26 +5,13 @@
 import { logger } from "@/lib/logger";
 import { trackRegistration } from "@/lib/analytics";
 import { markIncompleteRegistrationCompleted } from "@/lib/incompleteRegistration";
-import type { RegistrationFormData } from "@/hooks/useRegistrationForm";
+import {
+  RegistrationResult,
+  RegistrationSubmissionData,
+  RegistrationFormData
+} from "@/types/registration";
 import { callRpc } from "@/lib/supabaseRpc";
 import { supabase } from "@/integrations/supabase/client";
-
-export interface RegistrationResult {
-  success: boolean;
-  registrationId?: string;
-  accessToken?: string;
-  isWaitlist?: boolean;
-  waitlistPosition?: number;
-  error?: string;
-}
-
-export interface RegistrationSubmissionData {
-  fullName: string;
-  email: string;
-  whatsapp: string | null;
-  linkedIn: string | null;
-  resumePath: string | null;
-}
 
 export const registrationService = {
   /**

@@ -1,12 +1,5 @@
-/**
- * Log Forwarder Edge Function
- * 
- * Receives logs from client applications and forwards them to aggregation services
- * Provides server-side log forwarding with rate limiting and batching
- */
-
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { handleCORS, createResponse, createErrorResponse } from "../_shared/utils.ts";
 
 const LOGTAIL_ENDPOINT = Deno.env.get("LOGTAIL_ENDPOINT");
 const LOGTAIL_API_KEY = Deno.env.get("LOGTAIL_API_KEY");
@@ -33,31 +26,15 @@ interface LogEntry {
   };
 }
 
-interface LogBatch {
-  entries: LogEntry[];
-}
-
-serve(async (req) => {
-  // Handle CORS
-  if (req.method === "OPTIONS") {
-    return new Response(null, {
-      status: 204,
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "POST, OPTIONS",
-        "Access-Control-Allow-Headers": "authorization, content-type",
-      },
-    });
-  }
+serve(async (req: Request) => {
+  const corsResponse = handleCORS(req);
+  if (corsResponse) return corsResponse;
 
   try {
     // Verify authentication
     const authHeader = req.headers.get("Authorization");
     if (!authHeader) {
-      return new Response(
-        JSON.stringify({ error: "Missing authorization header" }),
-        { status: 401, headers: { "Content-Type": "application/json" } }
-      );
+      return createErrorResponse("Missing authorization header", 401);
     }
 
     // Parse request body
@@ -65,10 +42,7 @@ serve(async (req) => {
     const logs: LogEntry[] = body.entries || [body];
 
     if (!Array.isArray(logs) || logs.length === 0) {
-      return new Response(
-        JSON.stringify({ error: "Invalid log entries" }),
-        { status: 400, headers: { "Content-Type": "application/json" } }
-      );
+      return createErrorResponse("Invalid log entries", 400);
     }
 
     // Forward logs to aggregation service
@@ -79,34 +53,16 @@ serve(async (req) => {
     const successful = results.filter((r) => r.status === "fulfilled").length;
     const failed = results.filter((r) => r.status === "rejected").length;
 
-    return new Response(
-      JSON.stringify({
-        success: true,
-        forwarded: successful,
-        failed,
-      }),
-      {
-        status: 200,
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-        },
-      }
-    );
+    return createResponse({
+      success: true,
+      forwarded: successful,
+      failed,
+    });
   } catch (error) {
     console.error("Log forwarder error:", error);
-    return new Response(
-      JSON.stringify({
-        error: "Internal server error",
-        message: error instanceof Error ? error.message : "Unknown error",
-      }),
-      {
-        status: 500,
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-        },
-      }
+    return createErrorResponse(
+      error instanceof Error ? error.message : "Internal server error",
+      500
     );
   }
 });
