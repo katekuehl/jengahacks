@@ -4,6 +4,7 @@
  */
 
 import { safeLocalStorage } from "./polyfills";
+import { monitor } from "./monitoring";
 import { logger } from "./logger";
 
 const RATE_LIMIT_KEY = 'jengahacks_rate_limit';
@@ -50,6 +51,10 @@ export const checkRateLimit = (): { allowed: boolean; retryAfter?: number } => {
     // Check if limit exceeded
     if (data.attempts >= MAX_SUBMISSIONS_PER_WINDOW) {
       const retryAfter = Math.ceil((RATE_LIMIT_WINDOW - timeSinceWindowStart) / 1000);
+
+      // Track violation
+      monitor.trackMetric('rate_limit_violation', 1);
+
       return { allowed: false, retryAfter };
     }
 

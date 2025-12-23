@@ -1,16 +1,29 @@
-import { describe, it, expect, beforeEach, vi } from "vitest";
+import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
 import {
   checkRateLimit,
   recordSubmission,
   formatRetryAfter,
   clearRateLimit,
 } from "./rateLimit";
+import { monitor } from "./monitoring";
+
+// Mock monitoring
+vi.mock("./monitoring", () => ({
+  monitor: {
+    trackMetric: vi.fn(),
+  },
+}));
 
 describe("rateLimit", () => {
   beforeEach(() => {
     // Clear localStorage before each test
     localStorage.clear();
     clearRateLimit();
+    vi.clearAllMocks();
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
   });
 
   describe("checkRateLimit", () => {
@@ -29,7 +42,7 @@ describe("rateLimit", () => {
       expect(result2.allowed).toBe(true);
     });
 
-    it("should block after exceeding limit", () => {
+    it("should block after exceeding limit and track violation", () => {
       // Make 3 submissions
       checkRateLimit();
       checkRateLimit();
@@ -39,6 +52,9 @@ describe("rateLimit", () => {
       const result = checkRateLimit();
       expect(result.allowed).toBe(false);
       expect(result.retryAfter).toBeGreaterThan(0);
+
+      // Verify metric tracking
+      expect(monitor.trackMetric).toHaveBeenCalledWith('rate_limit_violation', 1);
     });
 
     it("should reset after window expires", () => {
