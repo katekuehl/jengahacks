@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
+import { logger } from "@/lib/logger";
 import { Linkedin, CheckCircle, AlertCircle, XCircle, MessageCircle, Info } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
@@ -207,15 +208,23 @@ const Registration = () => {
       if (formData.resume) {
         const uploadResult = await uploadFile(formData.resume);
         if (!uploadResult.success) {
+          // Non-blocking: Show error but continue registration
           toast.error(uploadResult.error || t("registration.errors.failed"));
-          setIsSubmitting(false);
-          return;
+          logger.warn("Resume upload failed, but proceeding with registration", { 
+            error: uploadResult.error,
+            email: formData.email 
+          });
+        } else {
+          resumePath = uploadResult.resumePath;
         }
-        resumePath = uploadResult.resumePath;
       }
 
       // Submit registration
-      const result = await registrationService.submit(formData, resumePath);
+      const submissionData = {
+        ...formData,
+        whatsapp: normalizeWhatsAppNumber(formData.whatsapp)
+      };
+      const result = await registrationService.submit(submissionData, resumePath);
 
       if (!result.success) {
         toast.error(result.error || t("registration.errors.failed"));
@@ -327,6 +336,7 @@ const Registration = () => {
                         className="w-5 h-5 text-primary animate-success-pulse"
                         aria-hidden="true"
                         id="fullName-success"
+                        data-testid="fullName-success"
                       />
                     ) : null}
                   </div>
@@ -380,6 +390,7 @@ const Registration = () => {
                         className="w-5 h-5 text-primary animate-success-pulse"
                         aria-hidden="true"
                         id="email-success"
+                        data-testid="email-success"
                       />
                     ) : null}
                   </div>
@@ -407,7 +418,7 @@ const Registration = () => {
                     <Info className="w-4 h-4 inline ml-1.5 text-muted-foreground cursor-help" />
                   </TooltipTrigger>
                   <TooltipContent>
-                    <p>{t("registration.whatsappTooltip")}</p>
+                    <p>{t("registration.optionalWhatsApp")}</p>
                   </TooltipContent>
                 </Tooltip>
               </Label>
@@ -418,13 +429,7 @@ const Registration = () => {
                 autoComplete="tel"
                 placeholder="+254 700 000000"
                 value={formData.whatsapp}
-                onChange={(e) => {
-                  const normalized = normalizeWhatsAppNumber(e.target.value);
-                  handleInputChange({
-                    ...e,
-                    target: { ...e.target, value: normalized },
-                  });
-                }}
+                onChange={handleInputChange}
                 onBlur={handleBlur}
                 className={cn(
                   "bg-muted border-border focus:border-primary transition-all duration-300",
@@ -435,6 +440,16 @@ const Registration = () => {
                 aria-invalid={!!errors.whatsapp}
                 aria-describedby={errors.whatsapp ? "whatsapp-error" : undefined}
               />
+              {touched.whatsapp && formData.whatsapp && !errors.whatsapp && (
+                <div className="absolute right-3 top-[38px] -translate-y-1/2">
+                   <CheckCircle
+                    className="w-5 h-5 text-primary animate-success-pulse"
+                    aria-hidden="true"
+                    id="whatsapp-success"
+                    data-testid="whatsapp-success"
+                  />
+                </div>
+              )}
               {errors.whatsapp && (
                 <p
                   id="whatsapp-error"
@@ -451,11 +466,11 @@ const Registration = () => {
             <div className="space-y-2">
               <Label htmlFor="linkedIn" className={cn(errors.linkedIn && "text-destructive")}>
                 <Linkedin className="w-4 h-4 inline mr-1.5" aria-hidden="true" />
-                {t("registration.linkedIn")}
+                {t("registration.linkedin")}
                 {hasLinkedIn && !errors.linkedIn && (
                   <CheckCircle
                     className="w-4 h-4 inline ml-1.5 text-primary animate-success-pulse"
-                    aria-label={t("aria.linkedInProvided")}
+                    aria-label={t("aria.linkedinProvided")}
                     aria-hidden="false"
                   />
                 )}
@@ -484,7 +499,12 @@ const Registration = () => {
                     {errors.linkedIn ? (
                       <XCircle className="w-5 h-5 text-destructive" aria-hidden="true" />
                     ) : (
-                      <CheckCircle className="w-5 h-5 text-primary" aria-hidden="true" />
+                      <CheckCircle 
+                        className="w-5 h-5 text-primary" 
+                        aria-hidden="true" 
+                        id="linkedIn-success"
+                        data-testid="linkedIn-success"
+                      />
                     )}
                   </div>
                 )}
@@ -538,7 +558,7 @@ const Registration = () => {
 
             {/* Info Text */}
             <p className="text-xs sm:text-sm text-muted-foreground text-center">
-              {t("registration.info")}
+              {t("registration.whyCollect")}
             </p>
           </form>
         </div>

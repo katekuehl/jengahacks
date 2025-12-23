@@ -74,7 +74,7 @@
 - [x] Add unit tests for SocialShare component (12 tests)
 - [x] Add unit tests for Google Analytics integration (`src/lib/analytics.test.ts` - 11 tests)
 - [x] Add unit tests for BlogPreview component (5 tests) - Component removed (unused)
-- [x] Fix all test failures and ensure all tests pass (47 tests passing)
+- [x] Fix all test failures and ensure all tests pass (26 tests passing)
 - [x] Add integration tests for registration flow (`src/components/Registration.integration.test.tsx` - 14 tests)
 - [x] Add E2E tests (Playwright) - Registration, Navigation, Homepage, Blog tests
 - [x] Test rate limiting in production-like environment (`e2e/rate-limiting.spec.ts` - 10 tests)
@@ -256,6 +256,12 @@
 ## Recent Accomplishments
 
 ### December 2024
+- ✅ Fixed TypeScript errors in registration tests
+- ✅ Resolved submission crash when resume is not provided
+- ✅ Fixed input sanitization bug that dropped spaces while typing
+- ✅ Moved WhatsApp normalization to submission time for better UX
+- ✅ Cleaned up outdated tests (Edge Functions, IP rate limiting)
+- ✅ Added data-testids for more reliable UI testing
 - ✅ Added WhatsApp number field to registration form
 - ✅ Added comprehensive test suite (47 tests passing across multiple test files)
 - ✅ Fixed security concerns (XSS prevention, HTML sanitization)

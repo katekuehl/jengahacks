@@ -8,7 +8,7 @@
 export const sanitizeFileName = (fileName: string): string => {
   // Remove path components
   const basename = fileName.replace(/^.*[\\/]/, '');
-  
+
   // Remove or replace dangerous characters
   return basename
     .replace(/[^a-zA-Z0-9._-]/g, '_')
@@ -51,7 +51,7 @@ export const validateAndSanitizeUrl = (url: string): string | null => {
 
   try {
     const urlObj = new URL(sanitized);
-    
+
     // Only allow http and https protocols
     if (!['http:', 'https:'].includes(urlObj.protocol)) {
       return null;
@@ -78,9 +78,8 @@ export const validateAndSanitizeUrl = (url: string): string | null => {
  */
 export const sanitizeInput = (input: string, maxLength: number = 1000): string => {
   if (!input) return '';
-  
+
   return input
-    .trim()
     .substring(0, maxLength)
     .replace(/[<>]/g, ''); // Remove potential HTML tags
 };
@@ -121,7 +120,7 @@ export const isValidWhatsAppNumber = (phone: string): boolean => {
   }
 
   const cleaned = phone.trim().replace(/[\s\-()]/g, ''); // Remove spaces, dashes, parentheses
-  
+
   // Must be between 7 and 15 digits (E.164 standard allows up to 15 digits)
   // Allow optional + prefix
   const phoneRegex = /^\+?[1-9]\d{6,14}$/;
@@ -138,14 +137,14 @@ export const normalizeWhatsAppNumber = (phone: string): string | null => {
   }
 
   const cleaned = phone.trim().replace(/[\s\-()]/g, '');
-  
+
   // If it doesn't start with +, add it
   if (!cleaned.startsWith('+')) {
     // If it starts with 0, remove it (common in some countries)
     const withoutLeadingZero = cleaned.startsWith('0') ? cleaned.substring(1) : cleaned;
     return `+${withoutLeadingZero}`;
   }
-  
+
   return cleaned;
 };
 

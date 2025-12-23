@@ -48,9 +48,11 @@ const Index = () => {
             <ScrollReveal direction="up" delay={200}>
               <Sponsors />
             </ScrollReveal>
+{/* 
             <ScrollReveal direction="up" delay={300}>
               <Prizes />
-            </ScrollReveal>
+            </ScrollReveal> 
+            */}
             <ScrollReveal direction="up" delay={400}>
               <JudgesMentors />
             </ScrollReveal>

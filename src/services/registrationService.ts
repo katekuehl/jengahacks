@@ -162,7 +162,7 @@ export const registrationService = {
       // Capture and sanitize form data
       const fullName = formData.fullName.trim();
       const email = formData.email.trim().toLowerCase();
-      const whatsapp = formData.whatsapp.trim() || null;
+      const whatsapp = formData.whatsapp?.trim() || null;
       const linkedIn = formData.linkedIn.trim() || null;
 
       // Check waitlist status
@@ -193,15 +193,19 @@ export const registrationService = {
           insertError.message?.includes("rate limit") ||
           insertError.message?.includes("too many")
         ) {
+          const rateLimitError = "Rate limit exceeded. Please try again later.";
+          trackRegistration(false, rateLimitError);
           return {
             success: false,
-            error: "Rate limit exceeded. Please try again later.",
+            error: rateLimitError,
           };
         }
 
+        const errorMessage = insertError.message || "Registration failed";
+        trackRegistration(false, errorMessage);
         return {
           success: false,
-          error: insertError.message || "Registration failed",
+          error: errorMessage,
         };
       }
 
