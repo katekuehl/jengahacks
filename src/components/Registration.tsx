@@ -99,6 +99,7 @@ const Registration = () => {
     return () => window.clearTimeout(timer);
   }, [formData.email, formData.fullName, formData.whatsapp, formData.linkedIn, formData.resume]);
 
+  // TODO: Consolidate file validation logic with other parts of the system
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -127,6 +128,7 @@ const Registration = () => {
     const newErrors = validateAllFields(captchaToken, RECAPTCHA_SITE_KEY);
     setErrors(newErrors);
 
+    // TODO: Review and simplify complex conditional logic in Registration component
     // Check if there are any errors
     if (Object.values(newErrors).some((error) => error !== undefined)) {
       // Scroll to first error

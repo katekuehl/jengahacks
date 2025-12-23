@@ -2,8 +2,7 @@
  * Typed wrapper for Supabase RPC calls
  * Provides type-safe RPC function calls
  * 
- * Note: This module is designed for future RPC functions.
- * Currently no RPC functions are defined in the database.
+ * Note: This module is designed for type-safe RPC function calls.
  */
 
 import { supabase } from "@/integrations/supabase/client";

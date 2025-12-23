@@ -13,13 +13,14 @@ import {
 import { callRpc } from "@/lib/supabaseRpc";
 import { supabase } from "@/integrations/supabase/client";
 
+// TODO: Extract common error handling patterns into utility functions
 export const registrationService = {
   /**
    * Check if registration should be added to waitlist
    */
   async checkWaitlist(): Promise<{ shouldWaitlist: boolean; error?: Error }> {
     try {
-      const { data: shouldWaitlist, error: waitlistCheckError } = await callRpc(
+      const { data: shouldWaitlist, error: waitlistCheckError } = await callRpc<boolean>(
         "should_add_to_waitlist",
         {}
       );
@@ -48,7 +49,7 @@ export const registrationService = {
    */
   async generateAccessToken(): Promise<{ token: string | null; error?: Error }> {
     try {
-      const { data: accessToken, error: tokenError } = await callRpc("generate_access_token", {});
+      const { data: accessToken, error: tokenError } = await callRpc<string>("generate_access_token", {});
 
       if (tokenError) {
         logger.error("Access token generation error", tokenError, {});
@@ -124,7 +125,7 @@ export const registrationService = {
    */
   async getWaitlistPosition(email: string): Promise<number | null> {
     try {
-      const { data: position, error: positionError } = await callRpc("get_waitlist_position", {
+      const { data: position, error: positionError } = await callRpc<number>("get_waitlist_position", {
         p_email: email,
       });
 

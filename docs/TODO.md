@@ -120,7 +120,7 @@
 - [x] Fix TypeScript type assertion error in `src/integrations/supabase/client.ts` (rpc method)
 - [x] Add proper type definitions for Deno globals in Edge Functions
 - [ ] Refactor functions with long parameter lists to use parameter objects
-- [ ] Remove commented-out code or add TODO comments
+- [x] Remove commented-out code or add TODO comments
 - [ ] Document naming conventions
 - [ ] Move all user-facing strings to translation files
 - [ ] Run ESLint with `--fix` to remove unused imports/variables
