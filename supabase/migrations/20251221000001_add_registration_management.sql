@@ -1,3 +1,7 @@
+-- Enable pgcrypto extension for gen_random_bytes
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+
+
 -- Add registration management functionality
 -- This migration adds token-based access and cancellation support
 

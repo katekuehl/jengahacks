@@ -21,10 +21,3 @@ ON storage.objects
 FOR DELETE
 USING (bucket_id = 'resumes' AND false);
 
--- Add comments for documentation
-COMMENT ON POLICY "Deny all resume updates" ON storage.objects IS 
-  'Explicitly denies all UPDATE operations on resume files. Resume files are immutable once uploaded.';
-COMMENT ON POLICY "Deny all resume deletes" ON storage.objects IS 
-  'Explicitly denies all DELETE operations on resume files. Resume files cannot be deleted by users.';
-
-

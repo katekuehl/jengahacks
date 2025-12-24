@@ -21,9 +21,3 @@ ON public.registrations
 FOR DELETE
 USING (false);
 
--- Add comments for documentation
-COMMENT ON POLICY "Deny all updates" ON public.registrations IS 
-  'Explicitly denies all UPDATE operations. Registration records are immutable once created.';
-COMMENT ON POLICY "Deny all deletes" ON public.registrations IS 
-  'Explicitly denies all DELETE operations. Registration records cannot be deleted by users.';
-
