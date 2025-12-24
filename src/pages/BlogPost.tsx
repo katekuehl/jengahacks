@@ -166,10 +166,10 @@ const BlogPost = () => {
               </header>
 
               {/* Post Content */}
-              <div className="prose prose-invert prose-lg max-w-none prose-headings:text-foreground prose-p:text-foreground prose-a:text-primary prose-strong:text-foreground prose-code:text-foreground">
+              <div className="blog-content">
                 {post.content ? (
                   <div 
-                    className="text-foreground"
+                    className="blog-post-body"
                     dangerouslySetInnerHTML={sanitizeForRender(post.content)}
                   />
                 ) : (

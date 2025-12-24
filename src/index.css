@@ -7,6 +7,202 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Blog Post Content Styling */
+.blog-content {
+  @apply max-w-none;
+}
+
+.blog-post-body {
+  @apply text-foreground;
+  @apply text-base sm:text-lg;
+  @apply leading-relaxed;
+  @apply space-y-6;
+}
+
+/* Paragraphs */
+.blog-post-body p {
+  @apply mb-6;
+  @apply text-foreground/90;
+  @apply leading-7;
+  @apply text-base sm:text-lg;
+}
+
+/* Headings */
+.blog-post-body h1 {
+  @apply text-3xl sm:text-4xl md:text-5xl;
+  @apply font-bold;
+  @apply text-foreground;
+  @apply mt-10 mb-6;
+  @apply leading-tight;
+}
+
+.blog-post-body h2 {
+  @apply text-2xl sm:text-3xl md:text-4xl;
+  @apply font-bold;
+  @apply text-foreground;
+  @apply mt-10 mb-5;
+  @apply leading-tight;
+  @apply border-b;
+  @apply border-border/50;
+  @apply pb-3;
+}
+
+.blog-post-body h3 {
+  @apply text-xl sm:text-2xl md:text-3xl;
+  @apply font-semibold;
+  @apply text-foreground;
+  @apply mt-8 mb-4;
+  @apply leading-tight;
+}
+
+.blog-post-body h4 {
+  @apply text-lg sm:text-xl md:text-2xl;
+  @apply font-semibold;
+  @apply text-foreground;
+  @apply mt-6 mb-3;
+  @apply leading-tight;
+}
+
+/* Lists */
+.blog-post-body ul,
+.blog-post-body ol {
+  @apply my-6;
+  @apply pl-6;
+  @apply space-y-3;
+}
+
+.blog-post-body ul {
+  @apply list-disc;
+}
+
+.blog-post-body ol {
+  @apply list-decimal;
+}
+
+.blog-post-body li {
+  @apply text-foreground/90;
+  @apply leading-7;
+  @apply pl-2;
+}
+
+.blog-post-body li::marker {
+  @apply text-primary;
+}
+
+/* Nested lists */
+.blog-post-body ul ul,
+.blog-post-body ol ol,
+.blog-post-body ul ol,
+.blog-post-body ol ul {
+  @apply mt-3 mb-0;
+  @apply ml-4;
+}
+
+/* Links */
+.blog-post-body a {
+  @apply text-primary;
+  @apply font-medium;
+  @apply underline;
+  @apply underline-offset-2;
+  @apply decoration-primary/50;
+  @apply transition-colors;
+  @apply hover:text-primary/80;
+  @apply hover:decoration-primary;
+}
+
+/* Strong/Bold */
+.blog-post-body strong {
+  @apply font-semibold;
+  @apply text-foreground;
+}
+
+/* Emphasis/Italic */
+.blog-post-body em {
+  @apply italic;
+  @apply text-foreground/90;
+}
+
+/* Code */
+.blog-post-body code {
+  @apply bg-muted;
+  @apply text-foreground;
+  @apply px-1.5 py-0.5;
+  @apply rounded;
+  @apply text-sm;
+  @apply font-mono;
+}
+
+.blog-post-body pre {
+  @apply bg-muted;
+  @apply p-4;
+  @apply rounded-lg;
+  @apply overflow-x-auto;
+  @apply my-6;
+  @apply border;
+  @apply border-border;
+}
+
+.blog-post-body pre code {
+  @apply bg-transparent;
+  @apply p-0;
+}
+
+/* Blockquotes */
+.blog-post-body blockquote {
+  @apply border-l-4;
+  @apply border-primary;
+  @apply pl-4;
+  @apply italic;
+  @apply text-foreground/80;
+  @apply my-6;
+  @apply py-2;
+}
+
+/* Images */
+.blog-post-body img {
+  @apply rounded-lg;
+  @apply my-8;
+  @apply w-full;
+  @apply h-auto;
+  @apply shadow-lg;
+}
+
+/* Horizontal Rules */
+.blog-post-body hr {
+  @apply my-8;
+  @apply border-border;
+  @apply border-t;
+}
+
+/* First paragraph */
+.blog-post-body > p:first-child {
+  @apply text-xl;
+  @apply leading-8;
+  @apply font-medium;
+  @apply text-foreground;
+}
+
+/* Spacing between sections */
+.blog-post-body > * + h2 {
+  @apply mt-12;
+}
+
+.blog-post-body > * + h3 {
+  @apply mt-10;
+}
+
+/* Better spacing for lists after paragraphs */
+.blog-post-body p + ul,
+.blog-post-body p + ol {
+  @apply mt-4;
+}
+
+/* Better spacing for paragraphs after lists */
+.blog-post-body ul + p,
+.blog-post-body ol + p {
+  @apply mt-6;
+}
+
 @layer base {
   :root {
     --background: 0 0% 4%;
