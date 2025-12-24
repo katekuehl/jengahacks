@@ -47,6 +47,21 @@ npm run test:visual
 npm run test:e2e:visual:update
 ```
 
+### Run tests on specific browsers
+```bash
+# Test on Chromium only
+npm run test:e2e:chromium
+
+# Test on Firefox only
+npm run test:e2e:firefox
+
+# Test on Safari (WebKit) only
+npm run test:e2e:safari
+
+# Test on mobile devices only
+npm run test:e2e:mobile
+```
+
 ## Test Files
 
 - `registration.spec.ts` - Tests for the registration form and flow
@@ -73,6 +88,8 @@ In CI environments, tests will:
 - Run with 1 worker (sequential)
 - Generate HTML reports
 - Capture screenshots and videos on failure
+- Test on Chromium, Firefox, and Safari (WebKit)
+- Test on mobile viewports (Mobile Chrome and Mobile Safari)
 
 ## Notes
 

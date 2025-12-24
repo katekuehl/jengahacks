@@ -80,7 +80,7 @@
 - [x] Test CAPTCHA integration end-to-end (`e2e/captcha.spec.ts` - 11 tests)
 - [x] Add performance tests (`e2e/performance.spec.ts` - 22 tests covering page load, network, rendering, Core Web Vitals)
 - [x] Add visual regression tests (`e2e/visual-regression.spec.ts` - 25+ tests for UI consistency)
-- [ ] Test on multiple browsers and devices (Firefox, Safari)
+- [x] Test on multiple browsers and devices (Firefox, Safari)
 
 ### Documentation
 - [x] Add API documentation (`API.md`)
@@ -116,12 +116,11 @@
 - [x] Consolidate file validation logic (currently duplicated in multiple places)
 - [x] Review and simplify complex conditional logic in Registration component
 - [x] Standardize error handling patterns across codebase
-- [ ] Replace silent failures (`.catch(() => {})`) with proper error handling
+- [x] Replace silent failures (`.catch(() => {})`) with proper error handling
 - [x] Fix TypeScript type assertion error in `src/integrations/supabase/client.ts` (rpc method)
 - [x] Add proper type definitions for Deno globals in Edge Functions
 - [ ] Refactor functions with long parameter lists to use parameter objects
 - [x] Remove commented-out code or add TODO comments
-- [ ] Document naming conventions
 - [ ] Move all user-facing strings to translation files
 - [ ] Run ESLint with `--fix` to remove unused imports/variables
 
