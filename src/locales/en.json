@@ -316,6 +316,7 @@
     "contactUs": "Contact Us",
     "copyright": "© 2026 JengaHacks. Built in Nairobi. Ready for the World.",
     "packages": {
+      "title": "Sponsorship Packages",
       "bronze": {
         "name": "Bronze",
         "description": "Perfect for startups looking to connect with emerging talent",
