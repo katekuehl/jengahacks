@@ -15,6 +15,7 @@ const Index = lazy(() => import("./pages/Index"));
 const Sponsorship = lazy(() => import("./pages/Sponsorship"));
 const Prizes = lazy(() => import("./pages/Prizes"));
 const JudgesMentors = lazy(() => import("./pages/JudgesMentors"));
+const FAQ = lazy(() => import("./pages/FAQ"));
 const Blog = lazy(() => import("./pages/Blog"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
 const Admin = lazy(() => import("./pages/Admin"));
@@ -75,6 +76,7 @@ const AnimatedRoutes = () => {
           <Route path="/sponsorship" element={<Sponsorship />} />
           <Route path="/prizes" element={<Prizes />} />
           <Route path="/judges-mentors" element={<JudgesMentors />} />
+          <Route path="/faq" element={<FAQ />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:id" element={<BlogPost />} />
           <Route path="/admin" element={<Admin />} />
