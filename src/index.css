@@ -17,6 +17,7 @@
   @apply text-base sm:text-lg;
   @apply leading-relaxed;
   @apply space-y-6;
+  @apply font-sans;
 }
 
 /* Paragraphs */
@@ -25,6 +26,15 @@
   @apply text-foreground/90;
   @apply leading-7;
   @apply text-base sm:text-lg;
+  @apply tracking-normal;
+}
+
+/* Last paragraph - call to action styling */
+.blog-post-body p:last-child {
+  @apply text-lg sm:text-xl;
+  @apply font-medium;
+  @apply text-foreground;
+  @apply mt-8;
 }
 
 /* Headings */
@@ -34,25 +44,29 @@
   @apply text-foreground;
   @apply mt-10 mb-6;
   @apply leading-tight;
+  @apply tracking-tight;
 }
 
 .blog-post-body h2 {
   @apply text-2xl sm:text-3xl md:text-4xl;
   @apply font-bold;
   @apply text-foreground;
-  @apply mt-10 mb-5;
+  @apply mt-12 mb-6;
   @apply leading-tight;
+  @apply tracking-tight;
   @apply border-b;
   @apply border-border/50;
-  @apply pb-3;
+  @apply pb-4;
+  @apply pt-2;
 }
 
 .blog-post-body h3 {
   @apply text-xl sm:text-2xl md:text-3xl;
   @apply font-semibold;
   @apply text-foreground;
-  @apply mt-8 mb-4;
+  @apply mt-10 mb-5;
   @apply leading-tight;
+  @apply tracking-tight;
 }
 
 .blog-post-body h4 {
@@ -69,6 +83,7 @@
   @apply my-6;
   @apply pl-6;
   @apply space-y-3;
+  @apply max-w-none;
 }
 
 .blog-post-body ul {
@@ -83,10 +98,19 @@
   @apply text-foreground/90;
   @apply leading-7;
   @apply pl-2;
+  @apply marker:text-primary;
+  @apply marker:font-semibold;
 }
 
 .blog-post-body li::marker {
   @apply text-primary;
+  @apply font-semibold;
+}
+
+/* List items with better spacing */
+.blog-post-body li p {
+  @apply mb-2;
+  @apply mt-2;
 }
 
 /* Nested lists */
@@ -195,12 +219,33 @@
 .blog-post-body p + ul,
 .blog-post-body p + ol {
   @apply mt-4;
+  @apply -mb-2;
 }
 
 /* Better spacing for paragraphs after lists */
 .blog-post-body ul + p,
 .blog-post-body ol + p {
   @apply mt-6;
+}
+
+/* Better spacing for headings after lists */
+.blog-post-body ul + h2,
+.blog-post-body ol + h2 {
+  @apply mt-10;
+}
+
+.blog-post-body ul + h3,
+.blog-post-body ol + h3 {
+  @apply mt-8;
+}
+
+/* Ensure proper spacing between sections */
+.blog-post-body > h2 + p {
+  @apply mt-4;
+}
+
+.blog-post-body > h3 + p {
+  @apply mt-3;
 }
 
 @layer base {
