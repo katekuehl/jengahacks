@@ -82,6 +82,10 @@ const Blog = () => {
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                             aria-hidden="true"
                             loading="lazy"
+                            onError={(e) => {
+                              const target = e.target as HTMLImageElement;
+                              target.src = '/placeholder.svg';
+                            }}
                           />
                         </div>
                       )}

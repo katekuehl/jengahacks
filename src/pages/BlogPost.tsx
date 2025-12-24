@@ -156,6 +156,10 @@ const BlogPost = () => {
                       alt=""
                       className="w-full h-full object-cover"
                       aria-hidden="true"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.src = '/placeholder.svg';
+                      }}
                     />
                   </div>
                 )}

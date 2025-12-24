@@ -7,7 +7,7 @@
     "publishedAt": "2025-12-21T08:00:00Z",
     "readTime": 2,
     "tags": ["registration", "announcement"],
-    "imageUrl": "https://images.unsplash.com/photo-1540317580384-e5d43616b9aa?auto=format&fit=crop&q=80&w=800"
+    "imageUrl": "https://picsum.photos/800/450?random=1"
   },
   {
     "id": "welcome-to-jengahacks-2026",
@@ -18,7 +18,7 @@
     "publishedAt": "2025-12-23T10:00:00Z",
     "readTime": 5,
     "tags": ["announcement", "event"],
-    "imageUrl": "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&q=80&w=800"
+    "imageUrl": "https://picsum.photos/800/450?random=2"
   },
   {
     "id": "meet-our-sponsors-2026",
@@ -28,7 +28,7 @@
     "publishedAt": "2025-12-10T14:30:00Z",
     "readTime": 3,
     "tags": ["sponsors", "partners"],
-    "imageUrl": "https://images.unsplash.com/photo-1454165833767-1306d7e0bbb1?auto=format&fit=crop&q=80&w=800"
+    "imageUrl": "https://picsum.photos/800/450?random=3"
   },
   {
     "id": "hackathon-tips-36-hours",
@@ -38,6 +38,6 @@
     "publishedAt": "2025-12-05T09:15:00Z",
     "readTime": 7,
     "tags": ["tips", "guide"],
-    "imageUrl": "https://images.unsplash.com/photo-1522071823991-b1ae95767b0b?auto=format&fit=crop&q=80&w=800"
+    "imageUrl": "https://picsum.photos/800/450?random=4"
   }
 ]
