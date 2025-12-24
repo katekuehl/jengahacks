@@ -30,7 +30,5 @@ SET public = false
 WHERE id = 'resumes';
 
 -- Add comment for documentation
-COMMENT ON POLICY "Deny all resume downloads" ON storage.objects IS 
-  'Prevents public access to resume files. Access must be granted via service role or signed URLs.';
 
 
