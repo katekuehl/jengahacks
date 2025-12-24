@@ -13,6 +13,7 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { formatDateTimeShort } from "@/lib/i18n";
 import { logger } from "@/lib/logger";
 import { useAdminAuth } from "@/hooks/useAdminAuth";
+import { getRegistrationStats } from "@/lib/dbQueries";
 
 interface RegistrationStats {
   total: number;
@@ -77,87 +78,23 @@ const Admin = () => {
 
   const loadStats = async () => {
     try {
-      const { data: registrations, error } = await supabase
-        .from("registrations")
-        .select("*")
-        .order("created_at", { ascending: false });
+      // Use optimized database function for stats
+      const stats = await getRegistrationStats();
 
-      if (error) throw error;
+      const calculatedStats: RegistrationStats = {
+        total: stats.total,
+        withLinkedIn: stats.withLinkedIn,
+        withWhatsApp: 0, // whatsapp_number column doesn't exist in current schema
+        withResume: stats.withResume,
+        today: stats.today,
+        thisWeek: stats.thisWeek,
+        thisMonth: stats.thisMonth,
+        dailyTrends: stats.dailyTrends || [],
+        hourlyDistribution: stats.hourlyDistribution || [],
+        incompleteCount: 0,
+      };
 
-      if (registrations) {
-        const now = new Date();
-        const today = new Date(now);
-        today.setHours(0, 0, 0, 0);
-        
-        const thisWeek = new Date(now);
-        thisWeek.setDate(thisWeek.getDate() - 7);
-        
-        const thisMonth = new Date(now);
-        thisMonth.setMonth(thisMonth.getMonth() - 1);
-
-        // Calculate daily trends (last 30 days)
-        const dailyTrendsMap = new Map<string, number>();
-        const thirtyDaysAgo = new Date(now);
-        thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-        
-        // Initialize all days with 0
-        for (let i = 0; i < 30; i++) {
-          const date = new Date(thirtyDaysAgo);
-          date.setDate(date.getDate() + i);
-          const dateKey = date.toISOString().split('T')[0];
-          dailyTrendsMap.set(dateKey, 0);
-        }
-
-        // Count registrations per day
-        registrations.forEach((r) => {
-          const regDate = new Date(r.created_at);
-          if (regDate >= thirtyDaysAgo) {
-            const dateKey = regDate.toISOString().split('T')[0];
-            dailyTrendsMap.set(dateKey, (dailyTrendsMap.get(dateKey) || 0) + 1);
-          }
-        });
-
-        const dailyTrends = Array.from(dailyTrendsMap.entries())
-          .map(([date, count]) => ({ date, count }))
-          .sort((a, b) => a.date.localeCompare(b.date));
-
-        // Calculate hourly distribution
-        const hourlyMap = new Map<number, number>();
-        for (let i = 0; i < 24; i++) {
-          hourlyMap.set(i, 0);
-        }
-
-        registrations.forEach((r) => {
-          const regDate = new Date(r.created_at);
-          const hour = regDate.getHours();
-          hourlyMap.set(hour, (hourlyMap.get(hour) || 0) + 1);
-        });
-
-        const hourlyDistribution = Array.from(hourlyMap.entries())
-          .map(([hour, count]) => ({ hour, count }))
-          .sort((a, b) => a.hour - b.hour);
-
-        const calculatedStats: RegistrationStats = {
-          total: registrations.length,
-          withLinkedIn: registrations.filter((r) => r.linkedin_url).length,
-          withWhatsApp: 0, // whatsapp_number column doesn't exist in current schema
-          withResume: registrations.filter((r) => r.resume_path).length,
-          today: registrations.filter(
-            (r) => new Date(r.created_at) >= today
-          ).length,
-          thisWeek: registrations.filter(
-            (r) => new Date(r.created_at) >= thisWeek
-          ).length,
-          thisMonth: registrations.filter(
-            (r) => new Date(r.created_at) >= thisMonth
-          ).length,
-          dailyTrends,
-          hourlyDistribution,
-          incompleteCount: 0,
-        };
-
-        setStats(calculatedStats);
-      }
+      setStats(calculatedStats);
     } catch (error) {
       logger.error("Error loading stats", error instanceof Error ? error : new Error(String(error)));
       toast.error(t("admin.failedLoadStats"));
@@ -166,12 +103,32 @@ const Admin = () => {
 
   const exportToCSV = async () => {
     try {
-      const { data: registrations, error } = await supabase
-        .from("registrations")
-        .select("*")
-        .order("created_at", { ascending: false });
+      // Use optimized paginated query, fetching in batches
+      // For CSV export, we need all data, so we'll fetch in chunks
+      const allRegistrations = [];
+      let offset = 0;
+      const limit = 1000; // Fetch 1000 at a time
+      let hasMore = true;
 
-      if (error) throw error;
+      while (hasMore) {
+        const { data: registrations, error } = await supabase
+          .from("registrations")
+          .select("id, full_name, email, linkedin_url, resume_path, created_at")
+          .order("created_at", { ascending: false })
+          .range(offset, offset + limit - 1);
+
+        if (error) throw error;
+
+        if (registrations && registrations.length > 0) {
+          allRegistrations.push(...registrations);
+          offset += limit;
+          hasMore = registrations.length === limit;
+        } else {
+          hasMore = false;
+        }
+      }
+
+      const registrations = allRegistrations;
 
       if (!registrations || registrations.length === 0) {
         toast.error(t("admin.noRegistrationsExport"));

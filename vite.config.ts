@@ -20,8 +20,26 @@ export default defineConfig(({ mode }) => ({
     cssTarget: ["chrome64", "firefox67", "safari12"],
     minify: "esbuild",
     polyfillModulePreload: true,
+    // Generate manifest for better caching
+    manifest: true,
     rollupOptions: {
       output: {
+        // Add content hash to filenames for better caching
+        entryFileNames: 'assets/[name]-[hash].js',
+        chunkFileNames: 'assets/[name]-[hash].js',
+        assetFileNames: (assetInfo) => {
+          // Different cache strategies for different asset types
+          if (assetInfo.name?.endsWith('.css')) {
+            return 'assets/[name]-[hash].css';
+          }
+          if (/\.(png|jpg|jpeg|gif|svg|ico|webp)$/.test(assetInfo.name || '')) {
+            return 'assets/images/[name]-[hash][extname]';
+          }
+          if (/\.(woff|woff2|ttf|eot)$/.test(assetInfo.name || '')) {
+            return 'assets/fonts/[name]-[hash][extname]';
+          }
+          return 'assets/[name]-[hash][extname]';
+        },
         manualChunks: {
           "vendor-core": ["react", "react-dom", "react-router-dom"],
           "vendor-supabase": ["@supabase/supabase-js"],

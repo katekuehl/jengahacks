@@ -1,0 +1,289 @@
+/**
+ * Optimized database query utilities
+ * Provides efficient query patterns and pagination support
+ */
+
+import { supabase } from "@/integrations/supabase/client";
+import { callRpc } from "./supabaseRpc";
+
+export interface PaginatedRegistrations {
+  data: Array<{
+    id: string;
+    full_name: string;
+    email: string;
+    linkedin_url: string | null;
+    resume_path: string | null;
+    created_at: string;
+  }>;
+  total: number;
+  limit: number;
+  offset: number;
+}
+
+export interface RegistrationStats {
+  total: number;
+  withLinkedIn: number;
+  withResume: number;
+  today: number;
+  thisWeek: number;
+  thisMonth: number;
+  dailyTrends: Array<{ date: string; count: number }>;
+  hourlyDistribution: Array<{ hour: number; count: number }>;
+}
+
+/**
+ * Get paginated registrations with optional search and sorting
+ * Uses database function for optimal performance
+ */
+export async function getPaginatedRegistrations(
+  options: {
+    limit?: number;
+    offset?: number;
+    search?: string;
+    sortBy?: "created_at" | "full_name" | "email";
+    sortOrder?: "ASC" | "DESC";
+  } = {}
+): Promise<PaginatedRegistrations> {
+  const {
+    limit = 50,
+    offset = 0,
+    search,
+    sortBy = "created_at",
+    sortOrder = "DESC",
+  } = options;
+
+  try {
+    const { data, error } = await callRpc<
+      Array<{
+        id: string;
+        full_name: string;
+        email: string;
+        linkedin_url: string | null;
+        resume_path: string | null;
+        created_at: string;
+        total_count: number;
+      }>
+    >("get_registrations_paginated", {
+      p_limit: limit,
+      p_offset: offset,
+      p_search: search || null,
+      p_sort_by: sortBy,
+      p_sort_order: sortOrder,
+    });
+
+    if (error) {
+      throw error;
+    }
+
+    if (!data || data.length === 0) {
+      return {
+        data: [],
+        total: 0,
+        limit,
+        offset,
+      };
+    }
+
+    // Extract total count from first row (all rows have same total_count)
+    const total = data[0]?.total_count || 0;
+
+    // Remove total_count from data
+    const registrations = data.map(({ total_count, ...rest }) => rest);
+
+    return {
+      data: registrations,
+      total,
+      limit,
+      offset,
+    };
+  } catch (error) {
+    // Fallback to direct query if RPC function fails
+    console.warn("RPC function failed, falling back to direct query", error);
+    return getPaginatedRegistrationsFallback(options);
+  }
+}
+
+/**
+ * Fallback function using direct Supabase queries
+ * Less efficient but more compatible
+ */
+async function getPaginatedRegistrationsFallback(
+  options: {
+    limit?: number;
+    offset?: number;
+    search?: string;
+    sortBy?: "created_at" | "full_name" | "email";
+    sortOrder?: "ASC" | "DESC";
+  } = {}
+): Promise<PaginatedRegistrations> {
+  const {
+    limit = 50,
+    offset = 0,
+    search,
+    sortBy = "created_at",
+    sortOrder = "DESC",
+  } = options;
+
+  // Build query
+  let query = supabase
+    .from("registrations")
+    .select("*", { count: "exact" })
+    .order(sortBy, { ascending: sortOrder === "ASC" })
+    .range(offset, offset + limit - 1);
+
+  // Apply search filter if provided
+  if (search) {
+    const searchLower = search.toLowerCase();
+    query = query.or(
+      `full_name.ilike.%${searchLower}%,email.ilike.%${searchLower}%,linkedin_url.ilike.%${searchLower}%`
+    );
+  }
+
+  const { data, error, count } = await query;
+
+  if (error) {
+    throw error;
+  }
+
+  return {
+    data: data || [],
+    total: count || 0,
+    limit,
+    offset,
+  };
+}
+
+/**
+ * Get registration statistics efficiently
+ * Uses database function for optimal performance
+ */
+export async function getRegistrationStats(): Promise<RegistrationStats> {
+  try {
+    const { data, error } = await callRpc<RegistrationStats>("get_registration_stats", {});
+
+    if (error) {
+      throw error;
+    }
+
+    if (!data) {
+      throw new Error("No stats data returned");
+    }
+
+    return data;
+  } catch (error) {
+    // Fallback to direct query if RPC function fails
+    console.warn("RPC function failed, falling back to direct query", error);
+    return getRegistrationStatsFallback();
+  }
+}
+
+/**
+ * Fallback function using direct Supabase queries
+ * Less efficient but more compatible
+ */
+async function getRegistrationStatsFallback(): Promise<RegistrationStats> {
+  const now = new Date();
+  const today = new Date(now);
+  today.setHours(0, 0, 0, 0);
+
+  const thisWeek = new Date(now);
+  thisWeek.setDate(thisWeek.getDate() - 7);
+
+  const thisMonth = new Date(now);
+  thisMonth.setMonth(thisMonth.getMonth() - 1);
+
+  const thirtyDaysAgo = new Date(now);
+  thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
+  // Get all registrations (unfortunately, we need them for stats)
+  // In production, consider using the materialized view or RPC function
+  const { data: registrations, error } = await supabase
+    .from("registrations")
+    .select("created_at, linkedin_url, resume_path")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    throw error;
+  }
+
+  if (!registrations) {
+    return {
+      total: 0,
+      withLinkedIn: 0,
+      withResume: 0,
+      today: 0,
+      thisWeek: 0,
+      thisMonth: 0,
+      dailyTrends: [],
+      hourlyDistribution: [],
+    };
+  }
+
+  // Calculate stats
+  const stats: RegistrationStats = {
+    total: registrations.length,
+    withLinkedIn: registrations.filter((r) => r.linkedin_url).length,
+    withResume: registrations.filter((r) => r.resume_path).length,
+    today: registrations.filter((r) => new Date(r.created_at) >= today).length,
+    thisWeek: registrations.filter((r) => new Date(r.created_at) >= thisWeek).length,
+    thisMonth: registrations.filter((r) => new Date(r.created_at) >= thisMonth).length,
+    dailyTrends: [],
+    hourlyDistribution: [],
+  };
+
+  // Calculate daily trends
+  const dailyTrendsMap = new Map<string, number>();
+  for (let i = 0; i < 30; i++) {
+    const date = new Date(thirtyDaysAgo);
+    date.setDate(date.getDate() + i);
+    const dateKey = date.toISOString().split("T")[0];
+    dailyTrendsMap.set(dateKey, 0);
+  }
+
+  registrations.forEach((r) => {
+    const regDate = new Date(r.created_at);
+    if (regDate >= thirtyDaysAgo) {
+      const dateKey = regDate.toISOString().split("T")[0];
+      dailyTrendsMap.set(dateKey, (dailyTrendsMap.get(dateKey) || 0) + 1);
+    }
+  });
+
+  stats.dailyTrends = Array.from(dailyTrendsMap.entries())
+    .map(([date, count]) => ({ date, count }))
+    .sort((a, b) => a.date.localeCompare(b.date));
+
+  // Calculate hourly distribution
+  const hourlyMap = new Map<number, number>();
+  for (let i = 0; i < 24; i++) {
+    hourlyMap.set(i, 0);
+  }
+
+  registrations.forEach((r) => {
+    const regDate = new Date(r.created_at);
+    const hour = regDate.getHours();
+    hourlyMap.set(hour, (hourlyMap.get(hour) || 0) + 1);
+  });
+
+  stats.hourlyDistribution = Array.from(hourlyMap.entries())
+    .map(([hour, count]) => ({ hour, count }))
+    .sort((a, b) => a.hour - b.hour);
+
+  return stats;
+}
+
+/**
+ * Refresh materialized view for stats (admin only)
+ * Call this periodically or after bulk operations
+ */
+export async function refreshStatsView(): Promise<void> {
+  try {
+    const { error } = await supabase.rpc("refresh_registration_stats");
+    if (error) {
+      throw error;
+    }
+  } catch (error) {
+    // Materialized view refresh might not be available, ignore error
+    console.warn("Could not refresh stats view", error);
+  }
+}
+

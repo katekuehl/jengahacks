@@ -3,6 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { CACHE_DURATIONS } from "./lib/cache";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import GoogleAnalytics from "./components/GoogleAnalytics";
 import PageTransition from "./components/PageTransition";
@@ -28,7 +29,31 @@ const PageLoader = () => (
   </div>
 );
 
-const queryClient = new QueryClient();
+// Configure React Query with caching strategies
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      // Data is considered fresh for 5 minutes
+      staleTime: CACHE_DURATIONS.SHORT,
+      // Cache data for 15 minutes after it becomes stale
+      gcTime: CACHE_DURATIONS.MEDIUM, // Previously called cacheTime
+      // Retry failed requests up to 3 times
+      retry: 3,
+      // Retry delay increases exponentially
+      retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
+      // Refetch on window focus in production (disabled in dev for better DX)
+      refetchOnWindowFocus: !import.meta.env.DEV,
+      // Refetch on reconnect
+      refetchOnReconnect: true,
+      // Don't refetch on mount if data exists
+      refetchOnMount: false,
+    },
+    mutations: {
+      // Retry failed mutations once
+      retry: 1,
+    },
+  },
+});
 
 const AnimatedRoutes = () => {
   const location = useLocation();

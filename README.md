@@ -75,6 +75,7 @@ JengaHacks is a 36-hour hackathon event taking place in Nairobi, Kenya, bringing
 - **[Contributing Guidelines](./CONTRIBUTING.md)** - Guidelines for contributing to the project
 - **[Performance Testing Guide](./PERFORMANCE.md)** - Performance benchmarks and optimization guidelines
 - **[Visual Regression Testing Guide](./VISUAL_REGRESSION.md)** - Visual testing and baseline management
+- **[Caching Strategies](./CACHING.md)** - Caching implementation and best practices
 - **[TODO](./TODO.md)** - Project roadmap and task tracking
 
 ## 📋 Prerequisites

@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Calendar, Clock, ArrowRight, ExternalLink } from "lucide-react";
@@ -8,31 +8,18 @@ import Footer from "@/components/Footer";
 import SEO from "@/components/SEO";
 import { fetchBlogPosts, formatBlogDate, type BlogPost } from "@/lib/blog";
 import { useTranslation } from "@/hooks/useTranslation";
-import { logger } from "@/lib/logger";
+import { CACHE_KEYS, CACHE_DURATIONS } from "@/lib/cache";
 
 const Blog = () => {
-  const [posts, setPosts] = useState<BlogPost[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const { t } = useTranslation();
 
-  useEffect(() => {
-    const loadPosts = async () => {
-      setIsLoading(true);
-      setError(null);
-      try {
-        const data = await fetchBlogPosts();
-        setPosts(data);
-      } catch (err) {
-        logger.error("Error loading blog posts", err instanceof Error ? err : new Error(String(err)));
-        setError(t("blog.error"));
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    loadPosts();
-  }, [t]);
+  // Use React Query for automatic caching and refetching
+  const { data: posts = [], isLoading, error } = useQuery<BlogPost[]>({
+    queryKey: [CACHE_KEYS.blog.posts],
+    queryFn: () => fetchBlogPosts(),
+    staleTime: CACHE_DURATIONS.MEDIUM, // Cache for 15 minutes
+    gcTime: CACHE_DURATIONS.LONG, // Keep in cache for 1 hour
+  });
 
   return (
     <>
@@ -69,7 +56,7 @@ const Blog = () => {
                 </div>
               ) : error ? (
                 <div className="text-center py-12" role="alert" aria-live="assertive">
-                  <p className="text-destructive text-lg mb-2">{error}</p>
+                  <p className="text-destructive text-lg mb-2">{t("blog.error")}</p>
                   <Button variant="outline" onClick={() => window.location.reload()} aria-label="Retry loading blog posts">
                     {t("common.retry")}
                   </Button>

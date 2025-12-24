@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 import { Calendar, Clock, ArrowLeft, ExternalLink, Share2 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -11,45 +12,28 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import SocialShare from "@/components/SocialShare";
 import { trackPageView } from "@/lib/analytics";
-import { logger } from "@/lib/logger";
+import { CACHE_KEYS, CACHE_DURATIONS } from "@/lib/cache";
 
 const BlogPost = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const [post, setPost] = useState<BlogPost | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const { t } = useTranslation();
 
+  // Use React Query for automatic caching
+  const { data: post, isLoading, error } = useQuery<BlogPost | null>({
+    queryKey: [CACHE_KEYS.blog.post(id || '')],
+    queryFn: () => id ? fetchBlogPost(id) : Promise.resolve(null),
+    enabled: !!id,
+    staleTime: CACHE_DURATIONS.LONG, // Cache for 1 hour (blog posts don't change often)
+    gcTime: CACHE_DURATIONS.VERY_LONG, // Keep in cache for 24 hours
+  });
+
+  // Track page view when post loads
   useEffect(() => {
-    const loadPost = async () => {
-      if (!id) {
-        setError(t("blogPost.notFound"));
-        setIsLoading(false);
-        return;
-      }
-
-      setIsLoading(true);
-      setError(null);
-      try {
-        const data = await fetchBlogPost(id);
-        if (data) {
-          setPost(data);
-          // Track page view
-          trackPageView(`/blog/${id}`, data.title);
-        } else {
-          setError(t("blogPost.notFound"));
-        }
-      } catch (err) {
-        logger.error("Error loading blog post", err instanceof Error ? err : new Error(String(err)), { id });
-        setError(t("blogPost.error"));
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    loadPost();
-  }, [id, t]);
+    if (post && id) {
+      trackPageView(`/blog/${id}`, post.title);
+    }
+  }, [post, id]);
 
   if (isLoading) {
     return (
@@ -73,7 +57,7 @@ const BlogPost = () => {
     );
   }
 
-  if (error || !post) {
+  if (error || (!isLoading && !post)) {
     return (
       <>
         <SEO title="Post Not Found | JengaHacks 2026" />
@@ -83,7 +67,7 @@ const BlogPost = () => {
             <div className="container mx-auto px-4 sm:px-6">
               <div className="text-center py-12" role="alert" aria-live="assertive">
                 <h1 className="text-3xl font-bold mb-4">{t("blogPost.notFound")}</h1>
-                <p className="text-muted-foreground mb-6">{error || t("blogPost.notFoundMessage")}</p>
+                <p className="text-muted-foreground mb-6">{t("blogPost.notFoundMessage")}</p>
                 <div className="flex gap-4 justify-center">
                   <Button variant="outline" asChild>
                     <Link to="/blog">{t("blogPost.backToBlog")}</Link>

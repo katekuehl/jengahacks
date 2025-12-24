@@ -1,9 +1,10 @@
-
 import { monitor } from './monitoring';
+import { getCacheHeaders } from './cache';
 
 /**
  * A wrapper around window.fetch that tracks response times and errors.
  * This is used to instrument the Supabase client.
+ * Also applies appropriate cache headers based on request type.
  */
 export const monitoredFetch = async (
     input: RequestInfo | URL,
@@ -21,8 +22,26 @@ export const monitoredFetch = async (
         // If not a valid URL (e.g. relative path), keep as is
     }
 
+    // Determine cache type based on URL or request
+    const isStaticAsset = /\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$/i.test(url);
+    const cacheType = isStaticAsset ? 'static' : 'api';
+    
+    // Merge cache headers with existing headers
+    const cacheHeaders = getCacheHeaders(cacheType);
+    const headers = new Headers(init?.headers);
+    Object.entries(cacheHeaders).forEach(([key, value]) => {
+        if (!headers.has(key)) {
+            headers.set(key, value);
+        }
+    });
+
+    const fetchOptions: RequestInit = {
+        ...init,
+        headers,
+    };
+
     try {
-        const response = await fetch(input, init);
+        const response = await fetch(input, fetchOptions);
         const duration = performance.now() - start;
 
         monitor.trackApiResponseTime(endpoint, duration, response.ok);
