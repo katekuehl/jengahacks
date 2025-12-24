@@ -51,7 +51,7 @@ export const sanitizeHtml = (
 
   const allowedAttr = options?.allowedAttributes
     ? Object.values(options.allowedAttributes).flat()
-    : ["href", "title", "target", "rel", "src", "poster", "controls", "preload", "width", "height", "frameborder", "allow", "allowfullscreen"];
+    : ["href", "title", "target", "rel", "src", "poster", "controls", "preload", "width", "height", "frameborder", "allow", "allowfullscreen", "class"];
 
   const config = {
     ALLOWED_TAGS: allowedTags,

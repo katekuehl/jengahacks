@@ -30,7 +30,8 @@
     "publishedAt": "2025-12-23T10:00:00Z",
     "readTime": 5,
     "tags": ["tangazo", "tukio"],
-    "videoUrl": "/NairobiCBD.mov"
+    "videoUrl": "/NairobiCBD.mp4",
+    "imageUrl": "/blog-welcome.svg"
   },
   {
     "id": "meet-our-sponsors-2026",

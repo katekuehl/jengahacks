@@ -10,9 +10,14 @@ import SEO from "@/components/SEO";
 import Navbar from "@/components/Navbar";
 import { useTranslation } from "@/hooks/useTranslation";
 import ScrollReveal from "@/components/ScrollReveal";
+import { sanitizeForRender } from "@/lib/sanitize";
+import { useNavigate } from "react-router-dom";
+import { useEffect, useRef } from "react";
 
 const FAQ = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const accordionRef = useRef<HTMLDivElement>(null);
 
   // Get FAQ items from translations
   const faqItems = [
@@ -68,6 +73,32 @@ const FAQ = () => {
     },
   ];
 
+  // Handle clicks on anchor tags for client-side navigation
+  useEffect(() => {
+    const handleClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      const anchor = target.closest('a');
+      if (anchor && anchor.href) {
+        try {
+          const url = new URL(anchor.href);
+          // Only handle internal links
+          if (url.origin === window.location.origin || url.pathname.startsWith('/')) {
+            e.preventDefault();
+            navigate(url.pathname);
+          }
+        } catch {
+          // Invalid URL, let browser handle it
+        }
+      }
+    };
+
+    const accordion = accordionRef.current;
+    if (accordion) {
+      accordion.addEventListener('click', handleClick);
+      return () => accordion.removeEventListener('click', handleClick);
+    }
+  }, [navigate]);
+
   return (
     <>
       <SEO 
@@ -106,7 +137,7 @@ const FAQ = () => {
             <div className="container mx-auto px-4 sm:px-6">
               <ScrollReveal direction="up" delay={100}>
                 <h2 id="faq-questions-heading" className="sr-only">FAQ Questions</h2>
-                <div className="max-w-4xl mx-auto">
+                <div className="max-w-4xl mx-auto" ref={accordionRef}>
                   <Accordion type="single" collapsible className="w-full space-y-4">
                     {faqItems.map((item) => (
                       <AccordionItem 
@@ -118,7 +149,10 @@ const FAQ = () => {
                           {item.question}
                         </AccordionTrigger>
                         <AccordionContent className="text-sm sm:text-base text-muted-foreground pb-4 sm:pb-6 pt-0">
-                          <div className="whitespace-pre-line leading-relaxed">{item.answer}</div>
+                          <div 
+                            className="whitespace-pre-line leading-relaxed prose prose-sm max-w-none prose-headings:font-semibold prose-a:text-primary prose-a:no-underline hover:prose-a:underline"
+                            dangerouslySetInnerHTML={sanitizeForRender(item.answer)}
+                          />
                         </AccordionContent>
                       </AccordionItem>
                     ))}
@@ -152,7 +186,7 @@ const FAQ = () => {
                     </Button>
                     <Button variant="hero" size="lg" asChild>
                       <a 
-                        href="https://discord.gg/jengahacks"
+                        href="https://discord.com/invite/dU5g936a"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex items-center gap-2"

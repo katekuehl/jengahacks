@@ -522,7 +522,7 @@
     },
     "whenWhere": {
       "question": "When and where is JengaHacks 2026?",
-      "answer": "JengaHacks 2026 will take place on February 21-22, 2026 in Nairobi, Kenya. The event runs for 36 hours, starting at 9:00 AM on February 21st and ending at 9:00 PM on February 22nd."
+      "answer": "JengaHacks 2026 will take place on February 21-22, 2026 in Nairobi, Kenya at PromptBI's HQ. The event runs for 36 hours, starting at 9:00 AM on February 21st and ending at 9:00 PM on February 22nd."
     },
     "whoCanParticipate": {
       "question": "Who can participate?",
@@ -542,7 +542,7 @@
     },
     "prizes": {
       "question": "What are the prizes?",
-      "answer": "Winners will receive cash prizes, mentorship opportunities, and potential partnerships with sponsors. Specific prize amounts and categories will be announced closer to the event date. All participants will also receive swag bags and certificates of participation."
+      "answer": "JengaHacks 2026 offers exciting prizes for top performers:\n\n<strong>Main Prizes:</strong>\n• 1st Place: KES 50,000\n• 2nd Place: KES 25,000\n• 3rd Place: KES 10,000\n\n<strong>Special Awards:</strong>\n• Best Design\n• Most Innovative\n• Best Pitch\n\n<strong>All Participants Receive:</strong>\n• Mentorship opportunities with industry experts\n• Networking sessions with sponsors and fellow participants\n• Certificate of participation\n• Event swag bag with branded merchandise\n• Potential partnership opportunities with sponsors\n\n<a href=\"/prizes\" class=\"text-primary hover:underline font-semibold\">View full prizes details →</a>"
     },
     "registrationDeadline": {
       "question": "When is the registration deadline?",

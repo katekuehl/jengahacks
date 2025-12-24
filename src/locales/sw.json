@@ -524,7 +524,7 @@
     },
     "whenWhere": {
       "question": "JengaHacks 2026 itafanyika lini na wapi?",
-      "answer": "JengaHacks 2026 itafanyika Februari 21-22, 2026 huko Nairobi, Kenya. Tukio linaendelea kwa masaa 36, kuanzia saa 9:00 asubuhi mnamo Februari 21 na kumalizika saa 9:00 jioni mnamo Februari 22."
+      "answer": "JengaHacks 2026 itafanyika Februari 21-22, 2026 huko Nairobi, Kenya katika Makao Makuu ya PromptBI. Tukio linaendelea kwa masaa 36, kuanzia saa 9:00 asubuhi mnamo Februari 21 na kumalizika saa 9:00 jioni mnamo Februari 22."
     },
     "whoCanParticipate": {
       "question": "Nani anaweza kushiriki?",
@@ -544,7 +544,7 @@
     },
     "prizes": {
       "question": "Zawadi ni zipi?",
-      "answer": "Washindi watapokea zawadi za pesa, fursa za uongozi, na uwezekano wa ushirikiano na wafadhili. Kiasi maalum cha zawadi na kategoria zitatangazwa karibu na tarehe ya tukio. Washiriki wote pia watapokea mifuko ya zawadi na vyeti vya ushiriki."
+      "answer": "JengaHacks 2026 inatoa zawadi za kusisimua kwa wanaoongoza:\n\n<strong>Zawadi Kuu:</strong>\n• Nafasi ya 1: KES 50,000\n• Nafasi ya 2: KES 25,000\n• Nafasi ya 3: KES 10,000\n\n<strong>Tuzo Maalum:</strong>\n• Muundo Bora\n• Ubunifu Zaidi\n• Mhadhara Bora\n\n<strong>Washiriki Wote Watapokea:</strong>\n• Fursa za uongozi na wataalamu wa tasnia\n• Vikao vya mtandao na wafadhili na washiriki wengine\n• Cheti cha ushiriki\n• Mfuko wa zawadi za tukio na bidhaa zilizo na chapa\n• Fursa za uwezekano wa ushirikiano na wafadhili\n\n<a href=\"/prizes\" class=\"text-primary hover:underline font-semibold\">Angalia maelezo kamili ya zawadi →</a>"
     },
     "registrationDeadline": {
       "question": "Mwisho wa usajili ni lini?",

@@ -38,7 +38,7 @@ const ThankYou = () => {
   const eventEndTime = "2026-02-23T09:00:00+03:00"; // 9 AM EAT (36 hours later)
   const eventLocation = "Nairobi, Kenya";
   const eventTitle = "JengaHacks 2026 - East Africa's Premier Hackathon";
-  const eventDescription = "Join us for 36 hours of innovation, collaboration, and building solutions that matter. February 21-22, 2026 in Nairobi, Kenya.";
+  const eventDescription = "Join us for 36 hours of innovation, collaboration, and building solutions that matter. February 21-22, 2026 in Nairobi, Kenya at PromptBI's HQ.";
 
   // Generate iCal file content
   const generateICal = () => {
