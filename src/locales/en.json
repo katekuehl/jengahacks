@@ -18,7 +18,10 @@
     "refresh": "Refresh",
     "selected": "Selected",
     "yes": "Yes",
-    "no": "No"
+    "no": "No",
+    "previous": "Previous",
+    "next": "Next",
+    "page": "Page"
   },
   "hero": {
     "title": "JengaHacks 2026 - East Africa's Premier Hackathon",
@@ -232,7 +235,8 @@
     "viewProfile": "View Profile",
     "failedLoad": "Failed to load registrations",
     "failedDownload": "Failed to download resume",
-    "authRequired": "Authentication required"
+    "authRequired": "Authentication required",
+    "page": "Page"
   },
   "adminAnalytics": {
     "profileCompletion": "Profile Completion",

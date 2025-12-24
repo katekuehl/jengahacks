@@ -18,7 +18,10 @@
     "refresh": "Onyesha Upya",
     "selected": "Imechaguliwa",
     "yes": "Ndiyo",
-    "no": "Hapana"
+    "no": "Hapana",
+    "previous": "Iliyotangulia",
+    "next": "Ifuatayo",
+    "page": "Ukurasa"
   },
   "hero": {
     "title": "JengaHacks 2026 - Hackathon Kuu ya Afrika Mashariki",
@@ -233,7 +236,8 @@
     "viewProfile": "Angalia Wasifu",
     "failedLoad": "Imeshindwa kupakia usajili",
     "failedDownload": "Imeshindwa kupakua resume",
-    "authRequired": "Uthibitishaji unahitajika"
+    "authRequired": "Uthibitishaji unahitajika",
+    "page": "Ukurasa"
   },
   "adminAnalytics": {
     "profileCompletion": "Ukamilishaji wa Wasifu",

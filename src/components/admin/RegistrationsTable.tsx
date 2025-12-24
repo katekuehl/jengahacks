@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { createObjectURL, revokeObjectURL } from "@/lib/polyfills";
 import { formatDateTimeShort } from "@/lib/i18n";
 import { logger } from "@/lib/logger";
+import { getPaginatedRegistrations } from "@/lib/dbQueries";
 import {
   Table,
   TableBody,
@@ -38,18 +39,26 @@ const RegistrationsTable = ({ onRefresh }: RegistrationsTableProps) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState<"name" | "email" | "date">("date");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
+  const [totalCount, setTotalCount] = useState(0);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [pageSize] = useState(50);
 
   const loadRegistrations = useCallback(async () => {
     try {
       setIsLoading(true);
-      const { data, error } = await supabase
-        .from("registrations")
-        .select("*")
-        .order("created_at", { ascending: false });
+      
+      // Use optimized paginated query
+      const result = await getPaginatedRegistrations({
+        limit: pageSize,
+        offset: currentPage * pageSize,
+        search: searchQuery || undefined,
+        sortBy: sortBy === "name" ? "full_name" : sortBy === "email" ? "email" : "created_at",
+        sortOrder: sortOrder.toUpperCase() as "ASC" | "DESC",
+      });
 
-      if (error) throw error;
-
-      setRegistrations(data || []);
+      setRegistrations(result.data);
+      setTotalCount(result.total);
+      
       if (onRefresh) onRefresh();
     } catch (error) {
       logger.error("Error loading registrations", error instanceof Error ? error : new Error(String(error)), { component: "RegistrationsTable" });
@@ -57,60 +66,21 @@ const RegistrationsTable = ({ onRefresh }: RegistrationsTableProps) => {
     } finally {
       setIsLoading(false);
     }
-  }, [onRefresh, t]);
+  }, [onRefresh, t, currentPage, pageSize, searchQuery, sortBy, sortOrder]);
 
-  const filterAndSort = useCallback(() => {
-    let filtered = [...registrations];
+  // Search and sorting are now handled by the database query
+  useEffect(() => {
+    setFilteredRegistrations(registrations);
+  }, [registrations]);
 
-    // Apply search filter
-    if (searchQuery) {
-      const query = searchQuery.toLowerCase();
-      filtered = filtered.filter(
-        (r) =>
-          r.full_name.toLowerCase().includes(query) ||
-          r.email.toLowerCase().includes(query) ||
-          r.linkedin_url?.toLowerCase().includes(query)
-      );
-    }
-
-    // Apply sorting
-    filtered.sort((a, b) => {
-      let aValue: string;
-      let bValue: string;
-
-      switch (sortBy) {
-        case "name":
-          aValue = a.full_name.toLowerCase();
-          bValue = b.full_name.toLowerCase();
-          break;
-        case "email":
-          aValue = a.email.toLowerCase();
-          bValue = b.email.toLowerCase();
-          break;
-        case "date":
-        default:
-          aValue = a.created_at;
-          bValue = b.created_at;
-          break;
-      }
-
-      if (sortOrder === "asc") {
-        return aValue > bValue ? 1 : -1;
-      } else {
-        return aValue < bValue ? 1 : -1;
-      }
-    });
-
-    setFilteredRegistrations(filtered);
-  }, [registrations, searchQuery, sortBy, sortOrder]);
+  useEffect(() => {
+    // Reset to first page when search or sort changes
+    setCurrentPage(0);
+  }, [searchQuery, sortBy, sortOrder]);
 
   useEffect(() => {
     loadRegistrations();
   }, [loadRegistrations]);
-
-  useEffect(() => {
-    filterAndSort();
-  }, [filterAndSort]);
 
   const handleSort = (column: "name" | "email" | "date") => {
     if (sortBy === column) {
@@ -202,8 +172,36 @@ const RegistrationsTable = ({ onRefresh }: RegistrationsTableProps) => {
 
       {/* Results Count */}
       <div className="text-sm text-muted-foreground">
-        {t("adminTable.showing")} {filteredRegistrations.length} {t("adminTable.of")} {registrations.length} {t("adminTable.registrations")}
+        {t("adminTable.showing")} {filteredRegistrations.length} {t("adminTable.of")} {totalCount} {t("adminTable.registrations")}
+        {totalCount > pageSize && (
+          <span className="ml-2">
+            ({t("adminTable.page")} {currentPage + 1} {t("adminTable.of")} {Math.ceil(totalCount / pageSize)})
+          </span>
+        )}
       </div>
+
+      {/* Pagination Controls */}
+      {totalCount > pageSize && (
+        <div className="flex items-center justify-between">
+          <Button
+            variant="outline"
+            onClick={() => setCurrentPage((p) => Math.max(0, p - 1))}
+            disabled={currentPage === 0}
+          >
+            {t("common.previous")}
+          </Button>
+          <span className="text-sm text-muted-foreground">
+            {t("adminTable.page")} {currentPage + 1} {t("adminTable.of")} {Math.ceil(totalCount / pageSize)}
+          </span>
+          <Button
+            variant="outline"
+            onClick={() => setCurrentPage((p) => p + 1)}
+            disabled={(currentPage + 1) * pageSize >= totalCount}
+          >
+            {t("common.next")}
+          </Button>
+        </div>
+      )}
 
       {/* Table */}
       <div className="rounded-md border">
