@@ -130,6 +130,8 @@ vi.mock("@/hooks/useTranslation", () => ({
 // Mock analytics
 vi.mock("@/lib/analytics", () => ({
   trackRegistration: vi.fn(),
+  trackRegistrationStart: vi.fn(),
+  trackRegistrationView: vi.fn(),
 }));
 
 // Mock rate limiting
