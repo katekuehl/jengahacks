@@ -144,7 +144,7 @@ const Registration = () => {
       }
       // Also show toast for critical errors
       if (newErrors.fullName || newErrors.email) {
-        toast.error("Please fix the errors in the form");
+        toast.error(t("registration.errors.formErrors"));
       }
       return;
     }

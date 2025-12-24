@@ -121,7 +121,7 @@
 - [x] Add proper type definitions for Deno globals in Edge Functions
 - [ ] Refactor functions with long parameter lists to use parameter objects
 - [x] Remove commented-out code or add TODO comments
-- [ ] Move all user-facing strings to translation files
+- [x] Move all user-facing strings to translation files
 - [ ] Run ESLint with `--fix` to remove unused imports/variables
 
 ### Performance

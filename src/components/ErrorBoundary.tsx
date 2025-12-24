@@ -103,7 +103,7 @@ const ErrorFallback = ({ error, onReset, onGoHome }: ErrorFallbackProps) => {
             <div className="text-muted-foreground">{error.message}</div>
             {error.stack && (
               <details className="mt-2">
-                <summary className="cursor-pointer text-xs text-muted-foreground">Stack trace</summary>
+                <summary className="cursor-pointer text-xs text-muted-foreground">{t("errorBoundary.stackTrace")}</summary>
                 <pre className="mt-2 text-xs overflow-auto">{error.stack}</pre>
               </details>
             )}

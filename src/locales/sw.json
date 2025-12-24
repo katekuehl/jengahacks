@@ -112,9 +112,11 @@
       "captchaFailed": "Uthibitishaji wa CAPTCHA umeshindwa. Tafadhali jaribu tena.",
       "rateLimit": "Majaribio mengi sana ya usajili. Tafadhali jaribu tena baada ya {time}.",
       "duplicateEmail": "Barua pepe hii tayari imesajiliwa",
-      "failed": "Usajili umeshindwa. Tafadhali jaribu tena."
+      "failed": "Usajili umeshindwa. Tafadhali jaribu tena.",
+      "formErrors": "Tafadhali rekebisha makosa kwenye fomu"
     },
-    "terms": "Kwa kujiandikisha, unakubali masharti na hali zetu. Hatutawahi kushiriki taarifa zako bila idhini."
+    "terms": "Kwa kujiandikisha, unakubali masharti na hali zetu. Hatutawahi kushiriki taarifa zako bila idhini.",
+    "fileSelected": "Imechaguliwa: {fileName}"
   },
   "sponsors": {
     "title": "Wafadhili Wetu",
@@ -191,6 +193,28 @@
     "csvExported": "CSV imehamishwa kwa mafanikio",
     "failedExportCSV": "Imeshindwa kuhamisha CSV"
   },
+  "adminAuth": {
+    "title": "Kuingia kwa Msimamizi",
+    "description": "Ingiza hati zako za kuingia ili kufikia dashibodi ya msimamizi",
+    "email": "Barua Pepe",
+    "emailPlaceholder": "msimamizi@mfano.com",
+    "password": "Nenosiri",
+    "passwordPlaceholder": "••••••••",
+    "signingIn": "Inaingia...",
+    "signIn": "Ingia",
+    "backToHome": "Rudi Nyumbani",
+    "checkingAuth": "Inaangalia uthibitishaji...",
+    "errors": {
+      "accessDenied": "Ufikiaji umekataliwa. Haki za msimamizi zinahitajika.",
+      "verifyPrivileges": "Kosa la kuthibitisha haki za msimamizi",
+      "unexpectedError": "Kosa lisilotarajiwa limetokea",
+      "invalidEmail": "Anwani ya barua pepe si halali",
+      "passwordMinLength": "Nenosiri lazima liwe na angalau herufi 6"
+    },
+    "success": {
+      "welcome": "Karibu, Msimamizi!"
+    }
+  },
   "adminTable": {
     "loading": "Inapakia usajili...",
     "searchPlaceholder": "Tafuta kwa jina, barua pepe, WhatsApp, au LinkedIn...",
@@ -208,7 +232,8 @@
     "download": "Pakua",
     "viewProfile": "Angalia Wasifu",
     "failedLoad": "Imeshindwa kupakia usajili",
-    "failedDownload": "Imeshindwa kupakua resume"
+    "failedDownload": "Imeshindwa kupakua resume",
+    "authRequired": "Uthibitishaji unahitajika"
   },
   "adminAnalytics": {
     "profileCompletion": "Ukamilishaji wa Wasifu",
@@ -235,7 +260,12 @@
     "totalRegistrations": "Jumla ya Usajili",
     "resumeUploadRate": "Kiwango cha Kupakia Resume",
     "whatsappProvided": "WhatsApp Imetolewa",
-    "linkedinProvided": "LinkedIn Imetolewa"
+    "linkedinProvided": "LinkedIn Imetolewa",
+    "conversionFunnel": "Mfumo wa Ubadilishaji",
+    "conversionFunnelDesc": "Kutoka mwanzo hadi ukamilifu",
+    "overallConversionRate": "Kiwango cha Jumla cha Ubadilishaji",
+    "starts": "Mwanzo",
+    "completions": "Ukamilifu"
   },
   "sponsorship": {
     "backToHome": "Rudi Nyumbani",
@@ -382,6 +412,7 @@
     "errorName": "Jina la Kosa",
     "errorMessage": "Ujumbe wa Kosa",
     "stack": "Ufuatiliaji wa Stack",
+    "stackTrace": "Ufuatiliaji wa stack",
     "reload": "Pakia Ukurasa Tena",
     "goHome": "Nenda Nyumbani"
   },

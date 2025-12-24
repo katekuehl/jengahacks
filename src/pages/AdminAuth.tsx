@@ -64,14 +64,14 @@ const AdminAuth = () => {
         if (roles && roles.length > 0) {
           navigate("/admin");
         } else {
-          toast.error("Access denied. Admin privileges required.");
+          toast.error(t("adminAuth.errors.accessDenied"));
           await supabase.auth.signOut();
         }
       }
     });
 
     return () => subscription.unsubscribe();
-  }, [navigate]);
+  }, [navigate, t]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -81,7 +81,15 @@ const AdminAuth = () => {
       // Validate input
       const result = loginSchema.safeParse({ email, password });
       if (!result.success) {
-        toast.error(result.error.errors[0].message);
+        const errorMessage = result.error.errors[0].message;
+        // Map validation errors to translation keys
+        if (errorMessage.includes("email")) {
+          toast.error(t("adminAuth.errors.invalidEmail"));
+        } else if (errorMessage.includes("Password")) {
+          toast.error(t("adminAuth.errors.passwordMinLength"));
+        } else {
+          toast.error(errorMessage);
+        }
         setIsLoading(false);
         return;
       }
@@ -107,23 +115,23 @@ const AdminAuth = () => {
 
         if (rolesError) {
           logger.error("Error checking admin role", rolesError);
-          toast.error("Error verifying admin privileges");
+          toast.error(t("adminAuth.errors.verifyPrivileges"));
           await supabase.auth.signOut();
           return;
         }
 
         if (!roles || roles.length === 0) {
-          toast.error("Access denied. Admin privileges required.");
+          toast.error(t("adminAuth.errors.accessDenied"));
           await supabase.auth.signOut();
           return;
         }
 
-        toast.success("Welcome, Admin!");
+        toast.success(t("adminAuth.success.welcome"));
         navigate("/admin");
       }
     } catch (error) {
       logger.error("Login error", error instanceof Error ? error : new Error(String(error)));
-      toast.error("An unexpected error occurred");
+      toast.error(t("adminAuth.errors.unexpectedError"));
     } finally {
       setIsLoading(false);
     }
@@ -134,7 +142,7 @@ const AdminAuth = () => {
       <div className="flex min-h-screen items-center justify-center bg-background">
         <div className="text-center">
           <div className="mb-4 h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent mx-auto" />
-          <p className="text-muted-foreground">Checking authentication...</p>
+          <p className="text-muted-foreground">{t("adminAuth.checkingAuth")}</p>
         </div>
       </div>
     );
@@ -146,22 +154,22 @@ const AdminAuth = () => {
         <CardHeader className="space-y-1">
           <div className="flex items-center gap-2">
             <Lock className="h-6 w-6 text-primary" />
-            <CardTitle className="text-2xl">Admin Login</CardTitle>
+            <CardTitle className="text-2xl">{t("adminAuth.title")}</CardTitle>
           </div>
           <CardDescription>
-            Enter your credentials to access the admin dashboard
+            {t("adminAuth.description")}
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleLogin} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">{t("adminAuth.email")}</Label>
               <div className="relative">
                 <Mail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                 <Input
                   id="email"
                   type="email"
-                  placeholder="admin@example.com"
+                  placeholder={t("adminAuth.emailPlaceholder")}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="pl-9"
@@ -171,13 +179,13 @@ const AdminAuth = () => {
               </div>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password">{t("adminAuth.password")}</Label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                 <Input
                   id="password"
                   type="password"
-                  placeholder="••••••••"
+                  placeholder={t("adminAuth.passwordPlaceholder")}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="pl-9"
@@ -187,7 +195,7 @@ const AdminAuth = () => {
               </div>
             </div>
             <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? "Signing in..." : "Sign In"}
+              {isLoading ? t("adminAuth.signingIn") : t("adminAuth.signIn")}
             </Button>
           </form>
           <div className="mt-4">
@@ -197,7 +205,7 @@ const AdminAuth = () => {
               onClick={() => navigate("/")}
             >
               <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Home
+              {t("adminAuth.backToHome")}
             </Button>
           </div>
         </CardContent>

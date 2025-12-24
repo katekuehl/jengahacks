@@ -69,7 +69,7 @@ export const FileUploadField = ({
             className="w-4 h-4 text-primary flex-shrink-0 animate-success-pulse"
             aria-hidden="true"
           />
-          <span>Selected: {sanitizeFileName(file.name)}</span>
+          <span>{t("registration.fileSelected", { fileName: sanitizeFileName(file.name) })}</span>
         </p>
       )}
       {error && (

@@ -302,8 +302,12 @@ if (import.meta.env.VITE_LOG_AGGREGATION_ENABLED === 'true') {
   // Dynamic import to avoid circular dependencies
   import('./logAggregation').then(({ integrateWithLogger }) => {
     integrateWithLogger(logger);
-  }).catch(() => {
-    // Silently fail if aggregation module is not available
+  }).catch((error) => {
+    // Log to console to avoid circular dependency with logger
+    // This is a non-critical failure - log aggregation is optional
+    if (import.meta.env.DEV || import.meta.env.MODE === 'development') {
+      console.warn('[Logger] Failed to integrate with log aggregation:', error);
+    }
   });
 }
 

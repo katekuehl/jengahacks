@@ -127,7 +127,7 @@ const RegistrationsTable = ({ onRefresh }: RegistrationsTableProps) => {
       const { data: { session } } = await supabase.auth.getSession();
       
       if (!session) {
-        toast.error("Authentication required");
+        toast.error(t("adminTable.authRequired"));
         return;
       }
 

@@ -112,9 +112,11 @@
       "captchaFailed": "CAPTCHA verification failed. Please try again.",
       "rateLimit": "Too many registration attempts. Please try again after {time}.",
       "duplicateEmail": "This email is already registered",
-      "failed": "Registration failed. Please try again."
+      "failed": "Registration failed. Please try again.",
+      "formErrors": "Please fix the errors in the form"
     },
-    "terms": "By registering, you agree to our terms and conditions. We'll never share your information without consent."
+    "terms": "By registering, you agree to our terms and conditions. We'll never share your information without consent.",
+    "fileSelected": "Selected: {fileName}"
   },
   "sponsors": {
     "title": "Our Sponsors",
@@ -190,6 +192,28 @@
     "csvExported": "CSV exported successfully",
     "failedExportCSV": "Failed to export CSV"
   },
+  "adminAuth": {
+    "title": "Admin Login",
+    "description": "Enter your credentials to access the admin dashboard",
+    "email": "Email",
+    "emailPlaceholder": "admin@example.com",
+    "password": "Password",
+    "passwordPlaceholder": "••••••••",
+    "signingIn": "Signing in...",
+    "signIn": "Sign In",
+    "backToHome": "Back to Home",
+    "checkingAuth": "Checking authentication...",
+    "errors": {
+      "accessDenied": "Access denied. Admin privileges required.",
+      "verifyPrivileges": "Error verifying admin privileges",
+      "unexpectedError": "An unexpected error occurred",
+      "invalidEmail": "Invalid email address",
+      "passwordMinLength": "Password must be at least 6 characters"
+    },
+    "success": {
+      "welcome": "Welcome, Admin!"
+    }
+  },
   "adminTable": {
     "loading": "Loading registrations...",
     "searchPlaceholder": "Search by name, email, WhatsApp, or LinkedIn...",
@@ -207,7 +231,8 @@
     "download": "Download",
     "viewProfile": "View Profile",
     "failedLoad": "Failed to load registrations",
-    "failedDownload": "Failed to download resume"
+    "failedDownload": "Failed to download resume",
+    "authRequired": "Authentication required"
   },
   "adminAnalytics": {
     "profileCompletion": "Profile Completion",
@@ -234,7 +259,12 @@
     "totalRegistrations": "Total Registrations",
     "resumeUploadRate": "Resume Upload Rate",
     "whatsappProvided": "WhatsApp Provided",
-    "linkedinProvided": "LinkedIn Provided"
+    "linkedinProvided": "LinkedIn Provided",
+    "conversionFunnel": "Conversion Funnel",
+    "conversionFunnelDesc": "From start to completion",
+    "overallConversionRate": "Overall Conversion Rate",
+    "starts": "Starts",
+    "completions": "Completions"
   },
   "sponsorship": {
     "backToHome": "Back to Home",
@@ -380,6 +410,7 @@
     "errorName": "Error Name",
     "errorMessage": "Error Message",
     "stack": "Stack Trace",
+    "stackTrace": "Stack trace",
     "reload": "Reload Page",
     "goHome": "Go Home"
   },

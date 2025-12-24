@@ -33,8 +33,10 @@ serve(async (req: Request) => {
       if (clientIp !== "unknown" && clientIp.match(/^[\d.:a-fA-F]+$/)) {
         ipAddress = clientIp;
       }
-    } catch {
+    } catch (error) {
       // If IP parsing fails, set to null (will skip IP-based rate limiting)
+      // Log error for debugging but don't fail the request
+      console.error('[register-with-ip] Failed to parse IP address:', error);
       ipAddress = null;
     }
 

@@ -145,16 +145,16 @@ const AnalyticsDashboard = ({ stats }: AnalyticsDashboardProps) => {
 
         <Card>
           <CardHeader>
-            <CardTitle>Conversion Funnel</CardTitle>
-            <CardDescription>From start to completion</CardDescription>
+            <CardTitle>{t("adminAnalytics.conversionFunnel")}</CardTitle>
+            <CardDescription>{t("adminAnalytics.conversionFunnelDesc")}</CardDescription>
           </CardHeader>
           <CardContent className="flex flex-col items-center justify-center pt-4">
             <div className="text-4xl font-bold text-primary mb-2">{conversionRate}%</div>
-            <p className="text-sm text-muted-foreground mb-6">Overall Conversion Rate</p>
+            <p className="text-sm text-muted-foreground mb-6">{t("adminAnalytics.overallConversionRate")}</p>
             <div className="w-full space-y-4">
               <div className="space-y-1">
                 <div className="flex justify-between text-sm">
-                  <span>Starts</span>
+                  <span>{t("adminAnalytics.starts")}</span>
                   <span>{totalStarts}</span>
                 </div>
                 <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
@@ -163,7 +163,7 @@ const AnalyticsDashboard = ({ stats }: AnalyticsDashboardProps) => {
               </div>
               <div className="space-y-1">
                 <div className="flex justify-between text-sm">
-                  <span>Completions</span>
+                  <span>{t("adminAnalytics.completions")}</span>
                   <span>{stats.total}</span>
                 </div>
                 <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
