@@ -46,13 +46,21 @@ export const t = (
       if (currentLocale !== "en-UK") {
         return t(key, params, "en-UK");
       }
-      logger.warn(`Translation key not found: ${key}`, { key, locale: currentLocale });
+      // Only warn about missing translations in development
+      const isDevelopment = import.meta.env.DEV || import.meta.env.MODE === 'development';
+      if (isDevelopment) {
+        logger.warn(`Translation key not found: ${key}`, { key, locale: currentLocale });
+      }
       return key;
     }
   }
 
   if (typeof value !== "string") {
-    logger.warn(`Translation value is not a string for key: ${key}`, { key, locale: currentLocale, valueType: typeof value });
+    // Only warn about invalid translation values in development
+    const isDevelopment = import.meta.env.DEV || import.meta.env.MODE === 'development';
+    if (isDevelopment) {
+      logger.warn(`Translation value is not a string for key: ${key}`, { key, locale: currentLocale, valueType: typeof value });
+    }
     return key;
   }
 

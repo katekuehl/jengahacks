@@ -98,7 +98,11 @@ export async function getPaginatedRegistrations(
     };
   } catch (error) {
     // Fallback to direct query if RPC function fails
-    console.warn("RPC function failed, falling back to direct query", error);
+    // Only log warnings in development
+    const isDevelopment = import.meta.env.DEV || import.meta.env.MODE === 'development';
+    if (isDevelopment) {
+      console.warn("RPC function failed, falling back to direct query", error);
+    }
     return getPaginatedRegistrationsFallback(options);
   }
 }
@@ -172,7 +176,11 @@ export async function getRegistrationStats(): Promise<RegistrationStats> {
     return data;
   } catch (error) {
     // Fallback to direct query if RPC function fails
-    console.warn("RPC function failed, falling back to direct query", error);
+    // Only log warnings in development
+    const isDevelopment = import.meta.env.DEV || import.meta.env.MODE === 'development';
+    if (isDevelopment) {
+      console.warn("RPC function failed, falling back to direct query", error);
+    }
     return getRegistrationStatsFallback();
   }
 }
@@ -283,7 +291,11 @@ export async function refreshStatsView(): Promise<void> {
     }
   } catch (error) {
     // Materialized view refresh might not be available, ignore error
-    console.warn("Could not refresh stats view", error);
+    // Only log warnings in development
+    const isDevelopment = import.meta.env.DEV || import.meta.env.MODE === 'development';
+    if (isDevelopment) {
+      console.warn("Could not refresh stats view", error);
+    }
   }
 }
 

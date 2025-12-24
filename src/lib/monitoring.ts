@@ -123,7 +123,10 @@ class Monitoring {
     // Expose to window for debugging
     if (this.isDevelopment && typeof window !== 'undefined') {
       (window as unknown as { monitor: Monitoring }).monitor = this;
-      logger.info('Monitoring system initialized', { config: this.config });
+      // Only log initialization in development mode
+      if (this.isDevelopment) {
+        logger.info('Monitoring system initialized', { config: this.config });
+      }
     }
   }
 
@@ -275,7 +278,10 @@ class Monitoring {
       Sentry.setMeasurement(name, value, 'none');
     }
 
-    logger.debug('Metric tracked', { name, value, tags });
+    // Only log metrics in development mode to reduce console noise
+    if (this.isDevelopment) {
+      logger.debug('Metric tracked', { name, value, tags });
+    }
   }
 
   /**
@@ -410,12 +416,14 @@ class Monitoring {
         severity,
       });
     } else {
-      // info() only accepts (message, context?)
-      logger.info(`Alert: ${message}`, {
-        ...context,
-        alertId: id,
-        severity,
-      });
+      // Only log info-level alerts in development
+      if (this.isDevelopment) {
+        logger.info(`Alert: ${message}`, {
+          ...context,
+          alertId: id,
+          severity,
+        });
+      }
     }
 
     // Send to Sentry
@@ -437,7 +445,10 @@ class Monitoring {
       });
     }
 
-    logger.info('Alert created', { id, severity, message });
+    // Only log alert creation in development
+    if (this.isDevelopment) {
+      logger.info('Alert created', { id, severity, message });
+    }
   }
 
   /**
@@ -476,7 +487,10 @@ class Monitoring {
     if (alert) {
       alert.resolved = true;
       alert.timestamp = new Date().toISOString();
-      logger.info('Alert resolved', { id });
+      // Only log alert resolution in development
+      if (this.isDevelopment) {
+        logger.info('Alert resolved', { id });
+      }
     }
   }
 
@@ -635,7 +649,10 @@ class Monitoring {
    */
   configure(config: Partial<MonitoringConfig>): void {
     this.config = { ...this.config, ...config };
-    logger.info('Monitoring configuration updated', { config: this.config });
+    // Only log configuration updates in development
+    if (this.isDevelopment) {
+      logger.info('Monitoring configuration updated', { config: this.config });
+    }
   }
 
   /**

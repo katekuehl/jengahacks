@@ -66,7 +66,11 @@ export const trackClientRateLimitViolation = (
     });
   } catch (error) {
     // Don't break the application if tracking fails
-    console.error("Failed to track rate limit violation", error);
+    // Only log errors in development to reduce console noise
+    const isDevelopment = import.meta.env.DEV || import.meta.env.MODE === 'development';
+    if (isDevelopment) {
+      console.error("Failed to track rate limit violation", error);
+    }
   }
 };
 

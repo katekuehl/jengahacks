@@ -50,11 +50,17 @@ class Logger {
 
     this.config = {
       level: envLevel || defaultLevel,
+      // Only enable console logging in development or if explicitly enabled
       enableConsole: this.isDevelopment || import.meta.env.VITE_LOG_CONSOLE === 'true',
       enableSentry: import.meta.env.VITE_SENTRY_ENABLED === 'true',
       enablePersist: this.isDevelopment || import.meta.env.VITE_LOG_PERSIST === 'true',
       maxPersistedLogs: parseInt(import.meta.env.VITE_LOG_MAX_PERSISTED || '100', 10),
     };
+    
+    // In production, only log errors and warnings to console
+    if (!this.isDevelopment && this.config.enableConsole) {
+      this.config.level = 'warn'; // Override to warn level in production
+    }
 
     // Expose logger to window for debugging (development only)
     if (this.isDevelopment && typeof window !== 'undefined') {
