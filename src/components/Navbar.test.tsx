@@ -1,12 +1,7 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect } from "vitest";
 import { render, screen } from "@/test/test-utils";
 import userEvent from "@testing-library/user-event";
 import Navbar from "./Navbar";
-
-// Mock the logo image
-vi.mock("@/assets/JengaHack.png", () => ({
-  default: "mock-logo.png",
-}));
 
 describe("Navbar", () => {
   it("should render the logo", () => {
@@ -14,7 +9,7 @@ describe("Navbar", () => {
     // Logo has aria-label on parent link
     const logoLink = screen.getByLabelText(/Home|JengaHacks Home/i);
     expect(logoLink).toBeInTheDocument();
-    const logo = container.querySelector('img');
+    const logo = container.querySelector('svg');
     expect(logo).toBeInTheDocument();
   });
 

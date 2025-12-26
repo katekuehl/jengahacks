@@ -1,3 +1,4 @@
+import Logo from "@/components/Logo";
 import mimisirobotiLogo from "@/assets/mimisiroboti-logo.png";
 import SocialShare from "@/components/SocialShare";
 import { useTranslation } from "@/hooks/useTranslation";
@@ -9,7 +10,7 @@ const Footer = () => {
       <div className="container mx-auto px-4 sm:px-6">
         <div className="flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="text-center md:text-left">
-            <h3 className="text-lg sm:text-xl font-bold text-gradient mb-1">JengaHacks</h3>
+            <Logo className="mb-2" />
             <p className="text-xs sm:text-sm text-muted-foreground">
               {t("footer.tagline")}
             </p>

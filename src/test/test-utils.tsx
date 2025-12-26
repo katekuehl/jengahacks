@@ -1,37 +1,6 @@
 import { ReactElement } from "react";
 import { render, RenderOptions } from "@testing-library/react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter } from "react-router-dom";
-import { TooltipProvider } from "@/components/ui/tooltip";
-
-// Create a test query client
-const createTestQueryClient = () =>
-  new QueryClient({
-    defaultOptions: {
-      queries: {
-        retry: false,
-      },
-    },
-  });
-
-// Custom render function that includes providers
-// eslint-disable-next-line react-refresh/only-export-components
-const AllTheProviders = ({ children }: { children: React.ReactNode }) => {
-  const queryClient = createTestQueryClient();
-
-  return (
-    <QueryClientProvider client={queryClient}>
-      <BrowserRouter
-        future={{
-          v7_startTransition: true,
-          v7_relativeSplatPath: true,
-        }}
-      >
-        <TooltipProvider>{children}</TooltipProvider>
-      </BrowserRouter>
-    </QueryClientProvider>
-  );
-};
+import { AllTheProviders } from "./TestWrapper";
 
 const customRender = (
   ui: ReactElement,
@@ -39,7 +8,6 @@ const customRender = (
 ) => render(ui, { wrapper: AllTheProviders, ...options });
 
 // Re-export everything
-// eslint-disable-next-line react-refresh/only-export-components
 export * from "@testing-library/react";
 export { customRender as render };
 

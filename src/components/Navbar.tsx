@@ -1,8 +1,8 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import logo from "@/assets/JengaHack.png";
+import Logo from "@/components/Logo";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { useTranslation } from "@/hooks/useTranslation";
 import { cn } from "@/lib/utils";
@@ -10,6 +10,7 @@ import { useFocusTrap } from "@/hooks/useFocusTrap";
 import { useArrowKeyNavigation } from "@/hooks/useArrowKeyNavigation";
 
 const Navbar = () => {
+
   const [isOpen, setIsOpen] = useState(false);
   const { t } = useTranslation();
   const location = useLocation();
@@ -83,8 +84,8 @@ const Navbar = () => {
     >
       <div className="container mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-14 sm:h-16">
-          <a href="/" className="flex items-center gap-2" aria-label={t("aria.homeLink")}>
-            <img src={logo} alt="JengaHack" className="h-10 sm:h-12 w-auto" width="180" height="48" />
+          <a href="/" className="flex items-center" aria-label={t("aria.homeLink")}>
+            <Logo />
           </a>
 
           {/* Desktop Navigation */}
