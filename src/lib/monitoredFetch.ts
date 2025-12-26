@@ -25,10 +25,18 @@ export const monitoredFetch = async (
     // Determine cache type based on URL or request
     const isStaticAsset = /\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$/i.test(url);
     const cacheType = isStaticAsset ? 'static' : 'api';
-    
+
     // Merge cache headers with existing headers
     const cacheHeaders = getCacheHeaders(cacheType);
-    const headers = new Headers(init?.headers);
+    // Merge headers from Request object, init options, and cache logic
+    const headers = new Headers(input instanceof Request ? input.headers : init?.headers);
+    if (init?.headers) {
+        new Headers(init.headers).forEach((value, key) => {
+            headers.set(key, value);
+        });
+    }
+
+    // Merge cache headers with existing headers
     Object.entries(cacheHeaders).forEach(([key, value]) => {
         if (!headers.has(key)) {
             headers.set(key, value);
