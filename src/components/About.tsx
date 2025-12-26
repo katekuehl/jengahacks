@@ -24,6 +24,7 @@ const About = () => {
       icon: Trophy,
       title: t("about.features.win.title"),
       description: t("about.features.win.description"),
+      link: "/prizes",
     },
     {
       icon: Lightbulb,

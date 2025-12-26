@@ -39,11 +39,9 @@ describe("About", () => {
     const learnCard = screen.getByText("Learn & Grow").closest("a");
     expect(learnCard).toHaveAttribute("href", "/#schedule");
 
-    // Win Big -> No link (div)
+    // Win Big -> /prizes
     const winCard = screen.getByText("Win Big").closest("a");
-    expect(winCard).not.toBeInTheDocument();
-    const winCardDiv = screen.getByText("Win Big").closest("div.block");
-    expect(winCardDiv).toBeInTheDocument();
+    expect(winCard).toHaveAttribute("href", "/prizes");
   });
 
   it("should render feature descriptions", () => {
