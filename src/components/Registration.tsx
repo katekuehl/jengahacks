@@ -303,6 +303,7 @@ const Registration = () => {
               error={errors.whatsapp}
               touched={touched.whatsapp}
               icon={<MessageCircle className="w-4 h-4 inline" />}
+              required
               autoComplete="tel"
             />
 

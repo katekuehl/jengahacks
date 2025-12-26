@@ -230,6 +230,10 @@ describe("Registration Integration Tests", () => {
 
       await user.type(nameInput, "John Doe");
       await user.type(emailInput, "john.doe@example.com");
+      await user.type(nameInput, "John Doe");
+      await user.type(emailInput, "john.doe@example.com");
+      const whatsappInput = screen.getByLabelText(/WhatsApp Number/i);
+      await user.type(whatsappInput, "+254712345678");
       await user.type(linkedInInput, "linkedin.com/in/johndoe");
 
       // Complete CAPTCHA
@@ -286,7 +290,10 @@ describe("Registration Integration Tests", () => {
       const resumeInput = screen.getByLabelText(/Resume/i);
 
       await user.type(nameInput, "Jane Smith");
+      await user.type(nameInput, "Jane Smith");
       await user.type(emailInput, "jane.smith@example.com");
+      const whatsappInput = screen.getByLabelText(/WhatsApp Number/i);
+      await user.type(whatsappInput, "+254722334455");
       
       // Upload resume
       await user.upload(resumeInput, file);
@@ -390,6 +397,10 @@ describe("Registration Integration Tests", () => {
 
       await user.type(nameInput, "David Lee");
       await user.type(emailInput, "david@example.com");
+      await user.type(nameInput, "David Lee");
+      await user.type(emailInput, "david@example.com");
+      const whatsappInput = screen.getByLabelText(/WhatsApp Number/i);
+      await user.type(whatsappInput, "+254733445566");
       await user.type(linkedInInput, "linkedin.com/in/david");
 
       const captchaTrigger = screen.getByTestId("recaptcha-trigger");
@@ -435,7 +446,10 @@ describe("Registration Integration Tests", () => {
       const resumeInput = screen.getByLabelText(/Resume/i);
 
       await user.type(nameInput, "Eve Adams");
+      await user.type(nameInput, "Eve Adams");
       await user.type(emailInput, "eve@example.com");
+      const whatsappInput = screen.getByLabelText(/WhatsApp Number/i);
+      await user.type(whatsappInput, "+254744556677");
       await user.upload(resumeInput, file);
 
       const captchaTrigger = screen.getByTestId("recaptcha-trigger");
@@ -528,7 +542,10 @@ describe("Registration Integration Tests", () => {
       // Wait for validation errors
       await waitFor(() => {
         expect(screen.getByText(/Full name is required/i)).toBeInTheDocument();
+        expect(screen.getByText(/Full name is required/i)).toBeInTheDocument();
         expect(screen.getByText(/Email address is required/i)).toBeInTheDocument();
+        expect(screen.getByText(/WhatsApp number is required/i)).toBeInTheDocument();
+        expect(screen.getByText(/WhatsApp number is required/i)).toBeInTheDocument();
       });
 
       // Verify no submission occurred
@@ -585,6 +602,10 @@ describe("Registration Integration Tests", () => {
 
       await user.type(nameInput, "Grace Hopper");
       await user.type(emailInput, "grace@example.com");
+      await user.type(nameInput, "Grace Hopper");
+      await user.type(emailInput, "grace@example.com");
+      const whatsappInput = screen.getByLabelText(/WhatsApp Number/i);
+      await user.type(whatsappInput, "+254766778899");
       await user.type(linkedInInput, "linkedin.com/in/grace");
 
       const captchaTrigger = screen.getByTestId("recaptcha-trigger");
@@ -627,6 +648,10 @@ describe("Registration Integration Tests", () => {
 
       await user.type(nameInput, "Henry Ford");
       await user.type(emailInput, "henry@example.com");
+      await user.type(nameInput, "Henry Ford");
+      await user.type(emailInput, "henry@example.com");
+      const whatsappInput = screen.getByLabelText(/WhatsApp Number/i);
+      await user.type(whatsappInput, "+254777889900");
       await user.type(linkedInInput, "linkedin.com/in/henry");
 
       // Don't complete CAPTCHA - submit form without CAPTCHA token
@@ -660,6 +685,10 @@ describe("Registration Integration Tests", () => {
 
       await user.type(nameInput, "Iris Watson");
       await user.type(emailInput, "iris@example.com");
+      await user.type(nameInput, "Iris Watson");
+      await user.type(emailInput, "iris@example.com");
+      const whatsappInput = screen.getByLabelText(/WhatsApp Number/i);
+      await user.type(whatsappInput, "+254788990011");
       await user.type(linkedInInput, "linkedin.com/in/iris");
 
       const captchaTrigger = screen.getByTestId("recaptcha-trigger");

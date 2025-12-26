@@ -54,7 +54,10 @@ export const validateField = (name: string, value: string, t: (key: string) => s
             return undefined;
 
         case "whatsapp":
-            if (trimmedValue && !isValidWhatsAppNumber(trimmedValue)) {
+            if (!trimmedValue) {
+                return t("registration.errors.whatsappRequired");
+            }
+            if (!isValidWhatsAppNumber(trimmedValue)) {
                 return t("registration.errors.whatsappInvalid");
             }
             return undefined;

@@ -94,7 +94,7 @@ export const useRegistrationForm = () => {
       const newErrors: FormErrors = {
         fullName: validateFieldRef("fullName", fullName),
         email: validateFieldRef("email", email),
-        whatsapp: whatsapp ? validateFieldRef("whatsapp", whatsapp) : undefined,
+        whatsapp: validateFieldRef("whatsapp", whatsapp),
         linkedIn: linkedIn ? validateFieldRef("linkedIn", linkedIn) : undefined,
       };
 

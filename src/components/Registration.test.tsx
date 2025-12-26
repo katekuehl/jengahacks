@@ -188,6 +188,7 @@ describe("Registration", () => {
     await waitFor(() => {
       // Check for inline error message
       expect(screen.getByText(/Full name is required/i)).toBeInTheDocument();
+      expect(screen.getByText(/WhatsApp number is required/i)).toBeInTheDocument();
     }, { timeout: 2000 });
   });
 
@@ -230,6 +231,10 @@ describe("Registration", () => {
 
     await user.type(nameInput, "John Doe");
     await user.type(emailInput, "john@example.com");
+    // WhatsApp is now required
+    const whatsappInput = screen.getByLabelText(/WhatsApp Number/i);
+    await user.type(whatsappInput, "+254712345678");
+    
     await user.click(submitButton);
 
     await waitFor(() => {
@@ -273,6 +278,8 @@ describe("Registration", () => {
 
     await user.type(nameInput, "John Doe");
     await user.type(emailInput, "john@example.com");
+    const whatsappInput = screen.getByLabelText(/WhatsApp Number/i);
+    await user.type(whatsappInput, "+254712345678");
     await user.type(linkedInInput, "linkedin.com/in/test");
     
     // Use fireEvent to submit form and trigger async handler
