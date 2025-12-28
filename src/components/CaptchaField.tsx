@@ -32,7 +32,7 @@ export const CaptchaField = ({
   return (
     <div className="space-y-2">
       <div className="flex justify-center overflow-x-auto pb-2">
-        <div className="scale-90 sm:scale-100">
+        <div className="scale-90 sm:scale-100" data-testid="recaptcha">
           <ReCAPTCHA
             ref={recaptchaRef}
             sitekey={siteKey}

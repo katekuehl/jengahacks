@@ -31,7 +31,9 @@ const Registration = () => {
   const recaptchaRef = useRef<ReCAPTCHA>(null);
   const hasCompletedRef = useRef(false);
 
-  const RECAPTCHA_SITE_KEY = import.meta.env.VITE_RECAPTCHA_SITE_KEY || "";
+  const RECAPTCHA_SITE_KEY = (window as any).VITE_RECAPTCHA_SITE_KEY !== undefined 
+    ? (window as any).VITE_RECAPTCHA_SITE_KEY 
+    : (import.meta.env.VITE_RECAPTCHA_SITE_KEY || "");
   const [hasStartedTracking, setHasStartedTracking] = useState(false);
 
   const { ref, inView } = useInView({
@@ -250,6 +252,7 @@ const Registration = () => {
           <form
             onSubmit={handleSubmit}
             onFocus={handleFormFocus}
+            noValidate
             className="space-y-5 sm:space-y-6 bg-card p-4 sm:p-6 md:p-8 rounded-xl sm:rounded-2xl border border-border"
             onKeyDown={(e) => {
               // Allow Ctrl/Cmd + Enter to submit form

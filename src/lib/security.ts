@@ -62,8 +62,8 @@ export const validateAndSanitizeUrl = (url: string): string | null => {
       return sanitized;
     }
 
-    // For other URLs, validate basic structure
-    if (urlObj.hostname && urlObj.hostname.length > 0) {
+    // For other URLs, validate basic structure (require at least one dot for TLD-like structure)
+    if (urlObj.hostname && urlObj.hostname.includes('.') && urlObj.hostname.length > 2) {
       return sanitized;
     }
 
