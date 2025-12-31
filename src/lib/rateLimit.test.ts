@@ -43,12 +43,12 @@ describe("rateLimit", () => {
     });
 
     it("should block after exceeding limit and track violation", () => {
-      // Make 3 submissions
-      checkRateLimit();
-      checkRateLimit();
-      checkRateLimit();
+      // Make 10 submissions (the limit)
+      for (let i = 0; i < 10; i++) {
+        checkRateLimit();
+      }
 
-      // Fourth should be blocked
+      // 11th should be blocked
       const result = checkRateLimit();
       expect(result.allowed).toBe(false);
       expect(result.retryAfter).toBeGreaterThan(0);
@@ -60,7 +60,7 @@ describe("rateLimit", () => {
         expect.objectContaining({
           type: 'client',
           identifier: 'client-localStorage',
-          attempt_count: '3'
+          attempt_count: '10'
         })
       );
     });
@@ -72,12 +72,12 @@ describe("rateLimit", () => {
 
       vi.spyOn(Date, "now").mockImplementation(() => mockTime);
 
-      // Make 3 submissions
-      checkRateLimit();
-      checkRateLimit();
-      checkRateLimit();
+      // Make 10 submissions (the limit)
+      for (let i = 0; i < 10; i++) {
+        checkRateLimit();
+      }
 
-      // Should be blocked
+      // 11th should be blocked
       let result = checkRateLimit();
       expect(result.allowed).toBe(false);
 
@@ -85,7 +85,7 @@ describe("rateLimit", () => {
       mockTime += 60 * 60 * 1000 + 1000;
       vi.spyOn(Date, "now").mockImplementation(() => mockTime);
 
-      // Should be allowed again
+      // Should be allowed again (window expired, reset to 1 attempt)
       result = checkRateLimit();
       expect(result.allowed).toBe(true);
 
