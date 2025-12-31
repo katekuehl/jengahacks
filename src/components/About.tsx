@@ -126,7 +126,7 @@ const About = () => {
               asChild
             >
               <a 
-                href={import.meta.env.VITE_DISCORD_URL || "https://discord.com/invite/dU5g936a"} 
+                href={import.meta.env.VITE_DISCORD_URL || "https://discord.gg/4qaZGnYe"} 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="flex items-center justify-center gap-2"
