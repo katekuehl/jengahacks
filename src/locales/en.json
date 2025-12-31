@@ -105,6 +105,7 @@
     "errors": {
       "fullNameRequired": "Full name is required",
       "fullNameInvalid": "Please enter a valid full name (2-100 characters, letters and spaces only)",
+      "fullNameMustIncludeLastName": "Please enter both your first and last name (separated by a space)",
       "emailRequired": "Email address is required",
       "emailInvalid": "Please enter a valid email address",
       "whatsappRequired": "WhatsApp number is required",

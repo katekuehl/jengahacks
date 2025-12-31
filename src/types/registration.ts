@@ -20,7 +20,7 @@ export interface RegistrationResult {
 }
 
 export interface RegistrationSubmissionData {
-    fullName: string;
+    fullName: string; // Combined firstName + lastName for backend
     email: string;
     whatsapp: string | null;
     linkedIn: string | null;

@@ -104,6 +104,7 @@
     "errors": {
       "fullNameRequired": "Jina kamili linahitajika",
       "fullNameInvalid": "Tafadhali ingiza jina halali (herufi 2-100, herufi na nafasi tu)",
+      "fullNameMustIncludeLastName": "Tafadhali ingiza jina lako la kwanza na la mwisho (limegawanywa na nafasi)",
       "emailRequired": "Anwani ya barua pepe inahitajika",
       "emailInvalid": "Tafadhali ingiza anwani halali ya barua pepe",
       "whatsappInvalid": "Tafadhali ingiza nambari halali ya WhatsApp (mfano: +254712345678 au 0712345678)",

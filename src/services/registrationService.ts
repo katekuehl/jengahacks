@@ -214,15 +214,12 @@ export const registrationService = {
    * Complete registration submission flow
    */
   async submit(
-    formData: RegistrationFormData & { fullName?: string },
+    formData: RegistrationFormData,
     resumePath: string | null
   ): Promise<RegistrationResult> {
     try {
       // Capture and sanitize form data
-      // Use provided fullName if available (from combined firstName + lastName), otherwise combine
-      const fullName = formData.fullName 
-        ? formData.fullName.trim()
-        : `${formData.firstName.trim()} ${formData.lastName.trim()}`.trim();
+      const fullName = formData.fullName.trim();
       const email = formData.email.trim().toLowerCase();
       const whatsapp = formData.whatsapp?.trim() || null;
       const linkedIn = formData.linkedIn.trim() || null;
@@ -295,11 +292,10 @@ export const registrationService = {
         waitlistPosition: waitlistPosition || undefined,
       };
     } catch (error) {
-      const fullNameForLog = formData.fullName || `${formData.firstName || ''} ${formData.lastName || ''}`.trim();
       logger.error(
         "Registration error",
         error instanceof Error ? error : new Error(String(error)),
-        { email: formData.email, fullName: fullNameForLog }
+        { email: formData.email, fullName: formData.fullName }
       );
 
       const errorMessage =

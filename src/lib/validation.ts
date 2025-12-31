@@ -42,6 +42,10 @@ export const validateField = (name: string, value: string, t: (key: string) => s
             if (!isValidFullName(trimmedValue)) {
                 return t("registration.errors.fullNameInvalid");
             }
+            // Check that full name contains at least one space (first and last name)
+            if (!trimmedValue.includes(" ")) {
+                return t("registration.errors.fullNameMustIncludeLastName");
+            }
             return undefined;
 
         case "email":
