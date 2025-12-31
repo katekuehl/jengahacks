@@ -83,6 +83,17 @@ export const registrationService = {
     accessToken: string | null;
   }): Promise<{ registrationId: string | null; error?: Error }> {
     try {
+      // Check if Edge Function is enabled
+      const useEdgeFunction = import.meta.env.VITE_USE_REGISTRATION_EDGE_FUNCTION === "true";
+      
+      if (!useEdgeFunction) {
+        const error = new Error(
+          "Edge Function registration is disabled. Please set VITE_USE_REGISTRATION_EDGE_FUNCTION=true in your environment variables."
+        );
+        logger.error("Edge Function disabled", error, { email: data.email, fullName: data.fullName });
+        return { registrationId: null, error };
+      }
+
       const { data: registrationData, error: insertError } = await supabase.functions.invoke(
         "register-with-ip",
         {
@@ -100,12 +111,38 @@ export const registrationService = {
 
       // Handle function error structure (which might wrap errors)
       if (insertError) {
+        // Provide more descriptive error messages
+        let errorMessage = "Failed to send a request to the Edge Function when registering";
+        
+        if (insertError.message) {
+          errorMessage = insertError.message;
+        } else if (typeof insertError === "string") {
+          errorMessage = insertError;
+        } else if (insertError instanceof Error) {
+          errorMessage = insertError.message;
+        }
+
+        // Check for common error scenarios
+        if (errorMessage.includes("404") || errorMessage.includes("not found")) {
+          errorMessage = "Edge Function not found. Please ensure the 'register-with-ip' Edge Function is deployed.";
+        } else if (errorMessage.includes("CORS") || errorMessage.includes("cors")) {
+          errorMessage = "CORS error when calling Edge Function. Please check Edge Function CORS configuration.";
+        } else if (errorMessage.includes("network") || errorMessage.includes("fetch")) {
+          errorMessage = "Network error when calling Edge Function. Please check your internet connection and Supabase configuration.";
+        }
+
+        const error = new Error(errorMessage);
         logger.error(
           "Registration insert error",
-          insertError instanceof Error ? insertError : new Error(String(insertError)),
-          { email: data.email, fullName: data.fullName }
+          error,
+          { 
+            email: data.email, 
+            fullName: data.fullName,
+            originalError: insertError,
+            supabaseUrl: import.meta.env.VITE_SUPABASE_URL
+          }
         );
-        return { registrationId: null, error: insertError };
+        return { registrationId: null, error };
       }
 
       // Check for success in the response data 
@@ -118,14 +155,34 @@ export const registrationService = {
 
       return { registrationId: registrationData?.data?.id || null };
     } catch (error) {
+      // Handle network errors, timeouts, etc.
+      let errorMessage = "Failed to send a request to the Edge Function when registering";
+      
+      if (error instanceof Error) {
+        errorMessage = error.message;
+        
+        // Provide more specific error messages
+        if (error.message.includes("fetch") || error.message.includes("network")) {
+          errorMessage = "Network error: Unable to connect to the Edge Function. Please check your internet connection and ensure the Edge Function is deployed.";
+        } else if (error.message.includes("timeout")) {
+          errorMessage = "Request timeout: The Edge Function took too long to respond. Please try again.";
+        }
+      }
+
+      const registrationError = new Error(errorMessage);
       logger.error(
         "Registration insert error",
-        error instanceof Error ? error : new Error(String(error)),
-        { email: data.email, fullName: data.fullName }
+        registrationError,
+        { 
+          email: data.email, 
+          fullName: data.fullName,
+          originalError: error,
+          supabaseUrl: import.meta.env.VITE_SUPABASE_URL
+        }
       );
       return {
         registrationId: null,
-        error: error instanceof Error ? error : new Error(String(error)),
+        error: registrationError,
       };
     }
   },
@@ -157,12 +214,15 @@ export const registrationService = {
    * Complete registration submission flow
    */
   async submit(
-    formData: RegistrationFormData,
+    formData: RegistrationFormData & { fullName?: string },
     resumePath: string | null
   ): Promise<RegistrationResult> {
     try {
       // Capture and sanitize form data
-      const fullName = formData.fullName.trim();
+      // Use provided fullName if available (from combined firstName + lastName), otherwise combine
+      const fullName = formData.fullName 
+        ? formData.fullName.trim()
+        : `${formData.firstName.trim()} ${formData.lastName.trim()}`.trim();
       const email = formData.email.trim().toLowerCase();
       const whatsapp = formData.whatsapp?.trim() || null;
       const linkedIn = formData.linkedIn.trim() || null;
@@ -235,10 +295,11 @@ export const registrationService = {
         waitlistPosition: waitlistPosition || undefined,
       };
     } catch (error) {
+      const fullNameForLog = formData.fullName || `${formData.firstName || ''} ${formData.lastName || ''}`.trim();
       logger.error(
         "Registration error",
         error instanceof Error ? error : new Error(String(error)),
-        { email: formData.email, fullName: formData.fullName }
+        { email: formData.email, fullName: fullNameForLog }
       );
 
       const errorMessage =
