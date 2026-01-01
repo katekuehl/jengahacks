@@ -94,6 +94,31 @@ export const registrationService = {
         return { registrationId: null, error };
       }
 
+      // Log the request details for debugging
+      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+      const hasAnonKey = !!import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+      
+      logger.info("Calling Edge Function", {
+        functionName: "register-with-ip",
+        supabaseUrl,
+        hasAnonKey,
+        email: data.email,
+        expectedUrl: supabaseUrl ? `${supabaseUrl}/functions/v1/register-with-ip` : "unknown",
+      });
+
+      // Validate configuration before making request
+      if (!supabaseUrl) {
+        const error = new Error("VITE_SUPABASE_URL is not set. Please check your .env file and restart the dev server.");
+        logger.error("Missing Supabase URL", error, { email: data.email });
+        return { registrationId: null, error };
+      }
+
+      if (!hasAnonKey) {
+        const error = new Error("VITE_SUPABASE_PUBLISHABLE_KEY is not set. Please check your .env file and restart the dev server.");
+        logger.error("Missing Supabase API key", error, { email: data.email });
+        return { registrationId: null, error };
+      }
+
       const { data: registrationData, error: insertError } = await supabase.functions.invoke(
         "register-with-ip",
         {
@@ -114,33 +139,53 @@ export const registrationService = {
         // Provide more descriptive error messages
         let errorMessage = "Failed to send a request to the Edge Function when registering";
         
+        // Extract error details
+        const errorDetails: Record<string, unknown> = {
+          email: data.email,
+          fullName: data.fullName,
+          supabaseUrl: import.meta.env.VITE_SUPABASE_URL,
+        };
+
+        // Try to extract more information from the error
         if (insertError.message) {
           errorMessage = insertError.message;
+          errorDetails.originalMessage = insertError.message;
         } else if (typeof insertError === "string") {
           errorMessage = insertError;
+          errorDetails.originalError = insertError;
         } else if (insertError instanceof Error) {
           errorMessage = insertError.message;
+          errorDetails.originalError = insertError;
+        }
+
+        // Check for Supabase-specific error properties
+        if (insertError && typeof insertError === "object") {
+          const errorObj = insertError as Record<string, unknown>;
+          if (errorObj.status) errorDetails.status = errorObj.status;
+          if (errorObj.statusCode) errorDetails.statusCode = errorObj.statusCode;
+          if (errorObj.context) errorDetails.context = errorObj.context;
         }
 
         // Check for common error scenarios
-        if (errorMessage.includes("404") || errorMessage.includes("not found")) {
+        if (errorMessage.includes("404") || errorMessage.includes("not found") || errorDetails.status === 404) {
           errorMessage = "Edge Function not found. Please ensure the 'register-with-ip' Edge Function is deployed.";
+        } else if (errorMessage.includes("401") || errorMessage.includes("Unauthorized") || errorDetails.status === 401) {
+          errorMessage = "Authentication failed. Please check your Supabase API key configuration.";
+        } else if (errorMessage.includes("403") || errorMessage.includes("Forbidden") || errorDetails.status === 403) {
+          errorMessage = "Access forbidden. Please check your Supabase permissions.";
         } else if (errorMessage.includes("CORS") || errorMessage.includes("cors")) {
           errorMessage = "CORS error when calling Edge Function. Please check Edge Function CORS configuration.";
-        } else if (errorMessage.includes("network") || errorMessage.includes("fetch")) {
+        } else if (errorMessage.includes("network") || errorMessage.includes("fetch") || errorMessage.includes("Failed to fetch")) {
           errorMessage = "Network error when calling Edge Function. Please check your internet connection and Supabase configuration.";
+        } else if (errorMessage.includes("timeout") || errorMessage.includes("Timeout")) {
+          errorMessage = "Request timeout. The Edge Function took too long to respond. Please try again.";
         }
 
         const error = new Error(errorMessage);
         logger.error(
           "Registration insert error",
           error,
-          { 
-            email: data.email, 
-            fullName: data.fullName,
-            originalError: insertError,
-            supabaseUrl: import.meta.env.VITE_SUPABASE_URL
-          }
+          errorDetails
         );
         return { registrationId: null, error };
       }

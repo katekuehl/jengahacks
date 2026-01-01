@@ -2,8 +2,24 @@
 import { createClient } from '@supabase/supabase-js';
 import type { Database } from './types';
 
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || "https://vyeqzbbnvmtgvhmbgduc.supabase.co";
-const SUPABASE_PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ5ZXF6YmJudm10Z3ZobWJnZHVjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU5ODUyMTYsImV4cCI6MjA4MTU2MTIxNn0.zzrWkeRMdEFj79OshV4gCXPE14czoEi-Y4qiyeHOn3s";
+// Get Supabase configuration from environment variables
+// These should be set in .env file
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+const SUPABASE_PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+
+// Validate required environment variables
+if (!SUPABASE_URL || !SUPABASE_PUBLISHABLE_KEY) {
+  const missingVars = [];
+  if (!SUPABASE_URL) missingVars.push("VITE_SUPABASE_URL");
+  if (!SUPABASE_PUBLISHABLE_KEY) missingVars.push("VITE_SUPABASE_PUBLISHABLE_KEY");
+  
+  console.error(
+    `❌ Missing required Supabase environment variables: ${missingVars.join(", ")}\n` +
+    `Please set these in your .env file. See example.env for reference.`
+  );
+  
+  throw new Error(`Missing required environment variables: ${missingVars.join(", ")}`);
+}
 
 // Import the supabase client like this:
 // import { supabase } from "@/integrations/supabase/client";
