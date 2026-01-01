@@ -3,7 +3,8 @@ import {
     isValidPdfMimeType,
     isValidFullName,
     isValidWhatsAppNumber,
-    validateAndSanitizeUrl
+    validateAndSanitizeUrl,
+    validateAndNormalizeLinkedIn
 } from "./security";
 import { MAX_FILE_SIZE, MAX_FILE_SIZE_MB } from "./constants";
 
@@ -67,7 +68,7 @@ export const validateField = (name: string, value: string, t: (key: string) => s
             return undefined;
 
         case "linkedIn":
-            if (trimmedValue && !validateAndSanitizeUrl(trimmedValue)) {
+            if (trimmedValue && !validateAndNormalizeLinkedIn(trimmedValue)) {
                 return t("registration.errors.linkedinInvalid");
             }
             return undefined;

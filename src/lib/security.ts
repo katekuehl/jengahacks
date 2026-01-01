@@ -32,7 +32,78 @@ export const isValidPdfMimeType = (mimeType: string): boolean => {
 };
 
 /**
- * Validate and sanitize URL
+ * Validate and normalize LinkedIn profile
+ * Accepts: username, in/username, linkedin.com/in/username, or full URL
+ * Returns: normalized LinkedIn URL or null if invalid
+ */
+export const validateAndNormalizeLinkedIn = (input: string): string | null => {
+  if (!input || !input.trim()) {
+    return null;
+  }
+
+  let sanitized = input.trim();
+
+  // Remove any whitespace
+  sanitized = sanitized.replace(/\s/g, '');
+
+  // Remove leading/trailing slashes
+  sanitized = sanitized.replace(/^\/+|\/+$/g, '');
+
+  // If it's already a full URL, validate it
+  if (sanitized.match(/^https?:\/\//i)) {
+    try {
+      const urlObj = new URL(sanitized);
+      if (urlObj.hostname.includes('linkedin.com')) {
+        // Normalize to https://linkedin.com/in/username format
+        const pathMatch = urlObj.pathname.match(/\/in\/([^/?]+)/);
+        if (pathMatch) {
+          return `https://linkedin.com/in/${pathMatch[1]}`;
+        }
+        return sanitized;
+      }
+      return null;
+    } catch {
+      return null;
+    }
+  }
+
+  // Handle different input formats
+  // Case 1: Just username (e.g., "johndoe")
+  if (/^[a-zA-Z0-9_-]+$/.test(sanitized)) {
+    return `https://linkedin.com/in/${sanitized}`;
+  }
+
+  // Case 2: in/username (e.g., "in/johndoe")
+  const inMatch = sanitized.match(/^in\/([a-zA-Z0-9_-]+)$/i);
+  if (inMatch) {
+    return `https://linkedin.com/in/${inMatch[1]}`;
+  }
+
+  // Case 3: linkedin.com/in/username or www.linkedin.com/in/username
+  const linkedinMatch = sanitized.match(/^(?:www\.)?linkedin\.com\/in\/([a-zA-Z0-9_-]+)/i);
+  if (linkedinMatch) {
+    return `https://linkedin.com/in/${linkedinMatch[1]}`;
+  }
+
+  // Case 4: Try to add protocol and validate
+  try {
+    const urlObj = new URL(`https://${sanitized}`);
+    if (urlObj.hostname.includes('linkedin.com')) {
+      const pathMatch = urlObj.pathname.match(/\/in\/([^/?]+)/);
+      if (pathMatch) {
+        return `https://linkedin.com/in/${pathMatch[1]}`;
+      }
+      return `https://${sanitized}`;
+    }
+  } catch {
+    // Not a valid URL format
+  }
+
+  return null;
+};
+
+/**
+ * Validate and sanitize URL (for non-LinkedIn URLs)
  */
 export const validateAndSanitizeUrl = (url: string): string | null => {
   if (!url || !url.trim()) {

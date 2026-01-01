@@ -110,7 +110,7 @@
       "emailInvalid": "Please enter a valid email address",
       "whatsappRequired": "WhatsApp number is required",
       "whatsappInvalid": "Please enter a valid WhatsApp number (e.g., +254712345678 or 0712345678)",
-      "linkedinInvalid": "Please enter a valid LinkedIn URL (e.g., linkedin.com/in/yourprofile)",
+      "linkedinInvalid": "Please enter a valid LinkedIn profile (e.g., johndoe, in/johndoe, or linkedin.com/in/johndoe)",
       "resumeRequired": "Please provide either your LinkedIn profile or upload your resume",
       "resumeSize": "File size must be less than 5MB",
       "resumeType": "Please upload a PDF file (.pdf extension required)",

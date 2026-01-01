@@ -12,6 +12,7 @@ import {
 } from "@/types/registration";
 import { callRpc } from "@/lib/supabaseRpc";
 import { supabase } from "@/integrations/supabase/client";
+import { validateAndNormalizeLinkedIn } from "@/lib/security";
 
 // TODO: Extract common error handling patterns into utility functions
 export const registrationService = {
@@ -267,7 +268,11 @@ export const registrationService = {
       const fullName = formData.fullName.trim();
       const email = formData.email.trim().toLowerCase();
       const whatsapp = formData.whatsapp?.trim() || null;
-      const linkedIn = formData.linkedIn.trim() || null;
+      // Normalize LinkedIn input (username, in/username, or full URL) to full URL
+      const linkedInInput = formData.linkedIn.trim();
+      const linkedIn = linkedInInput 
+        ? validateAndNormalizeLinkedIn(linkedInInput) 
+        : null;
 
       // Check waitlist status
       const { shouldWaitlist, error: waitlistError } = await this.checkWaitlist();

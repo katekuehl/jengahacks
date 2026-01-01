@@ -9,7 +9,7 @@ import { Upload, Linkedin, Save, X, AlertCircle, Loader2, ArrowLeft } from "luci
 import { supabase } from "@/integrations/supabase/client";
 import {
   sanitizeFileName,
-  validateAndSanitizeUrl,
+  validateAndNormalizeLinkedIn,
   normalizeWhatsAppNumber,
 } from "@/lib/security";
 import { validateFile, validateField } from "@/lib/validation";
@@ -194,8 +194,11 @@ const ManageRegistration = () => {
       // Normalize WhatsApp number
       const whatsappNumber = formData.whatsapp ? normalizeWhatsAppNumber(formData.whatsapp) : null;
 
-      // Validate and sanitize LinkedIn URL
-      const linkedInUrl = formData.linkedIn ? validateAndSanitizeUrl(formData.linkedIn) : null;
+      // Validate and normalize LinkedIn (accepts username, in/username, or full URL)
+      const linkedInInput = formData.linkedIn.trim();
+      const linkedInUrl = linkedInInput 
+        ? (validateAndNormalizeLinkedIn(linkedInInput) || null)
+        : null;
       if (formData.linkedIn && !linkedInUrl) {
         toast.error(t("registration.errors.linkedinInvalid"));
         setIsUpdating(false);
@@ -430,7 +433,7 @@ const ManageRegistration = () => {
                       name="linkedIn"
                       value={formData.linkedIn}
                       onChange={handleInputChange}
-                      placeholder="linkedin.com/in/yourprofile"
+                      placeholder="johndoe or linkedin.com/in/johndoe"
                       className={errors.linkedIn ? "border-destructive" : ""}
                       aria-invalid={!!errors.linkedIn}
                       aria-describedby={errors.linkedIn ? "linkedIn-error" : undefined}

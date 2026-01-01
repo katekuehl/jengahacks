@@ -108,7 +108,7 @@
       "emailRequired": "Anwani ya barua pepe inahitajika",
       "emailInvalid": "Tafadhali ingiza anwani halali ya barua pepe",
       "whatsappInvalid": "Tafadhali ingiza nambari halali ya WhatsApp (mfano: +254712345678 au 0712345678)",
-      "linkedinInvalid": "Tafadhali ingiza URL halali ya LinkedIn (mfano: linkedin.com/in/wasifuwako)",
+      "linkedinInvalid": "Tafadhali ingiza wasifu halali wa LinkedIn (mfano: johndoe, in/johndoe, au linkedin.com/in/johndoe)",
       "resumeRequired": "Tafadhali toa wasifu wako wa LinkedIn au pakia resume yako",
       "resumeSize": "Ukubwa wa faili lazima uwe chini ya 5MB",
       "resumeType": "Tafadhali pakia faili ya PDF (kipengele cha .pdf kinahitajika)",
