@@ -315,7 +315,7 @@ const Registration = () => {
               id="linkedIn"
               name="linkedIn"
               label={t("registration.linkedin")}
-              placeholder="johndoe or linkedin.com/in/johndoe"
+              placeholder="linkedin.com/in/johndoe"
               value={formData.linkedIn}
               onChange={handleInputChange}
               onBlur={handleBlur}
