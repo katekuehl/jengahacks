@@ -257,14 +257,26 @@ describe("Registration", () => {
 
   it("should disable submit button when submitting", async () => {
     const user = userEvent.setup();
-    vi.stubEnv("VITE_USE_REGISTRATION_EDGE_FUNCTION", "false");
+    // Enable Edge Function for this test so invokeMock is called
+    vi.stubEnv("VITE_USE_REGISTRATION_EDGE_FUNCTION", "true");
     render(<Registration />);
 
-    // Use the mocks set up in beforeEach
-    // But we need to make sure insertMock returns a builder that works for registrationService
-    const mockSingle = vi.fn().mockResolvedValue({ data: { id: "mock-id" }, error: null, count: null, status: 200, statusText: "OK" });
-    const mockSelect = vi.fn().mockReturnValue({ single: mockSingle });
-    insertMock.mockReturnValue({ select: mockSelect });
+    // Mock successful Edge Function response
+    invokeMock.mockResolvedValue({
+      data: { success: true, data: { id: "mock-id" } },
+      error: null,
+    });
+
+    // Mock RPC calls for waitlist check and token generation
+    vi.mocked(supabase.rpc).mockImplementation((fnName: string) => {
+      if (fnName === "should_add_to_waitlist") {
+        return Promise.resolve({ data: false, error: null, count: null, status: 200, statusText: "OK" });
+      }
+      if (fnName === "generate_access_token") {
+        return Promise.resolve({ data: "mock-token", error: null, count: null, status: 200, statusText: "OK" });
+      }
+      return Promise.resolve({ data: null, error: null, count: null, status: 200, statusText: "OK" });
+    });
 
     const nameInput = screen.getByLabelText(/Full Name/i);
     const emailInput = screen.getByLabelText(/Email Address/i);
@@ -292,7 +304,7 @@ describe("Registration", () => {
       expect(submitButton.disabled).toBe(true);
     }, { timeout: 2000 });
     
-    // Wait for submission to complete
+    // Wait for submission to complete and Edge Function to be called
     await waitFor(() => {
       expect(invokeMock).toHaveBeenCalled();
     }, { timeout: 5000 });
