@@ -433,7 +433,7 @@ const ManageRegistration = () => {
                       name="linkedIn"
                       value={formData.linkedIn}
                       onChange={handleInputChange}
-                      placeholder="johndoe or linkedin.com/in/johndoe"
+                      placeholder="linkedin.com/in/johndoe"
                       className={errors.linkedIn ? "border-destructive" : ""}
                       aria-invalid={!!errors.linkedIn}
                       aria-describedby={errors.linkedIn ? "linkedIn-error" : undefined}
