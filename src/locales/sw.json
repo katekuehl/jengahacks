@@ -220,7 +220,8 @@
       "verifyPrivileges": "Kosa la kuthibitisha haki za msimamizi",
       "unexpectedError": "Kosa lisilotarajiwa limetokea",
       "invalidEmail": "Anwani ya barua pepe si halali",
-      "passwordMinLength": "Nenosiri lazima liwe na angalau herufi 6"
+      "passwordMinLength": "Nenosiri lazima liwe na angalau herufi 6",
+      "invalidCredentials": "Barua pepe au nenosiri si sahihi. Tafadhali angalia hati zako na ujaribu tena."
     },
     "success": {
       "welcome": "Karibu, Msimamizi!"

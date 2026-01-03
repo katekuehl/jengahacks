@@ -96,13 +96,19 @@ const AdminAuth = () => {
       }
 
       const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
+        email: email.trim(),
+        password: password,
       });
 
       if (error) {
         logger.error("Login error", error);
-        toast.error(error.message);
+        // Provide more user-friendly error messages
+        if (error.message.includes("Invalid login credentials") || error.message.includes("Email not confirmed")) {
+          toast.error(t("adminAuth.errors.invalidCredentials") || "Invalid email or password. Please check your credentials and try again.");
+        } else {
+          toast.error(error.message);
+        }
+        setIsLoading(false);
         return;
       }
 
@@ -182,25 +188,27 @@ const AdminAuth = () => {
             <div className="space-y-2">
               <Label htmlFor="password">{t("adminAuth.password")}</Label>
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground z-10" />
                 <Input
                   id="password"
                   type={showPassword ? "text" : "password"}
                   placeholder={t("adminAuth.passwordPlaceholder")}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="pl-9 pr-9"
+                  className="pl-9 pr-10"
                   required
                   disabled={isLoading}
+                  autoComplete="current-password"
                 />
                 <Button
                   type="button"
                   variant="ghost"
                   size="sm"
-                  className="absolute right-1 top-1/2 h-7 w-7 -translate-y-1/2 p-0 hover:bg-transparent"
-                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-2 top-1/2 h-8 w-8 -translate-y-1/2 p-0 hover:bg-muted z-10 cursor-pointer"
+                  onClick={() => setShowPassword((prev) => !prev)}
                   disabled={isLoading}
                   aria-label={showPassword ? "Hide password" : "Show password"}
+                  tabIndex={0}
                 >
                   {showPassword ? (
                     <EyeOff className="h-4 w-4 text-muted-foreground" />

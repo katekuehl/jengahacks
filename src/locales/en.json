@@ -220,7 +220,8 @@
       "verifyPrivileges": "Error verifying admin privileges",
       "unexpectedError": "An unexpected error occurred",
       "invalidEmail": "Invalid email address",
-      "passwordMinLength": "Password must be at least 6 characters"
+      "passwordMinLength": "Password must be at least 6 characters",
+      "invalidCredentials": "Invalid email or password. Please check your credentials and try again."
     },
     "success": {
       "welcome": "Welcome, Admin!"
