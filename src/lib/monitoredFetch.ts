@@ -24,10 +24,10 @@ export const monitoredFetch = async (
 
     // Determine cache type based on URL or request
     const isStaticAsset = /\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$/i.test(url);
+    // Don't add cache headers to Edge Function requests (CORS doesn't allow cache-control header)
+    const isEdgeFunction = /\/functions\/v1\//.test(url);
     const cacheType = isStaticAsset ? 'static' : 'api';
 
-    // Merge cache headers with existing headers
-    const cacheHeaders = getCacheHeaders(cacheType);
     // Merge headers from Request object, init options, and cache logic
     const headers = new Headers(input instanceof Request ? input.headers : init?.headers);
     if (init?.headers) {
@@ -36,12 +36,16 @@ export const monitoredFetch = async (
         });
     }
 
-    // Merge cache headers with existing headers
-    Object.entries(cacheHeaders).forEach(([key, value]) => {
-        if (!headers.has(key)) {
-            headers.set(key, value);
-        }
-    });
+    // Only add cache headers for non-Edge Function requests
+    // Edge Functions don't allow cache-control header in CORS preflight
+    if (!isEdgeFunction) {
+        const cacheHeaders = getCacheHeaders(cacheType);
+        Object.entries(cacheHeaders).forEach(([key, value]) => {
+            if (!headers.has(key)) {
+                headers.set(key, value);
+            }
+        });
+    }
 
     const fetchOptions: RequestInit = {
         ...init,
