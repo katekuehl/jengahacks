@@ -103,8 +103,12 @@ const AdminAuth = () => {
       if (error) {
         logger.error("Login error", error);
         // Provide more user-friendly error messages
-        if (error.message.includes("Invalid login credentials") || error.message.includes("Email not confirmed")) {
+        if (error.message.includes("Invalid login credentials")) {
           toast.error(t("adminAuth.errors.invalidCredentials") || "Invalid email or password. Please check your credentials and try again.");
+        } else if (error.message.includes("Email not confirmed")) {
+          toast.error(t("adminAuth.errors.emailNotConfirmed") || "Please confirm your email address before logging in.");
+        } else if (error.message.includes("User not found")) {
+          toast.error(t("adminAuth.errors.userNotFound") || "No account found with this email address. Please create an admin user first.");
         } else {
           toast.error(error.message);
         }

@@ -221,7 +221,9 @@
       "unexpectedError": "Kosa lisilotarajiwa limetokea",
       "invalidEmail": "Anwani ya barua pepe si halali",
       "passwordMinLength": "Nenosiri lazima liwe na angalau herufi 6",
-      "invalidCredentials": "Barua pepe au nenosiri si sahihi. Tafadhali angalia hati zako na ujaribu tena."
+      "invalidCredentials": "Barua pepe au nenosiri si sahihi. Tafadhali angalia hati zako na ujaribu tena.",
+      "emailNotConfirmed": "Tafadhali thibitisha anwani yako ya barua pepe kabla ya kuingia.",
+      "userNotFound": "Hakuna akaunti iliyopatikana na anwani hii ya barua pepe. Tafadhali unda mtumiaji wa msimamizi kwanza."
     },
     "success": {
       "welcome": "Karibu, Msimamizi!"

@@ -221,7 +221,9 @@
       "unexpectedError": "An unexpected error occurred",
       "invalidEmail": "Invalid email address",
       "passwordMinLength": "Password must be at least 6 characters",
-      "invalidCredentials": "Invalid email or password. Please check your credentials and try again."
+      "invalidCredentials": "Invalid email or password. Please check your credentials and try again.",
+      "emailNotConfirmed": "Please confirm your email address before logging in.",
+      "userNotFound": "No account found with this email address. Please create an admin user first."
     },
     "success": {
       "welcome": "Welcome, Admin!"
