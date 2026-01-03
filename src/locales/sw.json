@@ -116,6 +116,8 @@
       "captchaFailed": "Uthibitishaji wa CAPTCHA umeshindwa. Tafadhali jaribu tena.",
       "rateLimit": "Majaribio mengi sana ya usajili. Tafadhali jaribu tena baada ya {time}.",
       "duplicateEmail": "Barua pepe hii tayari imesajiliwa",
+      "duplicateEmailHelp": "Anwani hii ya barua pepe tayari imetumika kujiandikisha. Ikiwa hii ni barua pepe yako, tafadhali angalia kikasha chako cha barua pepe kwa ujumbe wa uthibitishaji na maelezo ya usajili wako. Vinginevyo, tafadhali tumia anwani tofauti ya barua pepe ili kuendelea.",
+      "duplicateEmailSuggestion": "Tayari umesajiliwa? Angalia barua pepe yako kwa ujumbe wa uthibitishaji au tumia anwani tofauti ya barua pepe.",
       "failed": "Usajili umeshindwa. Tafadhali jaribu tena.",
       "formErrors": "Tafadhali rekebisha makosa kwenye fomu"
     },

@@ -2,13 +2,14 @@
  * Custom hook for registration form state and validation
  */
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import {
   sanitizeInput,
   isValidEmail,
 } from "@/lib/security";
 import { validateField } from "@/lib/validation";
 import { useTranslation } from "@/hooks/useTranslation";
+import { registrationService } from "@/services/registrationService";
 
 import { RegistrationFormData } from "@/types/registration";
 
@@ -41,6 +42,8 @@ export const useRegistrationForm = () => {
   const [touched, setTouched] = useState<TouchedFields>({});
   const [hasLinkedIn, setHasLinkedIn] = useState(false);
   const [hasResume, setHasResume] = useState(false);
+  const [isCheckingEmail, setIsCheckingEmail] = useState(false);
+  const emailCheckTimeoutRef = useRef<number | null>(null);
 
   const validateFieldRef = useCallback(
     (name: string, value: string): string | undefined => {
@@ -69,16 +72,77 @@ export const useRegistrationForm = () => {
     [errors]
   );
 
+  // Check for duplicate email when email field changes
+  useEffect(() => {
+    const email = formData.email.trim().toLowerCase();
+    
+    // Clear previous timeout
+    if (emailCheckTimeoutRef.current) {
+      window.clearTimeout(emailCheckTimeoutRef.current);
+    }
+
+    // Only check if email is valid and has been touched
+    if (!email || !isValidEmail(email) || !touched.email) {
+      return;
+    }
+
+    // Debounce email check (wait 500ms after user stops typing)
+    emailCheckTimeoutRef.current = window.setTimeout(async () => {
+      setIsCheckingEmail(true);
+      const { exists } = await registrationService.checkEmailExists(email);
+      
+      if (exists) {
+        setErrors((prev) => ({
+          ...prev,
+          email: t("registration.errors.duplicateEmail"),
+        }));
+      } else {
+        // Clear duplicate error if email doesn't exist
+        setErrors((prev) => {
+          if (prev.email === t("registration.errors.duplicateEmail")) {
+            const { email: _, ...rest } = prev;
+            return rest;
+          }
+          return prev;
+        });
+      }
+      setIsCheckingEmail(false);
+    }, 500);
+
+    return () => {
+      if (emailCheckTimeoutRef.current) {
+        window.clearTimeout(emailCheckTimeoutRef.current);
+      }
+    };
+  }, [formData.email, touched.email, t]);
+
   const handleBlur = useCallback(
-    (e: React.FocusEvent<HTMLInputElement>) => {
+    async (e: React.FocusEvent<HTMLInputElement>) => {
       const { name, value } = e.target;
       setTouched((prev) => ({ ...prev, [name]: true }));
 
+      // Basic validation
       const error = validateField(name, value, t);
       if (error) {
         setErrors((prev) => ({ ...prev, [name]: error }));
       } else {
-        setErrors((prev) => ({ ...prev, [name]: undefined }));
+        // For email field, also check for duplicates
+        if (name === "email" && isValidEmail(value.trim())) {
+          setIsCheckingEmail(true);
+          const { exists } = await registrationService.checkEmailExists(value.trim());
+          setIsCheckingEmail(false);
+          
+          if (exists) {
+            setErrors((prev) => ({
+              ...prev,
+              email: t("registration.errors.duplicateEmail"),
+            }));
+          } else {
+            setErrors((prev) => ({ ...prev, [name]: undefined }));
+          }
+        } else {
+          setErrors((prev) => ({ ...prev, [name]: undefined }));
+        }
       }
     },
     [t]
@@ -131,6 +195,7 @@ export const useRegistrationForm = () => {
     hasLinkedIn,
     hasResume,
     setHasResume,
+    isCheckingEmail,
     validateField,
     handleInputChange,
     handleBlur,

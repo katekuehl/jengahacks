@@ -17,6 +17,35 @@ import { validateAndNormalizeLinkedIn } from "@/lib/security";
 // TODO: Extract common error handling patterns into utility functions
 export const registrationService = {
   /**
+   * Check if email already exists in the database
+   * Returns true if email exists, false otherwise
+   */
+  async checkEmailExists(email: string): Promise<{ exists: boolean; error?: Error }> {
+    try {
+      const { data, error } = await callRpc<boolean>("email_exists", {
+        p_email: email.trim().toLowerCase(),
+      });
+
+      if (error) {
+        // If function doesn't exist yet, return false (graceful degradation)
+        // This allows the form to work even if migration hasn't been run
+        logger.warn("Email check function not available", error);
+        return { exists: false };
+      }
+
+      return { exists: data === true };
+    } catch (error) {
+      // Graceful degradation - if check fails, allow form submission
+      // Server-side validation will catch duplicates
+      logger.warn("Email existence check failed", {
+        error: error instanceof Error ? error.message : String(error),
+        email,
+      });
+      return { exists: false };
+    }
+  },
+
+  /**
    * Check if registration should be added to waitlist
    */
   async checkWaitlist(): Promise<{ shouldWaitlist: boolean; error?: Error }> {
@@ -183,6 +212,31 @@ export const registrationService = {
         };
       }
 
+      // Check response data first - even if there's an error, the response body may contain useful info
+      if (registrationData && !registrationData.success) {
+        // Extract error message and code from response
+        const errorMessage = registrationData.error || "Registration failed";
+        const errorCode = registrationData.code;
+        
+        // Handle specific error codes
+        if (errorCode === "DUPLICATE_EMAIL" || errorMessage.toLowerCase().includes("already registered")) {
+          const duplicateError = new Error("This email is already registered");
+          logger.warn("Duplicate email registration attempt", duplicateError, { email: data.email });
+          return { registrationId: null, error: duplicateError };
+        }
+        
+        if (errorCode === "RATE_LIMIT_EXCEEDED" || errorMessage.toLowerCase().includes("rate limit")) {
+          const rateLimitError = new Error("Rate limit exceeded. Please try again later.");
+          logger.warn("Rate limit exceeded", rateLimitError, { email: data.email });
+          return { registrationId: null, error: rateLimitError };
+        }
+        
+        // Generic error from response
+        const error = new Error(errorMessage);
+        logger.error("Registration function error", error, { email: data.email, fullName: data.fullName, code: errorCode });
+        return { registrationId: null, error };
+      }
+
       // Handle function error structure (which might wrap errors)
       if (insertError) {
         // Provide more descriptive error messages
@@ -219,12 +273,18 @@ export const registrationService = {
         }
 
         // Check for common error scenarios
-        if (errorMessage.includes("404") || errorMessage.includes("not found") || errorDetails.status === 404) {
+        if (errorMessage.includes("409") || errorDetails.status === 409 || errorDetails.statusCode === 409) {
+          // 409 Conflict - likely duplicate email
+          errorMessage = "This email is already registered";
+          errorDetails.isDuplicateEmail = true;
+        } else if (errorMessage.includes("404") || errorMessage.includes("not found") || errorDetails.status === 404) {
           errorMessage = "Edge Function not found. Please ensure the 'register-with-ip' Edge Function is deployed.";
         } else if (errorMessage.includes("401") || errorMessage.includes("Unauthorized") || errorDetails.status === 401) {
           errorMessage = "Authentication failed. Please check your Supabase API key configuration.";
         } else if (errorMessage.includes("403") || errorMessage.includes("Forbidden") || errorDetails.status === 403) {
           errorMessage = "Access forbidden. Please check your Supabase permissions.";
+        } else if (errorMessage.includes("429") || errorMessage.includes("rate limit") || errorDetails.status === 429) {
+          errorMessage = "Rate limit exceeded. Please try again later.";
         } else if (errorMessage.includes("CORS") || errorMessage.includes("cors")) {
           errorMessage = "CORS error when calling Edge Function. Please check Edge Function CORS configuration.";
         } else if (errorMessage.includes("network") || errorMessage.includes("fetch") || errorMessage.includes("Failed to fetch")) {
@@ -239,14 +299,6 @@ export const registrationService = {
           error,
           errorDetails
         );
-        return { registrationId: null, error };
-      }
-
-      // Check for success in the response data 
-      if (registrationData && !registrationData.success) {
-        // Re-construct error from response if success is false
-        const error = new Error(registrationData.error || "Registration failed");
-        logger.error("Registration function error", error, { email: data.email, fullName: data.fullName });
         return { registrationId: null, error };
       }
 
@@ -348,10 +400,25 @@ export const registrationService = {
       });
 
       if (insertError) {
+        // Check for duplicate email
+        if (
+          insertError.message?.includes("already registered") ||
+          insertError.message?.includes("duplicate") ||
+          insertError.message?.toLowerCase().includes("this email is already registered")
+        ) {
+          const duplicateError = "This email is already registered";
+          trackRegistration(false, duplicateError);
+          return {
+            success: false,
+            error: duplicateError,
+          };
+        }
+        
         // Check for rate limit violation
         if (
           insertError.message?.includes("rate limit") ||
-          insertError.message?.includes("too many")
+          insertError.message?.includes("too many") ||
+          insertError.message?.includes("Rate limit exceeded")
         ) {
           const rateLimitError = "Rate limit exceeded. Please try again later.";
           trackRegistration(false, rateLimitError);

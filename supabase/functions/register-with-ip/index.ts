@@ -229,7 +229,7 @@ serve(async (req: Request) => {
 
       // Check for duplicate email
       if (error.code === "23505") {
-        return createErrorResponse("This email is already registered", 409, "DUPLICATE_EMAIL", req);
+        return createErrorResponse("This email address has already been used to register. Please check your email for a confirmation message or use a different email address.", 409, "DUPLICATE_EMAIL", req);
       }
 
       // Generic error for all other cases

@@ -64,6 +64,7 @@ const Registration = () => {
     hasLinkedIn,
     hasResume,
     setHasResume,
+    isCheckingEmail,
     handleInputChange,
     handleBlur,
     validateAllFields,
@@ -128,6 +129,12 @@ const Registration = () => {
 
     // Validate all fields
     const newErrors = validateAllFields(captchaToken, RECAPTCHA_SITE_KEY);
+    
+    // Check for duplicate email error (from async validation)
+    if (errors.email && errors.email === t("registration.errors.duplicateEmail")) {
+      newErrors.email = errors.email;
+    }
+    
     setErrors(newErrors);
 
     // TODO: Review and simplify complex conditional logic in Registration component
@@ -146,8 +153,26 @@ const Registration = () => {
       }
       // Also show toast for critical errors
       if (newErrors.fullName || newErrors.email) {
-        toast.error(t("registration.errors.formErrors"));
+        const errorMessage = newErrors.email === t("registration.errors.duplicateEmail")
+          ? t("registration.errors.duplicateEmailSuggestion")
+          : t("registration.errors.formErrors");
+        toast.error(errorMessage, {
+          duration: newErrors.email === t("registration.errors.duplicateEmail") ? 6000 : 4000,
+        });
       }
+      return;
+    }
+    
+    // Double-check: Don't allow submission if email is being checked or if duplicate error exists
+    if (isCheckingEmail) {
+      toast.error(t("registration.errors.pleaseWait"));
+      return;
+    }
+    
+    if (errors.email === t("registration.errors.duplicateEmail")) {
+      toast.error(t("registration.errors.duplicateEmailSuggestion"), {
+        duration: 6000,
+      });
       return;
     }
 
@@ -188,7 +213,13 @@ const Registration = () => {
       const result = await registrationService.submit(submissionData, resumePath);
 
       if (!result.success) {
-        toast.error(result.error || t("registration.errors.failed"));
+        // Use translation key for duplicate email errors with helpful message
+        const errorMessage = result.error?.includes("already registered") || result.error?.includes("duplicate")
+          ? t("registration.errors.duplicateEmailSuggestion")
+          : result.error || t("registration.errors.failed");
+        toast.error(errorMessage, {
+          duration: 6000, // Show longer for helpful messages
+        });
         setIsSubmitting(false);
         return;
       }
@@ -291,6 +322,7 @@ const Registration = () => {
               touched={touched.email}
               required
               autoComplete="email"
+              isLoading={isCheckingEmail}
             />
 
             {/* WhatsApp */}

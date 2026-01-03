@@ -2,7 +2,8 @@ import { ReactNode } from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { CheckCircle, AlertCircle, XCircle } from "lucide-react";
+import { CheckCircle, AlertCircle, XCircle, Loader2 } from "lucide-react";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface RegistrationFieldProps {
   id: string;
@@ -18,6 +19,7 @@ interface RegistrationFieldProps {
   required?: boolean;
   icon?: ReactNode;
   autoComplete?: string;
+  isLoading?: boolean;
 }
 
 export const RegistrationField = ({
@@ -34,9 +36,16 @@ export const RegistrationField = ({
   required = false,
   icon,
   autoComplete,
+  isLoading = false,
 }: RegistrationFieldProps) => {
+  const { t } = useTranslation();
   const hasError = !!error;
-  const isSuccess = touched && !error && !!value;
+  const isSuccess = touched && !error && !!value && !isLoading;
+  const isDuplicateEmailError = error && (
+    error.includes("already registered") || 
+    error.includes("tayari imesajiliwa") ||
+    error === t("registration.errors.duplicateEmail")
+  );
 
   return (
     <div className="space-y-2">
@@ -65,7 +74,13 @@ export const RegistrationField = ({
         />
         {touched && (
           <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center">
-            {hasError ? (
+            {isLoading ? (
+              <Loader2
+                className="w-5 h-5 text-muted-foreground animate-spin"
+                aria-hidden="true"
+                aria-label="Checking email availability"
+              />
+            ) : hasError ? (
               <XCircle
                 className="w-5 h-5 text-destructive animate-bounce-in"
                 aria-hidden="true"
@@ -82,14 +97,22 @@ export const RegistrationField = ({
         )}
       </div>
       {hasError && (
-        <p
+        <div
           id={`${id}-error`}
-          className="text-sm text-destructive flex items-center gap-1.5"
+          className="text-sm text-destructive space-y-1"
           role="alert"
         >
-          <AlertCircle className="w-4 h-4 flex-shrink-0" />
-          <span>{error}</span>
-        </p>
+          <p className="flex items-center gap-1.5">
+            <AlertCircle className="w-4 h-4 flex-shrink-0" />
+            <span>{error}</span>
+          </p>
+          {/* Show helpful suggestion for duplicate email errors */}
+          {isDuplicateEmailError && (
+            <p className="text-xs text-muted-foreground ml-5 pl-0.5">
+              {t("registration.errors.duplicateEmailSuggestion")}
+            </p>
+          )}
+        </div>
       )}
     </div>
   );

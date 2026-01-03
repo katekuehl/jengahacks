@@ -118,6 +118,9 @@
       "captchaFailed": "CAPTCHA verification failed. Please try again.",
       "rateLimit": "Too many registration attempts. Please try again after {time}.",
       "duplicateEmail": "This email is already registered",
+      "duplicateEmailHelp": "This email address has already been used to register. If this is your email, please check your inbox for a confirmation message with your registration details. Otherwise, please use a different email address to continue.",
+      "duplicateEmailSuggestion": "Already registered? Check your email for a confirmation message or use a different email address.",
+      "pleaseWait": "Please wait while we verify your email",
       "failed": "Registration failed. Please try again.",
       "formErrors": "Please fix the errors in the form"
     },
