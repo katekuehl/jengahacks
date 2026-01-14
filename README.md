@@ -1,350 +1,177 @@
-# JengaHacks Hub
+# Supabase CLI
 
-> Built in Nairobi. Ready for the World.
+[![Coverage Status](https://coveralls.io/repos/github/supabase/cli/badge.svg?branch=main)](https://coveralls.io/github/supabase/cli?branch=main) [![Bitbucket Pipelines](https://img.shields.io/bitbucket/pipelines/supabase-cli/setup-cli/master?style=flat-square&label=Bitbucket%20Canary)](https://bitbucket.org/supabase-cli/setup-cli/pipelines) [![Gitlab Pipeline Status](https://img.shields.io/gitlab/pipeline-status/sweatybridge%2Fsetup-cli?label=Gitlab%20Canary)
+](https://gitlab.com/sweatybridge/setup-cli/-/pipelines)
 
-A modern, responsive website for **JengaHacks** - East Africa's premier hackathon event. This platform provides information about the hackathon, registration capabilities, sponsor showcases, and more.
+[Supabase](https://supabase.io) is an open source Firebase alternative. We're building the features of Firebase using enterprise-grade open source tools.
 
-## 🎯 About
+This repository contains all the functionality for Supabase CLI.
 
-JengaHacks is a 36-hour hackathon event taking place in Nairobi, Kenya, bringing together developers, designers, and entrepreneurs to build innovative solutions across multiple tracks including FinTech, HealthTech, AgriTech, EdTech, Climate Tech, and Open Innovation.
+- [x] Running Supabase locally
+- [x] Managing database migrations
+- [x] Creating and deploying Supabase Functions
+- [x] Generating types directly from your database schema
+- [x] Making authenticated HTTP requests to [Management API](https://supabase.com/docs/reference/api/introduction)
 
-**Event Details:**
-- 📅 **Date**: February 21-22, 2026
-- 📍 **Location**: Nairobi, Kenya
-- ⏱️ **Duration**: 36 hours
-- 👥 **Expected Participants**: 100+ hackers
+## Getting started
 
-## ✨ Features
+### Install the CLI
 
-- 🎨 **Modern UI/UX** - Beautiful, responsive design built with Tailwind CSS and shadcn/ui
-- 📝 **Registration System** - Easy event registration with form validation and rate limiting
-- 🏢 **Sponsor Showcase** - Dedicated section highlighting event sponsors
-- 📱 **Fully Responsive** - Optimized for all devices and screen sizes
-- ⚡ **Fast Performance** - Built with Vite for lightning-fast development and builds
-- 🔐 **Supabase Integration** - Backend services for data management
-- 🎯 **Multi-page Navigation** - Clean routing with React Router
-- 🐛 **Error Tracking** - Sentry integration for error monitoring and debugging
-
-## 🛠️ Tech Stack
-
-### Core
-- **React 18** - UI library
-- **TypeScript** - Type-safe development
-- **Vite** - Build tool and dev server
-
-### Styling & UI
-- **Tailwind CSS** - Utility-first CSS framework
-- **shadcn/ui** - High-quality React components
-- **Radix UI** - Accessible component primitives
-- **Lucide React** - Icon library
-
-### Routing & State
-- **React Router** - Client-side routing
-- **TanStack Query** - Data fetching and caching
-
-### Backend & Database
-- **Supabase** - Backend-as-a-Service (BaaS)
-
-### Forms & Validation
-- **React Hook Form** - Form state management
-- **Zod** - Schema validation
-
-### Monitoring & Error Tracking
-- **Sentry** - Error tracking and performance monitoring
-
-### Development Tools
-- **ESLint** - Code linting
-- **TypeScript ESLint** - TypeScript-specific linting rules
-- **PostCSS** - CSS processing
-- **Vitest** - Fast unit test framework
-- **React Testing Library** - Component testing utilities
-- **jsdom** - DOM environment for testing
-- **Playwright** - End-to-end testing framework
-
-## 📚 Documentation
-
-- **[Architecture Diagrams](./ARCHITECTURE.md)** - Visual system architecture and component diagrams
-- **[API Documentation](./API.md)** - Complete API reference for Edge Functions, database schema, and client-side integrations
-- **[Deployment Guide](./DEPLOYMENT.md)** - Step-by-step guide for deploying to production
-- **[Staging Setup](./STAGING_SETUP.md)** - Complete guide for setting up staging environment
-- **[Backup Strategy](./BACKUP_STRATEGY.md)** - Backup and disaster recovery procedures
-- **[Backup Implementation](./BACKUP_IMPLEMENTATION.md)** - Implemented backup system details
-- **[Log Aggregation](./LOG_AGGREGATION.md)** - Centralized log aggregation setup and configuration
-- **[Environment Variables](./ENVIRONMENT_VARIABLES.md)** - Complete reference for all environment variables
-- **[Troubleshooting Guide](./TROUBLESHOOTING.md)** - Solutions for common issues and errors
-- **[Contributing Guidelines](./CONTRIBUTING.md)** - Guidelines for contributing to the project
-- **[Performance Testing Guide](./PERFORMANCE.md)** - Performance benchmarks and optimization guidelines
-- **[Visual Regression Testing Guide](./VISUAL_REGRESSION.md)** - Visual testing and baseline management
-- **[Caching Strategies](./CACHING.md)** - Caching implementation and best practices
-- **[TODO](./TODO.md)** - Project roadmap and task tracking
-
-## 📋 Prerequisites
-
-Before you begin, ensure you have the following installed:
-
-- **Node.js** (v18 or higher) - [Download](https://nodejs.org/)
-- **npm** or **bun** - Package manager (npm comes with Node.js)
-
-> 💡 **Tip**: We recommend using [nvm](https://github.com/nvm-sh/nvm) to manage Node.js versions.
-
-## 🚀 Getting Started
-
-### 1. Clone the Repository
+Available via [NPM](https://www.npmjs.com) as dev dependency. To install:
 
 ```bash
-git clone <YOUR_GIT_URL>
-cd jengahacks-hub
+npm i supabase --save-dev
 ```
 
-### 2. Install Dependencies
-
-Using npm:
-```bash
-npm install
-```
-
-Or using bun:
-```bash
-bun install
-```
-
-### 3. Environment Setup
-
-Create a `.env` file in the root directory:
-
-```bash
-cp .env.example .env
-```
-
-Edit `.env` with your configuration. See [Environment Variables Documentation](./ENVIRONMENT_VARIABLES.md) for complete reference.
-
-**Minimum required variables:**
-
-```env
-VITE_SUPABASE_URL=your_supabase_url
-VITE_SUPABASE_PUBLISHABLE_KEY=your_supabase_anon_key
-VITE_RECAPTCHA_SITE_KEY=your_recaptcha_site_key
-```
-
-> 📖 **For detailed setup instructions**, see [ENVIRONMENT_VARIABLES.md](./ENVIRONMENT_VARIABLES.md)
-> 
-> ⚠️ **Note**: Replace the placeholder values with your actual credentials.
-> 
-> **Quick Setup Guides:**
-> - **Supabase**: [Dashboard → Settings → API](https://app.supabase.com)
-> - **reCAPTCHA**: [Google reCAPTCHA Admin](https://www.google.com/recaptcha/admin)
-> - **Google Analytics**: [Analytics Dashboard](https://analytics.google.com)
-
-### 4. Start Development Server
-
-```bash
-npm run dev
-```
-
-The application will be available at `http://localhost:8080`
-
-## 📜 Available Scripts
-
-| Command | Description |
-|---------|-------------|
-| `npm run dev` | Start development server with hot reload |
-| `npm run build` | Build for production |
-| `npm run build:dev` | Build in development mode |
-| `npm run preview` | Preview production build locally |
-| `npm run lint` | Run ESLint to check code quality |
-| `npm run test` | Run unit/integration tests in watch mode |
-| `npm run test:run` | Run unit/integration tests once |
-| `npm run test:ui` | Run tests with Vitest UI |
-| `npm run test:coverage` | Run tests with coverage report |
-| `npm run test:e2e` | Run E2E tests with Playwright |
-| `npm run test:e2e:ui` | Run E2E tests in interactive UI mode |
-| `npm run test:e2e:headed` | Run E2E tests with visible browser |
-| `npm run test:e2e:debug` | Debug E2E tests |
-| `npm run test:e2e:report` | View E2E test report |
-| `npm run test:visual` | Run visual regression tests |
-| `npm run test:e2e:visual:update` | Update visual regression baselines |
-
-## 📁 Project Structure
+When installing with yarn 4, you need to disable experimental fetch with the following nodejs config.
 
 ```
-jengahacks-hub/
-├── public/                 # Static assets
-│   ├── favicon.ico
-│   └── robots.txt
-├── src/
-│   ├── assets/            # Images and static files
-│   ├── components/        # React components
-│   │   ├── ui/           # shadcn/ui components
-│   │   ├── About.tsx
-│   │   ├── Footer.tsx
-│   │   ├── Hero.tsx
-│   │   ├── Navbar.tsx
-│   │   ├── Registration.tsx
-│   │   └── Sponsors.tsx
-│   ├── hooks/            # Custom React hooks
-│   ├── integrations/     # Third-party integrations
-│   │   └── supabase/     # Supabase client and types
-│   ├── lib/              # Utility functions
-│   ├── pages/            # Page components
-│   │   ├── Index.tsx
-│   │   ├── NotFound.tsx
-│   │   └── Sponsorship.tsx
-│   ├── App.tsx           # Main app component
-│   ├── main.tsx          # Application entry point
-│   └── index.css         # Global styles
-├── supabase/             # Supabase configuration
-│   └── migrations/       # Database migrations
-├── components.json       # shadcn/ui configuration
-├── tailwind.config.ts   # Tailwind CSS configuration
-├── vite.config.ts       # Vite configuration
-└── package.json         # Project dependencies
+NODE_OPTIONS=--no-experimental-fetch yarn add supabase
 ```
 
-## 🧪 Testing
+> **Note**
+For Bun versions below v1.0.17, you must add `supabase` as a [trusted dependency](https://bun.sh/guides/install/trusted) before running `bun add -D supabase`.
 
-The project uses **Vitest** and **React Testing Library** for testing. Tests are located alongside the components they test with the `.test.tsx` or `.test.ts` extension.
+<details>
+  <summary><b>macOS</b></summary>
 
-### Running Tests
+  Available via [Homebrew](https://brew.sh). To install:
 
-```bash
-# Run tests in watch mode (recommended for development)
-npm run test
+  ```sh
+  brew install supabase/tap/supabase
+  ```
 
-# Run tests once
-npm run test:run
+  To install the beta release channel:
+  
+  ```sh
+  brew install supabase/tap/supabase-beta
+  brew link --overwrite supabase-beta
+  ```
+  
+  To upgrade:
 
-# Run tests with UI
-npm run test:ui
+  ```sh
+  brew upgrade supabase
+  ```
+</details>
 
-# Generate coverage report
-npm run test:coverage
-```
+<details>
+  <summary><b>Windows</b></summary>
 
-### Writing Tests
+  Available via [Scoop](https://scoop.sh). To install:
 
-Test files should be placed next to the components they test:
-- `src/components/ComponentName.test.tsx`
-- `src/lib/utils.test.ts`
+  ```powershell
+  scoop bucket add supabase https://github.com/supabase/scoop-bucket.git
+  scoop install supabase
+  ```
 
-The test setup includes:
-- React Testing Library for component testing
-- Custom render utility with providers (Router, QueryClient, etc.)
-- Mocked Supabase client for integration tests
-- jsdom for DOM simulation
+  To upgrade:
 
-Example test:
-```typescript
-import { describe, it, expect } from "vitest";
-import { render, screen } from "@/test/test-utils";
-import MyComponent from "./MyComponent";
+  ```powershell
+  scoop update supabase
+  ```
+</details>
 
-describe("MyComponent", () => {
-  it("should render correctly", () => {
-    render(<MyComponent />);
-    expect(screen.getByText("Hello")).toBeInTheDocument();
-  });
-});
-```
+<details>
+  <summary><b>Linux</b></summary>
 
-## 🎨 Customization
+  Available via [Homebrew](https://brew.sh) and Linux packages.
 
-### Adding New Components
+  #### via Homebrew
 
-Components are organized in the `src/components/` directory. UI components from shadcn/ui are located in `src/components/ui/`.
+  To install:
 
-### Styling
+  ```sh
+  brew install supabase/tap/supabase
+  ```
 
-The project uses Tailwind CSS for styling. Configuration can be found in `tailwind.config.ts`. Custom CSS variables and global styles are defined in `src/index.css`.
+  To upgrade:
 
-### Routes
+  ```sh
+  brew upgrade supabase
+  ```
 
-Routes are defined in `src/App.tsx`. Add new routes above the catch-all `*` route.
+  #### via Linux packages
 
-## 🚢 Deployment
+  Linux packages are provided in [Releases](https://github.com/supabase/cli/releases). To install, download the `.apk`/`.deb`/`.rpm`/`.pkg.tar.zst` file depending on your package manager and run the respective commands.
 
-### Using Lovable
+  ```sh
+  sudo apk add --allow-untrusted <...>.apk
+  ```
 
-1. Open your [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID)
-2. Navigate to **Share → Publish**
-3. Follow the deployment prompts
+  ```sh
+  sudo dpkg -i <...>.deb
+  ```
 
-### Custom Domain
+  ```sh
+  sudo rpm -i <...>.rpm
+  ```
 
-To connect a custom domain:
-1. Navigate to **Project > Settings > Domains**
-2. Click **Connect Domain**
-3. Follow the setup instructions
+  ```sh
+  sudo pacman -U <...>.pkg.tar.zst
+  ```
+</details>
 
-For more information, see [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+<details>
+  <summary><b>Other Platforms</b></summary>
 
-### Manual Deployment
+  You can also install the CLI via [go modules](https://go.dev/ref/mod#go-install) without the help of package managers.
 
-Build the project for production:
+  ```sh
+  go install github.com/supabase/cli@latest
+  ```
+
+  Add a symlink to the binary in `$PATH` for easier access:
+
+  ```sh
+  ln -s "$(go env GOPATH)/bin/cli" /usr/bin/supabase
+  ```
+
+  This works on other non-standard Linux distros.
+</details>
+
+<details>
+  <summary><b>Community Maintained Packages</b></summary>
+
+  Available via [pkgx](https://pkgx.sh/). Package script [here](https://github.com/pkgxdev/pantry/blob/main/projects/supabase.com/cli/package.yml).
+  To install in your working directory:
+
+  ```bash
+  pkgx install supabase
+  ```
+
+  Available via [Nixpkgs](https://nixos.org/). Package script [here](https://github.com/NixOS/nixpkgs/blob/master/pkgs/development/tools/supabase-cli/default.nix).
+</details>
+
+### Run the CLI
 
 ```bash
-npm run build
+supabase bootstrap
 ```
 
-The `dist/` directory will contain the production-ready files that can be deployed to any static hosting service (Vercel, Netlify, GitHub Pages, etc.).
+Or using npx:
 
-## 🤝 Contributing
+```bash
+npx supabase bootstrap
+```
 
-Contributions are welcome! Please read our [Contributing Guidelines](./CONTRIBUTING.md) before submitting pull requests.
+The bootstrap command will guide you through the process of setting up a Supabase project using one of the [starter](https://github.com/supabase-community/supabase-samples/blob/main/samples.json) templates.
 
-**Quick Start:**
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Make your changes
-4. Run tests (`npm run test:run`) and lint (`npm run lint`)
-5. Commit your changes (follow [commit message guidelines](./CONTRIBUTING.md#commit-message-guidelines))
-6. Push to your branch (`git push origin feature/amazing-feature`)
-7. Open a Pull Request
+## Docs
 
-For detailed guidelines, see [CONTRIBUTING.md](./CONTRIBUTING.md).
+Command & config reference can be found [here](https://supabase.com/docs/reference/cli/about).
 
-## 📝 Editing Options
+## Breaking changes
 
-### Using Lovable
+We follow semantic versioning for changes that directly impact CLI commands, flags, and configurations.
 
-Visit your [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting. Changes made via Lovable will be automatically committed to this repository.
+However, due to dependencies on other service images, we cannot guarantee that schema migrations, seed.sql, and generated types will always work for the same CLI major version. If you need such guarantees, we encourage you to pin a specific version of CLI in package.json.
 
-### Using Your IDE
+## Developing
 
-1. Clone the repository
-2. Install dependencies (`npm install`)
-3. Make your changes locally
-4. Push changes to the repository
-5. Changes will be reflected in Lovable
+To run from source:
 
-### Using GitHub
-
-- Navigate to the desired file
-- Click the "Edit" button (pencil icon)
-- Make changes and commit
-
-### Using GitHub Codespaces
-
-1. Navigate to the repository main page
-2. Click "Code" → "Codespaces" tab
-3. Click "New codespace"
-4. Edit files directly in the Codespace
-5. Commit and push when done
-
-## 📄 License
-
-This project is private and proprietary.
-
-## 🙏 Acknowledgments
-
-- [shadcn/ui](https://ui.shadcn.com/) for the amazing component library
-- [Radix UI](https://www.radix-ui.com/) for accessible primitives
-- [Vite](https://vitejs.dev/) for the excellent build tooling
-- [Supabase](https://supabase.com/) for backend services
-
-## 📞 Support
-
-For questions or support, please open an issue in the repository or contact the project maintainers.
-
----
-
-**Built with ❤️ for the JengaHacks community**
+```sh
+# Go >= 1.22
+go run . help
+```

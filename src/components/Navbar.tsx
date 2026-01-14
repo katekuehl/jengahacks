@@ -1,13 +1,13 @@
-import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import Logo from "@/components/Logo";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
+import Logo from "@/components/Logo";
+import { Button } from "@/components/ui/button";
+import { useArrowKeyNavigation } from "@/hooks/useArrowKeyNavigation";
+import { useFocusTrap } from "@/hooks/useFocusTrap";
 import { useTranslation } from "@/hooks/useTranslation";
 import { cn } from "@/lib/utils";
-import { useFocusTrap } from "@/hooks/useFocusTrap";
-import { useArrowKeyNavigation } from "@/hooks/useArrowKeyNavigation";
+import { Menu, X } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
 
@@ -123,8 +123,10 @@ const Navbar = () => {
               );
             })}
             <LanguageSwitcher variant="compact" />
-            <Button variant="hero" size="sm" asChild>
-              <a href="#register" aria-label={`${t("common.joinNow")} - ${t("aria.navigateToRegistration")}`}>{t("common.joinNow")}</a>
+            <Button variant="default" asChild>
+              <a href="https://lu.ma/3uot4p9w" target="_blank" rel="noopener noreferrer">
+                {t("common.register")}
+              </a>
             </Button>
           </nav>
 
@@ -207,18 +209,14 @@ const Navbar = () => {
                   </a>
                 );
               })}
-              <div className="pt-2 border-t border-border">
-                <LanguageSwitcher variant="compact" className="w-full justify-start" />
-              </div>
-                <Button variant="hero" size="sm" asChild>
-                  <a 
-                    href="#register" 
-                    aria-label={`${t("common.joinNow")} - ${t("aria.navigateToRegistration")}`}
-                    onClick={() => setIsOpen(false)}
-                  >
-                    {t("common.joinNow")}
+              <div className="pt-2 border-t border-border flex flex-col gap-3">
+                 <Button variant="default" className="w-full" asChild>
+                  <a href="https://lu.ma/3uot4p9w" target="_blank" rel="noopener noreferrer">
+                    {t("common.register")}
                   </a>
                 </Button>
+                <LanguageSwitcher variant="compact" className="w-full justify-start" />
+              </div>
             </div>
           </div>
         </div>

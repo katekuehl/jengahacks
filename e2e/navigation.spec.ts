@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.describe('Navigation', () => {
   test.beforeEach(async ({ page }) => {
@@ -104,13 +104,7 @@ test.describe('Navigation', () => {
     await expect(page).toHaveURL('/blog', { timeout: 10000 });
   });
 
-  test('should scroll to registration section when clicking register link', async ({ page }) => {
-    const registerLink = page.getByRole('link', { name: /Register/i }).first();
-    await registerLink.click();
 
-    // Check that we're at the registration section
-    await expect(page.locator('#register')).toBeInViewport();
-  });
 
   test('should scroll to about section when clicking about link', async ({ page }) => {
     const aboutLink = page.getByRole('link', { name: /About/i }).first();

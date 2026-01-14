@@ -1,16 +1,17 @@
-import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
 import { useTranslation } from "@/hooks/useTranslation";
-import { 
-  Calendar, 
-  Clock, 
-  Coffee, 
-  Code, 
-  Utensils, 
-  Lightbulb, 
-  Trophy, 
-  Presentation,
-  CheckCircle2,
-  Circle
+import { motion } from "framer-motion";
+import {
+    ArrowRight,
+    Calendar,
+    CheckCircle2,
+    Clock,
+    Code,
+    Coffee,
+    Lightbulb,
+    Presentation,
+    Trophy,
+    Utensils
 } from "lucide-react";
 
 interface ScheduleItemProps {
@@ -150,6 +151,16 @@ const Schedule = () => {
               ))}
             </div>
           </div>
+        </div>
+
+        {/* Register CTA */}
+        <div className="mt-16 flex justify-center">
+            <Button size="lg" className="h-14 px-8 text-lg rounded-full shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-shadow" asChild>
+            <a href="https://lu.ma/3uot4p9w" target="_blank" rel="noopener noreferrer">
+                {t("common.register")}
+                <ArrowRight className="ml-2 w-5 h-5" />
+            </a>
+            </Button>
         </div>
       </div>
     </section>

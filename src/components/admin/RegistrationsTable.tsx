@@ -1,22 +1,30 @@
-import { useState, useEffect, useCallback } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@/components/ui/table";
+import { useTranslation } from "@/hooks/useTranslation";
 import { supabase } from "@/integrations/supabase/client";
-import { createObjectURL, revokeObjectURL } from "@/lib/polyfills";
+import { getPaginatedRegistrations } from "@/lib/dbQueries";
 import { formatDateTimeShort } from "@/lib/i18n";
 import { logger } from "@/lib/logger";
-import { getPaginatedRegistrations } from "@/lib/dbQueries";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Search, ExternalLink, FileText, Mail } from "lucide-react";
+import { createObjectURL, revokeObjectURL } from "@/lib/polyfills";
+import { ExternalLink, FileText, Mail, Search } from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
-import { useTranslation } from "@/hooks/useTranslation";
+
+/**
+ * RegistrationsTable - Admin component for viewing historical registrations
+ * 
+ * Note: This component displays legacy registration data from before the migration to Luma.
+ * New registrations are handled through Luma and will not appear in this table.
+ */
+
 
 interface Registration {
   id: string;

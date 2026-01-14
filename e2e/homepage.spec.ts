@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.describe('Homepage', () => {
   test.beforeEach(async ({ page }) => {
@@ -28,11 +28,7 @@ test.describe('Homepage', () => {
     await expect(page.getByRole('heading', { name: /Sponsors/i })).toBeVisible();
   });
 
-  test('should display registration section', async ({ page }) => {
-    await page.locator('#register').scrollIntoViewIfNeeded();
-    await expect(page.locator('#register')).toBeVisible({ timeout: 10000 });
-    await expect(page.getByRole('heading', { name: /Register/i })).toBeVisible();
-  });
+
 
   test('should display footer', async ({ page }) => {
     await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
@@ -40,7 +36,7 @@ test.describe('Homepage', () => {
   });
 
   test('should have working social share buttons', async ({ page }) => {
-    await page.locator('#register').scrollIntoViewIfNeeded();
+    await page.locator('footer').scrollIntoViewIfNeeded();
 
     // Look for social share buttons
     const shareButtons = page.locator('button[aria-label*="Share"], button[aria-label*="share"]');

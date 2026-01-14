@@ -1,8 +1,8 @@
-import { Button } from "@/components/ui/button";
-import { ArrowRight, Calendar, MapPin } from "lucide-react";
 import icon from "@/assets/jengahacks-icon.svg";
+import { Button } from "@/components/ui/button";
 import { useTranslation } from "@/hooks/useTranslation";
 import { trackButtonClick } from "@/lib/analytics";
+import { ArrowRight, Calendar, MapPin } from "lucide-react";
 
 const Hero = () => {
   const { t } = useTranslation();
@@ -77,15 +77,15 @@ const Hero = () => {
 
             {/* CTA Buttons */}
             <nav className="animate-slide-up delay-300 flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto px-4" aria-label={t("aria.mainActions")}>
-              <Button variant="hero" size="lg" className="sm:size-xl w-full sm:w-auto group" asChild>
+              <Button size="lg" className="sm:size-xl w-full sm:w-auto text-lg font-semibold shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-shadow" asChild>
                 <a 
-                  href="#register" 
-                  className="flex items-center justify-center gap-2"
+                  href="https://lu.ma/3uot4p9w"
+                  target="_blank" 
+                  rel="noopener noreferrer"
                   onClick={() => trackButtonClick("Register Now", "hero")}
-                  aria-label={`${t("common.register")} - ${t("aria.navigateToRegistration")}`}
                 >
                   {t("common.register")}
-                  <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true" />
+                  <ArrowRight className="ml-2 w-5 h-5" />
                 </a>
               </Button>
               <Button variant="outline" size="lg" className="sm:size-xl w-full sm:w-auto" asChild>

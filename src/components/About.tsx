@@ -1,7 +1,7 @@
-import { Code, Users, Trophy, Lightbulb, MessageSquare, ArrowRight } from "lucide-react";
-import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "@/hooks/useTranslation";
+import { ArrowRight, Code, Lightbulb, MessageSquare, Trophy, Users } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const About = () => {
   const { t, getNamespace } = useTranslation();
@@ -12,7 +12,7 @@ const About = () => {
       icon: Code,
       title: t("about.features.build.title"),
       description: t("about.features.build.description"),
-      link: "/#register",
+      link: "/#schedule",
     },
     {
       icon: Users,
