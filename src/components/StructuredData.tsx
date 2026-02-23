@@ -5,9 +5,9 @@ const eventStructuredData = {
   "@context": "https://schema.org",
   "@type": "Event",
   "name": "JengaHacks 2026",
-  "description": "East Africa's premier 36-hour hackathon. Join developers, designers, and entrepreneurs to build innovative solutions across FinTech, HealthTech, AgriTech, EdTech, Climate Tech, JobTech, AI/ML, and Open Innovation tracks.",
-  "startDate": "2026-02-21T00:00:00+03:00",
-  "endDate": "2026-02-22T23:59:59+03:00",
+  "description": "East Africa's premier hackathon. Join developers, designers, and entrepreneurs to build innovative solutions across FinTech, HealthTech, AgriTech, EdTech, Climate Tech, JobTech, AI/ML, and Open Innovation tracks.",
+  "startDate": "2026-02-28T08:00:00+03:00",
+  "endDate": "2026-02-28T23:59:59+03:00",
   "eventStatus": "https://schema.org/EventScheduled",
   "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
   "location": {

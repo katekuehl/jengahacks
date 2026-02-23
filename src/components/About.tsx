@@ -1,6 +1,5 @@
-import { Button } from "@/components/ui/button";
 import { useTranslation } from "@/hooks/useTranslation";
-import { ArrowRight, Code, Lightbulb, MessageSquare, Trophy, Users } from "lucide-react";
+import { Code, Lightbulb, Trophy, Users } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const About = () => {
@@ -108,37 +107,6 @@ const About = () => {
             ))}
           </div>
         </div>
-
-        {/* Community CTA */}
-        <aside className="mt-12 sm:mt-16 md:mt-20 text-center px-4" aria-label="Community information">
-          <div className="inline-block p-6 sm:p-8 bg-[#262626] border border-indigo-500/20 rounded-xl sm:rounded-2xl max-w-md mx-auto">
-            <div className="flex items-center justify-center mb-3" aria-hidden="true">
-              <MessageSquare className="w-8 h-8 sm:w-10 sm:h-10 text-primary" />
-            </div>
-            <h3 className="text-lg sm:text-xl font-semibold mb-2">{t("about.community.title")}</h3>
-            <p className="text-sm sm:text-base text-muted-foreground mb-4">
-              {t("about.community.description")}
-            </p>
-            <Button 
-              variant="outline" 
-              size="lg"
-              className="border-primary text-primary hover:bg-primary/10 hover:border-primary hover:text-primary"
-              asChild
-            >
-              <a 
-                href={import.meta.env.VITE_DISCORD_URL || "https://discord.gg/4qaZGnYe"} 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2"
-                aria-label={`${t("about.community.cta")} - Opens Discord community in new tab`}
-              >
-                <MessageSquare className="w-4 h-4" aria-hidden="true" />
-                {t("about.community.cta")}
-                <ArrowRight className="w-4 h-4" aria-hidden="true" />
-              </a>
-            </Button>
-          </div>
-        </aside>
       </div>
     </section>
   );

@@ -75,11 +75,6 @@
       "jobtech": "JobTech",
       "aiml": "AI/ML",
       "open": "Open Innovation"
-    },
-    "community": {
-      "title": "Join Our Community",
-      "description": "Connect with participants, mentors, and organizers on Discord. Get updates, ask questions, and network!",
-      "cta": "Join Discord Server"
     }
   },
   "sponsors": {
@@ -368,7 +363,6 @@
     "hackathonTrack": "Hackathon track: {track}",
     "communityInformation": "Community information",
     "opensInNewTab": "Opens in new tab",
-    "opensDiscordInNewTab": "Opens Discord community in new tab",
     "sponsorInfo": "{name} - {description} - Opens in new tab",
     "becomeSponsor": "Become a sponsor",
     "share": "Share",
@@ -439,7 +433,7 @@
     },
     "moreQuestions": {
       "question": "I have more questions. How can I get in touch?",
-      "answer": "You can reach out to us through our Discord community, email us at hello@siliconsavannahsolutions.com, or connect with us on social media. We're happy to help answer any questions you may have!"
+      "answer": "You can reach out to us by email at hello@siliconsavannahsolutions.com or connect with us on social media. We're happy to help answer any questions you may have!"
     }
   },
   "prizes": {
@@ -504,10 +498,9 @@
   "schedule": {
     "title": "Event Schedule",
     "timeline": "Timeline",
-    "subtitle": "36 hours of non-stop building, learning, and fun. Plan your weekend accordingly.",
+    "subtitle": "One full day of building, learning, and fun. Plan accordingly.",
     "days": {
-      "day1": "Saturday, Feb 21",
-      "day2": "Sunday, Feb 22"
+      "saturday": "Saturday, Feb 28"
     },
     "events": {
       "checkin": "Check-in & Breakfast",

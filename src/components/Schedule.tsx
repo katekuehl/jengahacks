@@ -42,23 +42,17 @@ const ScheduleItem = ({ time, title, icon: Icon, isLast }: ScheduleItemProps) =>
 const Schedule = () => {
   const { t } = useTranslation();
 
-  const day1Events = [
+  const events = [
     { time: "08:00 AM", title: t("schedule.events.checkin"), icon: Coffee },
     { time: "09:30 AM", title: t("schedule.events.opening"), icon: Presentation },
     { time: "10:30 AM", title: t("schedule.events.hackingStarts"), icon: Code },
     { time: "01:00 PM", title: t("schedule.events.lunch"), icon: Utensils },
     { time: "03:00 PM", title: t("schedule.events.workshopSupabase"), icon: Lightbulb },
+    { time: "05:00 PM", title: t("schedule.events.workshopPitch"), icon: Lightbulb },
     { time: "07:00 PM", title: t("schedule.events.dinner"), icon: Utensils },
-    { time: "09:00 PM", title: t("schedule.events.lateNightSnacks"), icon: Coffee },
-  ];
-
-  const day2Events = [
-    { time: "08:00 AM", title: t("schedule.events.breakfast"), icon: Coffee },
-    { time: "10:00 AM", title: t("schedule.events.workshopPitch"), icon: Lightbulb },
-    { time: "01:00 PM", title: t("schedule.events.lunch"), icon: Utensils },
-    { time: "04:00 PM", title: t("schedule.events.hackingEnds"), icon: CheckCircle2 },
-    { time: "05:00 PM", title: t("schedule.events.judging"), icon: Presentation },
-    { time: "08:00 PM", title: t("schedule.events.awards"), icon: Trophy },
+    { time: "08:00 PM", title: t("schedule.events.hackingEnds"), icon: CheckCircle2 },
+    { time: "08:30 PM", title: t("schedule.events.judging"), icon: Presentation },
+    { time: "09:30 PM", title: t("schedule.events.awards"), icon: Trophy },
   ];
 
   return (
@@ -99,57 +93,28 @@ const Schedule = () => {
           </motion.p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-16 md:gap-24 max-w-5xl mx-auto">
-          {/* Day 1 */}
-          <div>
-            <div className="flex items-center gap-3 mb-10">
-              <div className="w-1.5 h-8 bg-primary rounded-full" />
-              <h3 className="text-2xl font-bold tracking-tight">
-                {t("schedule.days.day1")}
-              </h3>
-            </div>
-            <div className="space-y-0">
-              {day1Events.map((event, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                >
-                  <ScheduleItem 
-                    {...event} 
-                    isLast={index === day1Events.length - 1} 
-                  />
-                </motion.div>
-              ))}
-            </div>
+        <div className="max-w-2xl mx-auto flex flex-col items-center">
+          <div className="flex items-center justify-center gap-3 mb-10">
+            <div className="w-1.5 h-8 bg-primary rounded-full" />
+            <h3 className="text-2xl font-bold tracking-tight">
+              {t("schedule.days.saturday")}
+            </h3>
           </div>
-
-          {/* Day 2 */}
-          <div>
-            <div className="flex items-center gap-3 mb-10">
-              <div className="w-1.5 h-8 bg-indigo-500 rounded-full" />
-              <h3 className="text-2xl font-bold tracking-tight">
-                {t("schedule.days.day2")}
-              </h3>
-            </div>
-            <div className="space-y-0">
-              {day2Events.map((event, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                >
-                  <ScheduleItem 
-                    {...event} 
-                    isLast={index === day2Events.length - 1} 
-                  />
-                </motion.div>
-              ))}
-            </div>
+          <div className="space-y-0">
+            {events.map((event, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+              >
+                <ScheduleItem 
+                  {...event} 
+                  isLast={index === events.length - 1} 
+                />
+              </motion.div>
+            ))}
           </div>
         </div>
 

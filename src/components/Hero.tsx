@@ -21,7 +21,7 @@ const Hero = () => {
       <div className="container mx-auto px-4 sm:px-6 relative z-10">
         <div className="flex flex-col items-center text-center max-w-4xl mx-auto">
           {/* Logo */}
-          <header className="animate-slide-up mb-6 sm:mb-8 relative">
+          <header className="animate-slide-up mt-8 sm:mt-12 mb-6 sm:mb-8 relative">
             <img 
               src={icon} 
               alt="" 

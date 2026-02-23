@@ -5,7 +5,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
-import { HelpCircle, Mail, MessageCircle } from "lucide-react";
+import { HelpCircle, Mail } from "lucide-react";
 import SEO from "@/components/SEO";
 import Navbar from "@/components/Navbar";
 import { useTranslation } from "@/hooks/useTranslation";
@@ -182,18 +182,6 @@ const FAQ = () => {
                       >
                         <Mail className="w-5 h-5" aria-hidden="true" />
                         Email Us
-                      </a>
-                    </Button>
-                    <Button variant="hero" size="lg" asChild>
-                      <a 
-                        href={import.meta.env.VITE_DISCORD_URL || "https://discord.gg/4qaZGnYe"}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-2"
-                        aria-label="Join our Discord community - Opens in new tab"
-                      >
-                        <MessageCircle className="w-5 h-5" aria-hidden="true" />
-                        Join Discord
                       </a>
                     </Button>
                   </div>
